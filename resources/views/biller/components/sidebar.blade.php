@@ -70,88 +70,29 @@
                         <p>Billing Period</p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('bill.cashier') ? 'active' : '' }}">
-                    <a href="{{ route('bill.cashier') }}" aria-expanded="false">
+                <li class="nav-item {{ request()->routeIs('utility.reading') ? 'active' : '' }}">
+                    <a href="{{ route('utility.reading') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
-                        <p>Biller</p>
+                        <p>Utility Reading</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('bill.billing') ? 'active' : '' }}">
+                    <a href="{{ route('bill.billing') }}" aria-expanded="false">
+                        <i class="fas fa-layer-group"></i>
+                        <p>Billing</p>
                     </a>
                 </li>
                 <!-- <li class="nav-item {{ request()->routeIs('bill.cashier') ? 'active' : '' }}">
                     <a href="{{ route('bill.cashier') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
+                        <p>Biller</p>
+                    </a>
+                </li> -->
+                <!-- <li class="nav-item {{ request()->routeIs('bill.cashier') ? 'active' : '' }}">
+                    <a href="{{ route('bill.cashier') }}" aria-expanded="false">
+                        <i class="fas fa-layer-group"></i>
                         <p>Billing</p>
                     </a>
-                </li> -->
-                <li class="nav-item {{ request()->routeIs('bill.invoices') ? 'active' : '' }}">
-                    <a href="{{ route('bill.invoices') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Invoices</p>
-                    </a>
-                </li>
-                <!-- <li class="nav-item {{ request()->routeIs('client.proposal') ? 'active' : '' }}">
-                    <a href="{{ route('client.proposal') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Invoices</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ request()->routeIs('client.proposal') ? 'active' : '' }}">
-                    <a href="{{ route('client.proposal') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Activities</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ request()->routeIs('client.proposal') ? 'active' : '' }}">
-                    <a href="{{ route('client.proposal') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Reports</p>
-                    </a>
-                </li> -->
-                
-                <!-- <li class="nav-item {{ request()->routeIs('client.proposal') ? 'active' : '' }}">
-                    <a href="{{ route('client.proposal') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Lease Proposals</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ request()->routeIs('client.award.notice') ? 'active' : '' }}">
-                    <a href="{{ route('client.award.notice') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Award Notice</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ request()->routeIs('client.contracts') ? 'active' : '' }}">
-                    <a href="{{ route('client.contracts') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Contracts</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ request()->routeIs('client.space') ? 'active' : '' }}">
-                    <a href="{{ route('client.space') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Spaces</p>
-                    </a>
-                </li>
-                <li
-                    class="nav-item {{ request()->routeIs('client.auth.person') || request()->routeIs('client.documents') ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#leases" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Setup</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="leases">
-                        <ul class="nav nav-collapse">
-                            <li class="{{ request()->routeIs('client.auth.person') ? 'active' : '' }}">
-                                <a href="{{ route('client.auth.person') }}">
-                                    <span class="sub-item">Authorized Personnel</span>
-                                </a>
-                            </li>
-                            <li class="{{ request()->routeIs('client.documents') ? 'active' : '' }}">
-                                <a href="{{ route('client.documents') }}">
-                                    <span class="sub-item">Documents</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li> -->
             </ul>
         </div>

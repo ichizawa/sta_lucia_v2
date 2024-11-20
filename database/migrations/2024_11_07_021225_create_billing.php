@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('billing', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('tenant_id');
+            // $table->bigInteger('tenant_id');
             $table->unsignedBigInteger('proposal_id');
             $table->foreign('proposal_id')->references('id')->on('proposal')->cascadeOnDelete();
+            $table->string('date_start')->nullable();
+            $table->string('date_end')->nullable();
             $table->boolean('status');
             $table->timestamps();
         });

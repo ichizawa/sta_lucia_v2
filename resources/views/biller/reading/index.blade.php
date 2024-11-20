@@ -1,21 +1,13 @@
 @extends('layouts')
 
 @section('content')
-@include('biller.period.billing-modal.bill-modal')
-<style>
-    .rotate-icon {
-        transition: transform 0.3s ease;
-    }
-
-    .rotate-icon.rotate-up {
-        transform: rotate(180deg);
-    }
-</style>
-
+@include('biller.reading.reading-modal.reading-modal')
+@include('biller.reading.reading-modal.input-reading-modal')
+@include('biller.reading.reading-modal.lists-utility')
 <div class="page-inner">
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>
-            <h3 class="fw-bold mb-3">Billing Period</h3>
+            <h3 class="fw-bold mb-3">Utility Reading</h3>
         </div>
         <div class="ms-md-auto py-2 py-md-0">
             <!-- <input type="date" class="form-control" name="filter_year" id="filter_year"/> -->
@@ -27,11 +19,11 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center justify-content-between">
-                        <h4 class="card-title">List of Periods</h4>
+                        <h4 class="card-title">List of Billings</h4>
                     </div>
                 </div>
                 <div class="card-body">
-                    @include('biller.period.components.period-table')
+                    @include('biller.reading.components.reading-table')
                 </div>
             </div>
         </div>

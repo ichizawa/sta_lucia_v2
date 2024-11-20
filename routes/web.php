@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\biller\ActivitiesController;
 use App\Http\Controllers\biller\BillController;
 use \App\Http\Controllers\biller\InvoicesController;
 use App\Http\Controllers\biller\CashierController;
@@ -140,6 +141,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
         Route::prefix('commencement')->group(function () {
             Route::get('/lists', [CommencementController::class, 'index'])->name('commencement.lists');
+            Route::post('/commencement-update', [CommencementController::class, 'commencementUpdate'])->name('commencement.update');
         });
         Route::get('/billing-periods', [AdminController::class, 'adminBillingPeriods'])->name('admin.bill.period');
 
@@ -170,12 +172,19 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         });
 
         Route::prefix('billing')->group(function () {
-            Route::get('/period', [BillController::class, 'bill'])->name('bill.period');
+            Route::get('/biller', [BillController::class, 'bill'])->name('bill.billing');
             Route::get('/lists', [BillController::class, 'contractLists'])->name('biller.period.lists');
-            Route::post('/prepare-bill', [BillController::class, 'prepare'])->name('biller.prepare.period');
+            Route::get('/check-periods', [BillController::class, 'checkBills'])->name('biller.check.bills');
+
+            Route::post('/prepare-bill', [BillController::class, 'prepare'])->name('biller.prepare.process');
+            Route::get('/billing-period', [BillController::class, 'period'])->name('bill.period');
         });
 
-        Route::get('/invoices', [InvoicesController::class, 'index'])->name('bill.invoices');
+        Route::prefix('utility')->group(function () {
+            Route::get('/reading', [ActivitiesController::class, 'index'])->name('utility.reading');
+            Route::get('/lists', [ActivitiesController::class, 'lists'])->name('utility.reading.get');
+            Route::get('/utility-lists', [ActivitiesController::class, 'utilityLists'])->name('utility.reading.lists');
+        });
     });
 
     Route::prefix('collector')->group(function () {

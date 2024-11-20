@@ -1,21 +1,26 @@
-<div class="modal fade" id="cashierBillingPeriod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="billingPeriodLists" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
-    <form action="{{ route('biller.prepare.period') }}" method="POST">
+    <form action="{{ route('biller.prepare.process') }}" method="POST">
       @csrf
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Billing Periods</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Billing</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body appendhere">
+        <div class="modal-body">
+          <div class="appendhere">
+
+          </div>
           <div class="table-responsive">
             <table id="tenantBillings" class="table">
               <thead class="thead-light">
                 <tr>
-                  <th>Tenant #</th>
+                  <th colspan="2">Billing #</th>
+                  <th>Date of Billing</th>
+                  <th>Bill Status</th>
                 </tr>
               </thead>
-              <tbody id="tenantLists">
+              <tbody id="billLists">
 
               </tbody>
             </table>
@@ -23,57 +28,35 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-sta" data-bs-dismiss="modal">Process Billing</button>
+          <!-- <button type="button" class="btn btn-sta" data-bs-dismiss="modal">Process Billing</button> -->
         </div>
       </div>
     </form>
   </div>
 </div>
 <script>
-  $(document).on('click', '.prepareBill', function () {
+  $(document).on('click', '.periodLists', function () {
     const date = $(this).data('date');
     $.ajax({
-      url: "{{route('biller.period.lists')}}",
+      url: "{{route('biller.check.bills')}}",
       type: "GET",
       dataType: "json",
       data: {
         date: date
       },
       success: function (response) {
-        $('#tenantLists').empty();
-        console.log(response);
+        $('#billLists').empty();
+        // console.log(response);
+        $('.appendhere').empty();
         $.each(response, function (key, value) {
-          if(value.min_mgr == 0){
-            
-          }
-          $('.appendhere').append(`<input type="text" name="contract_id[]" value="${value.id}" hidden/>`);
-          $('#tenantLists').append(`
-            <tr class="showContracts" data-bs-toggle="collapse" data-bs-target="#tenant_bill${key}" aria-expanded="false" aria-controls="tenant_bill${key}">
-              <td>${value.acc_id}</td>
-            </tr>
-            <tr class="collapse" id="tenant_bill${key}">
-              <td colspan="2">
-                <div id="contract-lists" class="table-responsive">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Contract #</th>
-                        <th></th>
-                        <th>Total Payment</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                          <td>${value.proposal_uid}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </td>
+          const date = new Date(value.date_to + "-01");
+          date.setDate(date.getDate() + 4);
+          const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
+          $('#billLists').append(`
+            <tr>
+              <td colspan="2">${value.bill_no}</td>
+              <td>${formattedDate}</td>
+              <td>${value.status ? '<span class="badge bg-success">Paid</span>' : '<span class="badge bg-warning">Pending Payment</span>'}</td>
             </tr>
           `);
         });

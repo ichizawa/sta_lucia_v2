@@ -15,17 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('billing_id');
             $table->foreign('billing_id')->references('id')->on('billing')->cascadeOnDelete();
-            $table->string('bill_no');
-            $table->string('total_sales');
-            $table->string('brent');
-            $table->string('total_brent');
-            $table->string('mgr');
-            $table->string('total_mgr');
-            $table->string('amount_payable');
-            $table->string('total_amount_payable');
-            $table->dateTime('date_from');
-            $table->dateTime('date_to');
+            $table->string('bill_no')->nullable();
+            $table->string('date_from')->nullable();
+            $table->string('date_to')->nullable();
             $table->string('remarks')->nullable();
+            $table->boolean('status');
             $table->timestamps();
         });
     }

@@ -65,18 +65,11 @@
 @if (session('success'))
 <script>
     $(document).ready(function() {
-<<<<<<< HEAD
-        var content = 'testing',
-            message = "{{ session('success') }}",  // Fixed session key
-            title = "Success",
-            icon = "fa fa-bell";
-=======
         var content = { 'testing',
             message: "{{ session('success ') }}",
             title: "Success",
             icon: "fa fa-bell"
         };
->>>>>>> e67c6283d67f69a6ed9d24288d6b87df87f8e37e
 
         $.notify(content, {
             type: 'success',
@@ -87,11 +80,7 @@
             time: 1000,
             delay: 1500,
         });
-<<<<<<< HEAD
-    });  // Corrected parentheses and bracket
-=======
     });
->>>>>>> e67c6283d67f69a6ed9d24288d6b87df87f8e37e
 </script>
 
 @endif

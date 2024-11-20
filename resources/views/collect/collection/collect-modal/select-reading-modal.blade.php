@@ -16,7 +16,7 @@
                             </tr>
                         </thead>
                         <tbody id="utilityTableList">
-                            <!-- <tr>
+                        <!-- <tr>
                                 <td scope="row">Gas</td>
                                 <td>1855.50</td>
                                 <td>

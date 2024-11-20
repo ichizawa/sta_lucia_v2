@@ -12,8 +12,10 @@ class Billing extends Model
     protected $table = 'billing';
 
     protected $fillable = [
-        'tenant_id',
+        // 'tenant_id',
         'proposal_id',
+        'date_start',
+        'date_end',
         'status',
     ];
 }

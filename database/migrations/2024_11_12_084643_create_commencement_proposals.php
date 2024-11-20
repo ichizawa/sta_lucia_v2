@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('proposal_id');
             $table->foreign('proposal_id')->references('id')->on('proposal')->cascadeOnDelete();
-            $table->string('commencement_date');
+            $table->string('commencement_date')->nullable();
             $table->timestamps();
         });
     }

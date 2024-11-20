@@ -43,11 +43,11 @@
                         badge = '';
                     }
                     monthContainer.append(`
-                        <div class="col-md-3 periodLists" data-bs-toggle="modal"
-                        data-bs-target="#billingPeriodLists" data-date="${year}-${monthNumber}">
+                        <div class="col-md-3 prepareBill" data-bs-toggle="modal"
+                        data-bs-target="#cashierBillingPeriod" data-date="${year}-${monthNumber}">
                             <div class="card mb-2">
                                 <div class="card-body">
-                                    <h6 class="text-center">${monthName} ${badge}</h6>
+                                    <h6 class="text-center">${monthName}</h6>
                                 </div>
                             </div>
                         </div>

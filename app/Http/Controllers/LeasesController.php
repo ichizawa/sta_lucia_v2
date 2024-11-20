@@ -93,7 +93,6 @@ class LeasesController extends Controller
         $data = [];
         if ($option == 'proposal') {
             $this->newProposal($request);
-            // dd($request->all()); die();
             $data = [
                 'status' => 'success',
                 'message' => 'Lease proposal added successfully'
@@ -107,29 +106,10 @@ class LeasesController extends Controller
             ];
             return redirect()->route('leases.leases.proposal')->with('success', 'Counter Lease proposal added successfully');
         }
-
     }
 
     public function newProposal(Request $request)
     {
-        // $data = [
-        //     'tenant_id' => $request->companyprop,
-        //     'proposal_uid' => rand(100000, 999999),
-        //     'bussiness_nature' => $request->businessnature,
-        //     'brent' => (float) str_replace(',', '', $request->brent),
-        //     'total_rent' => (float) str_replace(',', '', $request->total_rent),
-        //     'discount' => $request->paymentdisc ?? 0,
-        //     'min_mgr' => (float) str_replace(',', '', $request->minmgr ?? 0),
-        //     'lease_term' => $request->termlease,
-        //     'commencement' => $request->commencementmonth,
-        //     'end_contract' => $request->leaseendmonth,
-        //     'const_period' => $request->constperiod,
-        //     'rent_deposit' => $request->advrent ?? 0,
-        //     'sec_dep' => $request->secrent ?? 0,
-        //     'escalation_rate' => $request->escrent,
-        //     'status' => 0
-        // ];
-
         $data = [
             'tenant_id' => $request->companyprop,
             'proposal_uid' => rand(100000, 999999),
@@ -198,11 +178,10 @@ class LeasesController extends Controller
                 'status' => 0
             ]);
         }
-        CommencementProposal::create([
-            'proposal_id' => $lease_prop->id,
-            'commencement_date' => $request->leaseendmonth
-        ]);
-
+        // $date = new \DateTime($request->commencementmonth);
+        // $date->modify('+2 months');
+        // $comm_date = $date->format('Y-m');
+        
         $this->newProposalPDF($lease_prop);
     }
 

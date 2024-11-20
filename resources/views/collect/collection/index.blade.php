@@ -7,7 +7,7 @@
 <div class="page-inner">
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>
-            <h3 class="fw-bold mb-3">Utility Admin</h3>
+            <h3 class="fw-bold mb-3">Collection</h3>
         </div>
         <div class="ms-md-auto py-2 py-md-0">
         </div>
@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h4 class="card-title">Utility Readings</h4>
+                        <h4 class="card-title">Lists to Collect</h4>
                         <!-- <button class="btn btn-sta ms-auto create-bill me-2" data-bs-toggle="modal"
                             data-bs-target="#collectionModal">
                             <i class="fa fa-plus"></i>
@@ -66,40 +66,5 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        $('#collect-datatables').DataTable({
-            pageLength: 5,
-            initComplete: function () {
-                this.api()
-                    .columns()
-                    .every(function () {
-                        var column = this;
-                        var select = $(
-                            '<select class="form-select"><option value="#" selected hidden>Select Filter</option><option value="">All</option></select>',
-                        )
-                            .appendTo($(column.footer()).empty())
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                                column
-                                    .search(val ? '^' + val + '$' : '', true, false)
-                                    .draw();
-                            });
-
-                        column
-                            .data()
-                            .unique()
-                            .sort()
-                            .each(function (d, j) {
-                                select.append(
-                                    '<option value="' + d + '">' + d + '</option>',
-                                );
-                            });
-                    });
-            },
-        });
-
-    });
-</script>
 @endsection

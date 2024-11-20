@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AwardNotice;
 use App\Models\AwardNoticeFiles;
 use App\Models\ChargesSelected;
+use App\Models\CommencementProposal;
 use App\Models\Company;
 use App\Models\Contracts;
 use App\Models\LeaseProposal;
@@ -129,7 +130,11 @@ class VacateNoticesController extends Controller
                 $tenant_email = Representative::where('owner_id', $tenant_id)->pluck('rep_email')->first();
                 Representative::where('owner_id', $tenant_id)->update(['status' => 1]);
                 User::where('email', $tenant_email)->update(['status' => 1]);
-
+                CommencementProposal::create([
+                    'proposal_id' => $awardnotice->proposal_id,
+                    'commencement_date' => null
+                ]);
+                
                 $ownerName = Company::where('owner_id', $tenant_id)->pluck('company_name')->first();
                 $directorypath = "public/tenant_documents/{$ownerName}/contract/";
                 $pdfFileName = "contract_{$contracts->id}.pdf";
