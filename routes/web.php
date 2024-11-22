@@ -184,6 +184,8 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/reading', [ActivitiesController::class, 'index'])->name('utility.reading');
             Route::get('/lists', [ActivitiesController::class, 'lists'])->name('utility.reading.get');
             Route::get('/utility-lists', [ActivitiesController::class, 'utilityLists'])->name('utility.reading.lists');
+            Route::get('/utility-reading', [ActivitiesController::class, 'reading'])->name('utility.reading.bills');
+            Route::post('/prepare-reading', [ActivitiesController::class, 'prepare'])->name('utility.reading.store');
         });
     });
 

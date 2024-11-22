@@ -80,37 +80,79 @@
                     date: date
                 },
                 success: function (data) {
-                table.clear();
+                    table.clear();
+                    $.each(data, function (key, value) {
+                        if (value.proposal.length !== 0) {
+                            let nestedTableRows = '';
 
-                $.each(data, function (key, value) {
-                    table.row.add([
-                        `<div data-bs-toggle="collapse" data-bs-target="#utility_bill${key}" aria-expanded="false" aria-controls="utility_bill${key}" style="cursor: pointer;">
-                            ${value.company.acc_id}
-                        </div>
-                        <div class="collapse mt-4" id="utility_bill${key}">
-                            <table class="table table-bordered">
-                                <thead class="thead-light">
-                                        <tr>
-                                            <th>Contract #</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>${value.proposal.proposal_uid}</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-warning contractUtil" data-bs-toggle="modal" data-bs-target="#contractUtilityLists" data-id="${value.billing_id}">
-                                                <i class="fa fa-pen"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>`,
-                    ]);
-                });
-                table.draw();
+                            $.map(value.proposal, function (val, index) {
+                                // console.log(val);
+                                nestedTableRows += `
+                                <tr>
+                                    <td>${val.contract_uid}</td>
+                                    <td>${val.bill_status}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#contractUtilityLists" data-date="${date}" data-id="${val.bill_id}">
+                                        <i class="fa fa-pen"></i>
+                                        </button>
+                                    </td>
+                                </tr>`;
+                            });
 
+                            table.row.add([
+                                `<div data-bs-toggle="collapse" data-bs-target="#utility_bill${key}" aria-expanded="false" aria-controls="utility_bill${key}" style="cursor: pointer;">
+                                    ${value.acc_id}
+                                </div>
+                                <div class="collapse mt-4" id="utility_bill${key}">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-light">
+                                            <tr>   
+                                                <th>Contract #</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${nestedTableRows}
+                                        </tbody>
+                                    </table>
+                                </div>`,
+                            ]);
+                        }
+                    });
+                    table.draw();
+
+                    // table.clear();
+                    // $.each(data, function (key, value) {
+                    //     table.row.add([
+                    //         `<div data-bs-toggle="collapse" data-bs-target="#utility_bill${key}" aria-expanded="false" aria-controls="utility_bill${key}" style="cursor: pointer;">
+                    //             ${value.proposal.company.acc_id}
+                    //         </div>
+                    //         <div class="collapse mt-4" id="utility_bill${key}">
+                    //             <table class="table table-bordered">
+                    //                 <thead class="thead-light">
+                    //                         <tr>
+                    //                             <th>Contract #</th>
+                    //                             <th>Status</th>
+                    //                             <th>Action</th>
+                    //                         </tr>
+                    //                     </thead>
+                    //                 <tbody>
+                    //                     <tr>
+                    //                         <td>${value.proposal.proposal_uid}</td>
+                    //                         <td>${value.status == 0 ? '<span class="badge bg-warning">Pending</span>' : '<span class="badge bg-success">Prepared</span>' }</td>
+                    //                         <td>
+                    //                             <button class="btn btn-sm btn-warning contractUtil" data-bs-toggle="modal" data-bs-target="#contractUtilityLists" data-id="${value.bill_details.billing_id}">
+                    //                                 <i class="fa fa-pen"></i>
+                    //                             </button>
+                    //                         </td>
+                    //                     </tr>
+                    //                 </tbody>
+                    //             </table>
+                    //         </div>`,
+                    //     ]);
+                    // });
+                    // table.draw();
                 },
                 error: function (status, xhr, error) {
                     console.log(xhr.responseText);

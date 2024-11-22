@@ -11,6 +11,7 @@ use App\Models\CommencementProposal;
 use App\Models\Company;
 use App\Models\Contracts;
 use App\Models\LeaseProposal;
+use App\Models\UtilitiesReading;
 use Illuminate\Http\Request;
 
 class BillController extends Controller
@@ -27,15 +28,24 @@ class BillController extends Controller
 
     public function contractLists(Request $request)
     {
-        $bill = Billing::join('proposal', 'billing.proposal_id', '=', 'proposal.id')
-            ->join('company', 'company.owner_id', '=', 'proposal.tenant_id')
-            ->join('commencement_proposals', 'proposal.id', '=', 'commencement_proposals.proposal_id')
-            ->select('proposal.proposal_uid', 'company.acc_id', 'billing.*', 'commencement_proposals.commencement_date')
-            ->where('billing.date_start', $request->date)
-            // ->where('billing.status', 0)
-            ->get();
+        $tenants = Company::all();
+        $proposals = LeaseProposal::all();
+        $bills = Billing::all();
+        $commencements = CommencementProposal::all();
 
-        return response()->json($bill);
+        $tenants->map(function ($tenant) use ($proposals, $bills, $commencements) {
+            $matchedProposals = $proposals->where('tenant_id', $tenant->owner_id);
+            $matchedProposals->map(function ($proposal) use ($bills, $commencements) {
+                $proposal->bill = $bills->where('proposal_id', $proposal->id);
+                $proposal->commencement = $commencements->firstWhere('proposal_id', $proposal->id);
+                return $proposal;
+            });
+            $tenant->proposal = $matchedProposals;
+            return $tenant;
+        });
+
+        return response()->json($tenants);
+
     }
 
     public function prepare(Request $request)

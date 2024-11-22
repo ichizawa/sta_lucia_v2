@@ -16,7 +16,8 @@
               <thead class="thead-light">
                 <tr>
                   <th colspan="2">Billing #</th>
-                  <th>Date of Billing</th>
+                  <th>Date Started</th>
+                  <th>Due Date</th>
                   <th>Bill Status</th>
                 </tr>
               </thead>
@@ -50,11 +51,14 @@
         $('.appendhere').empty();
         $.each(response, function (key, value) {
           const date = new Date(value.date_to + "-01");
+          const datefrom = new Date(value.date_from);
           date.setDate(date.getDate() + 4);
           const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
+          const formattedDatefrom = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(datefrom);
           $('#billLists').append(`
             <tr>
               <td colspan="2">${value.bill_no}</td>
+              <td>${formattedDatefrom}</td>
               <td>${formattedDate}</td>
               <td>${value.status ? '<span class="badge bg-success">Paid</span>' : '<span class="badge bg-warning">Pending Payment</span>'}</td>
             </tr>

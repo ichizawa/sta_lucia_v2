@@ -14,14 +14,18 @@ return new class extends Migration
         Schema::create('utilities_reading', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('bill_id');
-            $table->unsignedBigInteger('utility_id');
-            $table->foreign('utility_id')->references('id')->on('utilities_selected');
-            $table->float('present_reading');
-            $table->float('previous_reading');
-            $table->dateTime('present_reading_date');
-            $table->dateTime('previous_reading_date');
-            $table->float('consumption');
-            $table->float('total_reading');
+            $table->unsignedBigInteger('utility_id')->nullable();
+            // $table->foreign('utility_id')->references('id')->on('utilities_selected');
+            $table->float('present_reading')->nullable();
+            $table->float('previous_reading')->nullable();
+            $table->date('present_reading_date')->nullable();
+            $table->date('previous_reading_date')->nullable();
+            $table->float('consumption')->nullable();
+            $table->float('utility_price')->nullable();
+            $table->float('total_reading')->nullable();
+            $table->string('date_reading')->nullable();
+            $table->smallInteger('status');
+            $table->smallInteger('prepare');
             $table->timestamps();
         });
     }

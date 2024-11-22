@@ -19,58 +19,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-sta" data-bs-dismiss="modal">Prepare Bill</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-<!-- <script>
-    $(document).on('click', '.utilityReadingModal', function () {
-        var date = $(this).data('date');
-
-        $.ajax({
-            url: "{{ route('utility.reading.get') }}",
-            method: 'GET',
-            dataType: 'json',
-            data: {
-                date: date
-            },
-            success: function (data) {
-                // $('#utilityTableList').empty();
-                // $.each(data, function (key, value) {
-                //     $('#utilityTableList').append(`
-                //         <tr data-bs-toggle="collapse" data-bs-target="#utility_bill${key}" aria-expanded="false" aria-controls="#utility_bill${key}">
-                //             <td>${value.company.acc_id}</td>
-                //         </tr>
-                //         <tr class="collapse" id="utility_bill${key}">
-                //             <td>
-                //                 <table class="table">
-                //                     <thead class="thead-light">
-                //                         <tr>
-                //                             <th scope="col" colspan="2">Contract #</th>
-                //                             <th scope="col">Action</th>
-                //                         </tr>
-                //                     </thead>
-                //                     <tbody>
-                //                         <tr>
-                //                             <td colspan="2">${value.proposal.proposal_uid}</td>
-                //                             <td>
-                //                                 <button class="btn btn-sm btn-warning contractUtil" data-bs-toggle="modal" data-bs-target="#contractUtilityLists" data-id="${value.billing_id}">
-                //                                 <i class="fa fa-pen"></i>
-                //                                 </button>
-                //                             </td>
-                //                         </tr>
-                //                     </tbody>
-                //                 </table>
-                //             </td>
-                //         </tr>
-                //     `);
-                // });
-
-            },
-            error: function (status, xhr, error) {
-                console.log(xhr.responseText);
-            }
-        });
-    });
-</script> -->

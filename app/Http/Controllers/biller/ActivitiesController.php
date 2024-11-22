@@ -5,73 +5,144 @@ namespace App\Http\Controllers\biller;
 use App\Http\Controllers\Controller;
 use App\Models\Billing;
 use App\Models\BillingDetails;
+use App\Models\CommencementProposal;
 use App\Models\Company;
 use App\Models\LeaseProposal;
+use App\Models\UtilitiesReading;
 use App\Models\UtilitiesSelected;
 use Illuminate\Http\Request;
 
 class ActivitiesController extends Controller
 {
-    public function index(){
-        $bills = Billing::all();
-        $companies = Company::all();
-        $proposals = LeaseProposal::all();
-
-        $bills->map(function ($bill) use ($companies, $proposals) {
-            $matching_proposal = $proposals->firstWhere('id', $bill->proposal_id);
-            $matching_company = $companies->firstWhere('owner_id', $matching_proposal->tenant_id ?? null);
-            $bill->proposal = $matching_proposal;
-            $bill->company = $matching_company;
-
-            return $bill;
-        });
+    public function index()
+    {
         return view('biller.reading.index');
     }
 
-    public function lists(Request $request){
-        $date = $request->date;
-
-        $bills = Billing::all();
-        $billing_details = BillingDetails::where('date_to', $date)->get();
+    public function lists(Request $request)
+    {
+        $bills = Billing::where('date_end', $request->date)->get();
+        $billing_details = BillingDetails::all();
         $companies = Company::all();
-        $proposals = LeaseProposal::all();
+        $proposals = LeaseProposal::join('billing', 'billing.proposal_id', '=', 'proposal.id')
+            ->where('billing.date_end', $request->date)
+            ->select('proposal.id as proposal_id', 'billing.id as bill_id', 'billing.status as bill_status', 'proposal.tenant_id', 'proposal.proposal_uid as contract_uid')
+            ->get();
 
-        $billing_details->map(function ($billing_detail) use ($bills, $companies, $proposals) {
-            $matching_bill = $bills->firstWhere('id', $billing_detail->billing_id);
-            $matching_proposal = $proposals->firstWhere('id', $matching_bill->proposal_id ?? null);
-            $matching_company = $companies->firstWhere('owner_id', $matching_proposal->tenant_id ?? null);
-
-            $billing_detail->bill = $matching_bill;
-            $billing_detail->proposal = $matching_proposal;
-            $billing_detail->company = $matching_company;
-
-            return $billing_detail;
+        $companies->map(function ($company) use ($proposals, $billing_details) {
+            $matching_proposals = $proposals->where('tenant_id', $company->owner_id);
+            $company->proposal = $matching_proposals;
+            return $company;
         });
 
-        return response()->json($billing_details);
+        // $companies->map(function($company) use ($bills, $proposals, $commencements) {
+        //     $matchedProposals = $proposals->where('tenant_id', $company->owner_id);
+        //     $matchedProposals->map(function ($proposal) use ($bills, $commencements) {
+        //         $proposal->bill = $bills->where('proposal_id', $proposal->id);
+        //         $proposal->commencement = $commencements->firstWhere('proposal_id', $proposal->id);
+        //         return $proposal;
+        //     });
+        //     $company->proposal = $matchedProposals;
+        //     return $company;
+        // });
+        // $bills->map(function ($bill) use ($billing_details, $companies, $proposals) {
+        //     $matching_bill_details = $billing_details->firstWhere('billing_id', operator: $bill->id);
+        //     $matching_proposal = $proposals->firstWhere('id', $bill->proposal_id ?? null);
+        //     $matching_company = $companies->where('owner_id', $matching_proposal->tenant_id ?? null);
+
+        //     $bill->bill_details = $matching_bill_details;
+        //     $bill->proposal = $matching_proposal;
+        //     $bill->proposal->company = $matching_company;
+
+        //     return $bill;
+        // });
+
+        return response()->json($companies);
     }
 
-    public function utilityLists(Request $request){
-        $bills = Billing::all();
-        $billing_details = BillingDetails::where('billing_id', $request->id)->get();
-        $companies = Company::all();
-        $proposals = LeaseProposal::all();
-        $utilities = UtilitiesSelected::join('utilities', 'utilities_selected.utility_id', '=', 'utilities.id')->get();
+    public function utilityLists(Request $request)
+    {
+        // $bills = Billing::where('id', $request->id)->select('billing.proposal_id', 'billing.status', 'billing.id')->first();
+        // $utilities = UtilitiesSelected::join('utilities', 'utilities_selected.utility_id', '=', 'utilities.id')
+        // // ->where('lease_id', $bills->proposal_id)
+        // ->select('utilities_selected.id as selected_utility_id', 'utilities.utility_name', 'utilities_selected.lease_id')
+        // ->get();
 
-        $billing_details->map(function ($billing_detail) use ($bills, $companies, $proposals, $utilities) {
-            $matching_bill = $bills->firstWhere('id', $billing_detail->billing_id);
-            $matching_proposal = $proposals->firstWhere('id', $matching_bill->proposal_id ?? null);
-            $matching_company = $companies->firstWhere('owner_id', $matching_proposal->tenant_id ?? null);
-            $matching_utilities = $utilities->where('lease_id', $matching_bill->proposal_id ?? null);
+        // $match_util = $utilities->where('lease_id', $bills->proposal_id);
 
-            $billing_detail->bill = $matching_bill;
-            $billing_detail->proposal = $matching_proposal;
-            $billing_detail->company = $matching_company;
-            $billing_detail->proposal->utilities = $matching_utilities;
+        // $bills->utilities = $match_util;
 
-            return $billing_detail;
-        });
+        // return response()->json($bills);
 
-        return response()->json($billing_details);
+        $bills = Billing::where('id', $request->id)
+            ->select('billing.proposal_id', 'billing.status', 'billing.id')
+            ->first();
+
+        $utilities = UtilitiesSelected::join('utilities', 'utilities_selected.utility_id', '=', 'utilities.id')
+            ->select('utilities_selected.id as selected_utility_id', 'utilities.utility_name', 'utilities_selected.lease_id', 'utilities.utility_price', 'utilities_selected.utility_id')
+            ->get();
+
+        $readings = UtilitiesReading::all();
+
+        if ($bills) {
+            $matched_utilities = $utilities->where('lease_id', $bills->proposal_id);
+            $matched_utilities->each(function ($utility) use ($readings) {
+                $utility->reading = $readings->where('utility_id', $utility->selected_utility_id)->values();
+            });
+            $bills->utilities = $matched_utilities;
+        }
+
+        return response()->json($bills);
+
+    }
+
+    public function reading(Request $request)
+    {
+        $utilities = UtilitiesSelected::join('utilities', 'utilities_selected.utility_id', '=', 'utilities.id')
+            ->where('utilities_selected.id', $request->id)
+            ->select('utilities_selected.id as selected_utility_id', 'utilities.utility_name')
+            ->first();
+        $reading = UtilitiesReading::all();
+
+        $matching_reading = $reading->firstWhere('utility_id', $utilities->selected_utility_id);
+        $utilities->reading = $matching_reading;
+
+        return response()->json($utilities);
+    }
+
+    public function prepare(Request $request)
+    {
+        $response = UtilitiesReading::firstOrCreate(
+            [
+                'utility_id' => $request->utility_id,
+            ],
+            [
+                'bill_id' => $request->bill_id,
+                'present_reading' => $request->present_reading,
+                'previous_reading' => $request->previous_reading,
+                'present_reading_date' => $request->present_reading_date,
+                'previous_reading_date' => $request->previous_reading_date,
+                'consumption' => $request->consumption,
+                'utility_price' => $request->total_reading_charge,
+                'total_reading' => $request->total_reading_charge,
+                'date_reading' => $request->date_reading,
+                'prepare' => 1,
+                'status' => 0
+            ]
+        );
+
+        $data = [];
+        if ($response->wasRecentlyCreated) {
+            $data = [
+                'status' => 'success',
+                'message' => 'Reading Prepared Successfully'
+            ];
+        } else {
+            $data = [
+                'status' => 'error',
+                'message' => 'Something went wrong'
+            ];
+        }
+        return response()->json($data);
     }
 }

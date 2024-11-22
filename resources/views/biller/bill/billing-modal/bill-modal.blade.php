@@ -44,41 +44,61 @@
       },
       success: function (response) {
         $('#tenantLists').empty();
-        // console.log(response);
         $('.appendhere').empty();
-        $.each(response, function (key, value) {
-          // var total_pay = value.min_mgr ? value.total_mgr : total_rent;
-          $('.appendhere').append(`<input type="text" name="bill_id[]" value="${value.id}" hidden/>
-          <input type="text" name="date" value="${date}" hidden/>`);
-          $('#tenantLists').append(`
-            <tr class="showContracts" data-bs-toggle="collapse" data-bs-target="#tenant_bill${key}" aria-expanded="false" aria-controls="tenant_bill${key}">
-              <td>${value.acc_id}</td>
-            </tr>
-            <tr class="collapse" id="tenant_bill${key}">
-              <td colspan="2">
-                <div id="contract-lists" class="table-responsive">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th colspan="2">Contract #</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+
+        $.each(response, function (key, tenant) {
+          const filteredProposals = tenant.proposal.filter(function (proposal) {
+            return proposal.commencement.commencement_date === date;
+          });
+
+          console.log(tenant);
+
+          if (filteredProposals.length > 0) {
+            $('#tenantLists').append(`
+              <tr class="showContracts" data-bs-toggle="collapse" data-bs-target="#tenant_bill${key}" aria-expanded="false" aria-controls="tenant_bill${key}">
+                <td>${tenant.acc_id}</td>
+              </tr>
+              <tr class="collapse" id="tenant_bill${key}">
+                <td colspan="2">
+                  <div id="contract-lists" class="table-responsive">
+                    <table>
+                      <thead>
                         <tr>
-                          <td colspan="2">${value.proposal_uid}</td>
-                          <td>${value.status ? '<span class="badge bg-success">Prepared</span>' : '<span class="badge bg-warning">Pending</span>'}</td>
-                          <td><input type="checkbox" class="" name="contracts[]" value="${value.id}"></td>
+                          <th colspan="2">Contract #</th>
+                          <th>Action</th>
                         </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </td>
-            </tr>
-          `);
+                      </thead>
+                      <tbody id="proposalLists${key}">
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            `);
+
+            $.each(filteredProposals, function (index, proposal) {
+              $(`#proposalLists${key}`).append(`
+                <tr>
+                  <td colspan="2">${proposal.proposal_uid}</td>
+                  <td>
+                    <input type="checkbox" class="" name="contracts[]" value="${proposal.id}">
+                  </td>
+                </tr>
+              `);
+
+              if (proposal.bill) {
+                $.each(proposal.bill, function (billId, billDetails) {
+                  $('.appendhere').append(`
+                    <input type="text" name="bill_id[]" value="${billDetails.id}" hidden/>
+                    <input type="text" name="date" value="${date}" hidden/>
+                  `);
+                });
+              }
+            });
+          }
         });
       }
     });
+
   });
 </script>
