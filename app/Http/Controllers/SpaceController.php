@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SpaceBroadcast;
+use App\Events\SpaceCreated;
 use App\Models\Amenities;
 use App\Models\AmenitySelected;
 use App\Models\LeasableInfoModel;
@@ -15,6 +15,7 @@ use App\Models\SpaceUtility;
 use App\Models\UtilitiesModel;
 use Illuminate\Http\Request;
 use App\Models\Space;
+use Illuminate\Support\Facades\Log;
 
 class SpaceController extends Controller
 {
@@ -129,6 +130,10 @@ class SpaceController extends Controller
                 'proposal_id' => null,
                 'status' => 0,
             ]);
+
+            Log::info('Broadcasting space event', ['space' => $space]);
+
+            event(new SpaceCreated($space));
 
             return redirect()->route('admin.space')->with('status', 'Space Added Successfully');
         } else {
