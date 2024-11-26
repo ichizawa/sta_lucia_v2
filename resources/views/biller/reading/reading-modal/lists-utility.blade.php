@@ -48,7 +48,7 @@
                         $('#contractTableUtility').append(`
                             <tr>
                                 <td>${value.utility_name}</td>
-                                <td></td>
+                                <td>${value.reading == null ? '-' : parseFloat(value.reading.total_reading).toFixed(2)}</td>
                                 <td>
                                     <button class="btn btn-sm btn-warning" data-id="${data.id}" data-date-reading="${date}" data-utility-id="${value.selected_utility_id}" data-bs-toggle="modal" data-bs-target="#utilityReadingModal">
                                         <i class="fa fa-pen"></i>
@@ -64,41 +64,4 @@
             });
         });
     });
-    // $(document).on('click', '.contractUtil', function () {
-    //     var id = $(this).data('id');
-    //     $.ajax({
-    //         url: "{{ route('utility.reading.lists') }}",
-    //         type: "GET",
-    //         dataType: "json",
-    //         data: {
-    //             id: id
-    //         },
-    //         success: function (data) {
-    //             $('#contractTableUtility').empty();
-    //             console.log(data);
-
-    //             // const billUtilities = data[0].bill.utility_bill;
-    //             // const proposalUtilities = data[0].proposal.utilities;
-
-    //             // const utilities = billUtilities.length > 0 ? billUtilities : proposalUtilities;
-
-    //             // $.each(utilities, function (key, value) {
-    //             //     $('#contractTableUtility').append(`
-    //             //         <tr>
-    //             //             <td>${value.utility_name}</td>
-    //             //             <td>${value.utility_price}</td>
-    //             //             <td>
-    //             //                 <button class="btn btn-sm btn-warning" data-bill-id="${data[0].id}" data-id="${value.id}" data-bs-toggle="modal" data-bs-target="#utilityReadingModal">
-    //             //                     <i class="fa fa-pen"></i>
-    //             //                 </button>
-    //             //             </td>
-    //             //         </tr>
-    //             //     `);
-    //             // });
-    //         },
-    //         error: function (xhr, status, error) {
-    //             console.log(xhr.responseText);
-    //         }
-    //     });
-    // });
 </script>

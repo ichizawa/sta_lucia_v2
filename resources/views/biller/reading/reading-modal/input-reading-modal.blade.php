@@ -77,20 +77,20 @@
                     date_reading: date_reading
                 },
                 success: function (data) {
-                    console.log(data);
                     $('#previous_reading').val('');
                     $('#previous_reading_date').val('');
                     $('#bill_id').val(bill_id);
                     $('#utility_id').val(data.selected_utility_id);
                     $('#date_reading').val(date_reading);
 
-                    // if(data[0].reading != null){
-                    //     $('#previous_reading').val(data[0].reading.present_reading);
-                    //     $('#previous_reading_date').val(data[0].reading.present_reading_date);
-                    // }else{
-                    //     $('#previous_reading').val('');
-                    //     $('#previous_reading_date').val('');
-                    // }
+                    if(data.reading != null){
+                        $('#previous_reading').val(data.reading.present_reading);
+                        $('#previous_reading_date').val(data.reading.present_reading_date);
+                    }else{
+                        $('#previous_reading').val('');
+                        $('#previous_reading_date').val('');
+                    }
+
                     // $('#utility_id').val(data[0].id);
                     // $('#bill_id').val(bill_id);
                     // $('#utility_name').val(data[0].utility_name);
@@ -113,6 +113,21 @@
                 processData: false,
                 dataType: "json",
                 success: function (data) {
+                    // var content = {
+                    //     message: data.message,
+                    //     title: data.status,
+                    //     icon: "fa fa-bell"
+                    // }
+                    // $.notify(content, {
+                    //     type: data.status,
+                    //     placement: {
+                    //         from: 'top',
+                    //         align: 'right',
+                    //     },
+                    //     time: 1000,
+                    //     delay: 2000,
+                    // })
+                    
                     console.log(data);
                 },
                 error: function (xhr, status, error) {

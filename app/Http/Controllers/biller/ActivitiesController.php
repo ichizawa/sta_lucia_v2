@@ -11,6 +11,8 @@ use App\Models\LeaseProposal;
 use App\Models\UtilitiesReading;
 use App\Models\UtilitiesSelected;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Constraint\IsEmpty;
+use function PHPUnit\Framework\isEmpty;
 
 class ActivitiesController extends Controller
 {
@@ -87,7 +89,7 @@ class ActivitiesController extends Controller
         if ($bills) {
             $matched_utilities = $utilities->where('lease_id', $bills->proposal_id);
             $matched_utilities->each(function ($utility) use ($readings) {
-                $utility->reading = $readings->where('utility_id', $utility->selected_utility_id)->values();
+                $utility->reading = $readings->firstWhere('utility_id', $utility->selected_utility_id);
             });
             $bills->utilities = $matched_utilities;
         }
@@ -112,37 +114,53 @@ class ActivitiesController extends Controller
 
     public function prepare(Request $request)
     {
-        $response = UtilitiesReading::firstOrCreate(
-            [
-                'utility_id' => $request->utility_id,
-            ],
-            [
-                'bill_id' => $request->bill_id,
-                'present_reading' => $request->present_reading,
-                'previous_reading' => $request->previous_reading,
-                'present_reading_date' => $request->present_reading_date,
-                'previous_reading_date' => $request->previous_reading_date,
-                'consumption' => $request->consumption,
-                'utility_price' => $request->total_reading_charge,
-                'total_reading' => $request->total_reading_charge,
-                'date_reading' => $request->date_reading,
-                'prepare' => 1,
-                'status' => 0
-            ]
-        );
+        $find = UtilitiesReading::where('bill_id', $request->bill_id)
+            ->where('date_reading', $request->date_reading)
+            ->where('utility_id', $request->utility_id)->first();
+        $response = [];
+        if (!empty($find)) {
+            if($find->prepare == 1){
+                $response = [
+                    'status' => 'danger',
+                    'message' => 'Utility Already Prepared'
+                ];
+            }else{
+                $reading = UtilitiesReading::create([
+                    'utility_id' => $request->utility_id,
+                    'bill_id' => $request->bill_id,
+                    'present_reading' => $request->present_reading,
+                    'previous_reading' => $request->previous_reading,
+                    'present_reading_date' => $request->present_reading_date,
+                    'previous_reading_date' => $request->previous_reading_date,
+                    'consumption' => $request->consumption,
+                    'utility_price' => $request->total_reading_charge,
+                    'total_reading' => $request->total_reading_charge,
+                    'date_reading' => $request->date_reading,
+                    'prepare' => 1,
+                ]);
 
-        $data = [];
-        if ($response->wasRecentlyCreated) {
-            $data = [
-                'status' => 'success',
-                'message' => 'Reading Prepared Successfully'
-            ];
+                if ($reading) {
+                    $response = [
+                        'status' => 'success',
+                        'message' => 'Reading Prepared Successfully'
+                    ];
+                } else {
+                    $response = [
+                        'status' => 'danger',
+                        'message' => 'Reading Not Prepared'
+                    ];
+                }
+            }
         } else {
-            $data = [
-                'status' => 'error',
-                'message' => 'Something went wrong'
+            $response = [
+                'status' => 'danger',
+                'message' => 'Utility Not Found'
             ];
         }
-        return response()->json($data);
+        return response()->json($response);
+    }
+
+    public function save(Request $request){
+        return response()->json($request->all());
     }
 }

@@ -4,7 +4,7 @@
 <script>
     $(document).ready(function () {
         var table = $("#utilityreading-datatable").DataTable({
-            pageLength: 5,
+            pageLength: 10,
         });
 
         const currentYear = (new Date()).getFullYear();
@@ -43,7 +43,6 @@
             $(`#reading_${index}`).on('show.bs.collapse', function () {
                 const monthContainer = $(`#months_${index}`);
                 monthContainer.empty();
-
                 for (let month = 0; month < 12; month++) {
                     const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
                     const monthNumber = String(month + 1).padStart(2, '0');
@@ -81,22 +80,27 @@
                 },
                 success: function (data) {
                     table.clear();
+                    $('#appendInputHere').empty();
                     $.each(data, function (key, value) {
                         if (value.proposal.length !== 0) {
                             let nestedTableRows = '';
-
                             $.map(value.proposal, function (val, index) {
-                                // console.log(val);
                                 nestedTableRows += `
                                 <tr>
                                     <td>${val.contract_uid}</td>
-                                    <td>${val.bill_status}</td>
+                                    <td>${val.bill_status == 2 ? 'Bill Prepared' : val.bill_status == 1 ? 'Bill Paid' : 'Bill Pending'}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#contractUtilityLists" data-date="${date}" data-id="${val.bill_id}">
+                                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#contractUtilityLists" data-date="${date}" 
+                                            data-proposal-id="${val.proposal_id}" 
+                                            data-id="${val.bill_id}">
                                         <i class="fa fa-pen"></i>
                                         </button>
                                     </td>
                                 </tr>`;
+
+                                $('#appendInputHere').append(`
+                                    <input type="text" value="${val.bill_id}" name="bill_id[]" hidden/>
+                                `);
                             });
 
                             table.row.add([
@@ -121,7 +125,6 @@
                         }
                     });
                     table.draw();
-
                     // table.clear();
                     // $.each(data, function (key, value) {
                     //     table.row.add([

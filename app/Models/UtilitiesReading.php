@@ -22,7 +22,6 @@ class UtilitiesReading extends Model
         'utility_price',
         'total_reading',
         'date_reading',
-        'prepare',
-        'status'
+        'prepare'
     ];
 }
