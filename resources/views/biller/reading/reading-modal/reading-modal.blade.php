@@ -21,10 +21,10 @@
                     </div>
                 </div>
                 <div id="appendInputHere">
-                    <input type="text" name="dateToRead" id="dateToRead" hidden/>
+                    <input type="text" name="dateToRead" id="dateToRead" hidden />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sta prepareBilling">Prepare Bill</button>
+                    <button type="button" class="btn btn-sta prepareBilling">Prepare Reading</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -33,24 +33,165 @@
 </div>
 <script>
     $(document).ready(function () {
+        const table = $("#utilityreading-datatable").DataTable({
+            pageLength: 10,
+        });
+
+        $('#utilityListModal').on('show.bs.modal', function (event) {
+            var date = $(event.relatedTarget).data('date');
+
+            $.ajax({
+                url: "{{ route('utility.reading.get') }}",
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    date: date
+                },
+                success: function (data) {
+                    $('#appendInputHere').empty();
+                    table.clear();
+                    $.each(data, function (key, value) {
+                        let nestedRows = '';
+
+                        $.each(value.proposals, function (ke, val) {
+                            nestedRows += `
+                                <tr>
+                                    <td>${val.proposal_uid}</td>
+                                    <td>${val.billing.is_prepared == 0 ? 'Not Prepared' : val.billing.is_prepared == 1 ? 'Processed' : 'Prepared'}</td>
+                                    <td>${val.billing.util_reading == null ? 'No Reading Yet' : ''}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-warning"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#contractUtilityLists"
+                                            data-date="${date}" 
+                                            data-proposal-id="${val.id}" 
+                                            data-id="${val.billing.id}">
+                                        <i class="fa fa-pen"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+
+                        table.row.add([
+                            `<div data-bs-toggle="collapse" data-bs-target="#utility_bill${key}" aria-expanded="false" aria-controls="utility_bill${key}" style="cursor: pointer;">
+                                ${value.acc_id}
+                            </div>
+                            <div class="collapse mt-4" id="utility_bill${key}">
+                                <table class="table table-bordered">
+                                    <thead class="thead-light">
+                                        <tr>   
+                                            <th>Contract #</th>
+                                            <th>Status</th>
+                                            <th>Reading Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${nestedRows}
+                                    </tbody>
+                                </table>
+                            </div>`
+                        ]);
+                    });
+                    table.draw();
+
+                    // $.each(data, function (key, value) {
+                    //     if (value.proposal.length !== 0) {
+                    //         let nestedTableRows = '';
+                    //         $.map(value.proposal, function (val, index) {
+                    //             let allUtilitiesPrepared = true;
+                    //             let allUtilitiesPaid = true;
+
+                    //             val.utilities.forEach(function (utility) {
+                    //                 if (utility.prepare !== 2) {
+                    //                     allUtilitiesPrepared = false;
+                    //                 }
+                    //                 if (utility.prepare !== 0) {
+                    //                     allUtilitiesPaid = false;
+                    //                 }
+                    //             });
+
+                    //             let readingStatus = '';
+                    //             if (allUtilitiesPrepared) {
+                    //                 readingStatus = 'Reading Prepared';
+                    //             } else if (allUtilitiesPaid) {
+                    //                 readingStatus = 'Reading Paid';
+                    //             } else {
+                    //                 readingStatus = 'Reading Pending';
+                    //             }
+
+                    //             nestedTableRows += `
+                    //             <tr>
+                    //                 <td>${val.contract_uid}</td>
+                    //                 <td>${val.bill_status == 2 ? 'Bill Prepared' : val.bill_status == 1 ? 'Bill Paid' : 'Bill Pending'}</td>
+                    //                 <td>${readingStatus}</td>
+                    //                 <td>
+                    //                     <a class="btn btn-sm btn-warning"
+                    //                         data-bs-toggle="modal"
+                    //                         data-bs-target="#contractUtilityLists"
+                    //                         data-date="${date}" 
+                    //                         data-proposal-id="${val.proposal_id}" 
+                    //                         data-id="${val.bill_id}">
+                    //                     <i class="fa fa-pen"></i>
+                    //                     </a>
+                    //                 </td>
+                    //             </tr>`;
+
+                    //             $('#appendInputHere').append(`
+                    //                 <input type="text" value="${val.bill_id}" name="bill_id[]" hidden/>
+                    //             `);
+                    //         });
+
+
+                    //         table.row.add([
+                    //             `<div data-bs-toggle="collapse" data-bs-target="#utility_bill${key}" aria-expanded="false" aria-controls="utility_bill${key}" style="cursor: pointer;">
+                    //                 ${value.acc_id}
+                    //             </div>
+                    //             <div class="collapse mt-4" id="utility_bill${key}">
+                    //                 <table class="table table-bordered">
+                    //                     <thead class="thead-light">
+                    //                         <tr>   
+                    //                             <th>Contract #</th>
+                    //                             <th>Status</th>
+                    //                             <th>Reading Status</th>
+                    //                             <th>Action</th>
+                    //                         </tr>
+                    //                     </thead>
+                    //                     <tbody>
+                    //                         ${nestedTableRows}
+                    //                     </tbody>
+                    //                 </table>
+                    //             </div>`,
+                    //         ]);
+                    //     }
+                    // });
+
+                },
+                error: function (status, xhr, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
         $('.prepareBilling').click(function () {
             var form = $('#billReadingForm')[0];
             var formdata = new FormData(form);
 
             $.ajax({
-               url: "{{ route('utility.reading.save') }}",
-               method: 'POST',
-               data: formdata,
-               contentType: false,
-               cache: false,
-               processData: false,
-               dataType: 'json',
-               success: function (response) {
-                   console.log(response);
-               },
-               error: function (status, xhr, error) {
-                   console.log(xhr.responseText);
-               }
+                url: "{{ route('utility.reading.save') }}",
+                method: 'POST',
+                data: formdata,
+                contentType: false,
+                cache: false,
+                processData: false,
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (status, xhr, error) {
+                    console.log(xhr.responseText);
+                }
             });
         });
     });

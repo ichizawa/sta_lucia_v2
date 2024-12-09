@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\biller;
 
 use App\Http\Controllers\Controller;
-use App\Models\Billing;
+use App\Models\bill\BillReading;
+use App\Models\bill\Billing;
 use App\Models\BillingDetails;
 use App\Models\CommencementProposal;
 use App\Models\Company;
@@ -23,93 +24,28 @@ class ActivitiesController extends Controller
 
     public function lists(Request $request)
     {
-        $bills = Billing::where('date_end', $request->date)->get();
-        $billing_details = BillingDetails::all();
-        $companies = Company::all();
-        $proposals = LeaseProposal::join('billing', 'billing.proposal_id', '=', 'proposal.id')
-            ->where('billing.date_end', $request->date)
-            ->select('proposal.id as proposal_id', 'billing.id as bill_id', 'billing.status as bill_status', 'proposal.tenant_id', 'proposal.proposal_uid as contract_uid')
+        $company = Company::with(['proposals.billing.util_reading'])
+            ->whereRelation('proposals.billing', $request->date ? 'date_end' : 'date_start', $request->date)
             ->get();
 
-        $companies->map(function ($company) use ($proposals, $billing_details) {
-            $matching_proposals = $proposals->where('tenant_id', $company->owner_id);
-            $company->proposal = $matching_proposals;
-            return $company;
-        });
+        return response()->json($company);
 
-        // $companies->map(function($company) use ($bills, $proposals, $commencements) {
-        //     $matchedProposals = $proposals->where('tenant_id', $company->owner_id);
-        //     $matchedProposals->map(function ($proposal) use ($bills, $commencements) {
-        //         $proposal->bill = $bills->where('proposal_id', $proposal->id);
-        //         $proposal->commencement = $commencements->firstWhere('proposal_id', $proposal->id);
-        //         return $proposal;
-        //     });
-        //     $company->proposal = $matchedProposals;
-        //     return $company;
-        // });
-        // $bills->map(function ($bill) use ($billing_details, $companies, $proposals) {
-        //     $matching_bill_details = $billing_details->firstWhere('billing_id', operator: $bill->id);
-        //     $matching_proposal = $proposals->firstWhere('id', $bill->proposal_id ?? null);
-        //     $matching_company = $companies->where('owner_id', $matching_proposal->tenant_id ?? null);
-
-        //     $bill->bill_details = $matching_bill_details;
-        //     $bill->proposal = $matching_proposal;
-        //     $bill->proposal->company = $matching_company;
-
-        //     return $bill;
-        // });
-
-        return response()->json($companies);
     }
 
     public function utilityLists(Request $request)
     {
-        // $bills = Billing::where('id', $request->id)->select('billing.proposal_id', 'billing.status', 'billing.id')->first();
-        // $utilities = UtilitiesSelected::join('utilities', 'utilities_selected.utility_id', '=', 'utilities.id')
-        // // ->where('lease_id', $bills->proposal_id)
-        // ->select('utilities_selected.id as selected_utility_id', 'utilities.utility_name', 'utilities_selected.lease_id')
-        // ->get();
-
-        // $match_util = $utilities->where('lease_id', $bills->proposal_id);
-
-        // $bills->utilities = $match_util;
-
-        // return response()->json($bills);
-
-        $bills = Billing::where('id', $request->id)
-            ->select('billing.proposal_id', 'billing.status', 'billing.id')
-            ->first();
-
-        $utilities = UtilitiesSelected::join('utilities', 'utilities_selected.utility_id', '=', 'utilities.id')
-            ->select('utilities_selected.id as selected_utility_id', 'utilities.utility_name', 'utilities_selected.lease_id', 'utilities.utility_price', 'utilities_selected.utility_id')
-            ->get();
-
-        $readings = UtilitiesReading::all();
-
-        if ($bills) {
-            $matched_utilities = $utilities->where('lease_id', $bills->proposal_id);
-            $matched_utilities->each(function ($utility) use ($readings) {
-                $utility->reading = $readings->firstWhere('utility_id', $utility->selected_utility_id);
-            });
-            $bills->utilities = $matched_utilities;
-        }
-
-        return response()->json($bills);
-
+        $proposals = LeaseProposal::with(['utilities.util_desc', 'billing', 'utilities.utilities_reading'])->where('id', $request->proposal_id)->first();
+        return response()->json($proposals);
     }
 
     public function reading(Request $request)
     {
-        $utilities = UtilitiesSelected::join('utilities', 'utilities_selected.utility_id', '=', 'utilities.id')
-            ->where('utilities_selected.id', $request->id)
-            ->select('utilities_selected.id as selected_utility_id', 'utilities.utility_name')
-            ->first();
-        $reading = UtilitiesReading::all();
+        $utility = UtilitiesReading::where([
+            ['bill_id', $request->bill_id],
+            ['utility_id', $request->id]
+        ])->first();
+        return response()->json($utility);
 
-        $matching_reading = $reading->firstWhere('utility_id', $utilities->selected_utility_id);
-        $utilities->reading = $matching_reading;
-
-        return response()->json($utilities);
     }
 
     public function prepare(Request $request)
@@ -119,15 +55,18 @@ class ActivitiesController extends Controller
             ->where('utility_id', $request->utility_id)->first();
         $response = [];
         if (!empty($find)) {
-            if($find->prepare == 1){
+            if ($find->prepare == 1) {
                 $response = [
                     'status' => 'danger',
                     'message' => 'Utility Already Prepared'
                 ];
-            }else{
-                $reading = UtilitiesReading::create([
-                    'utility_id' => $request->utility_id,
-                    'bill_id' => $request->bill_id,
+            } else if($find->prepare == 2) {
+                $response = [
+                    'status' => 'danger',
+                    'message' => 'Utility Already Prepared, Waiting for Payment'
+                ];
+            } else {
+                $reading = $find->update([
                     'present_reading' => $request->present_reading,
                     'previous_reading' => $request->previous_reading,
                     'present_reading_date' => $request->present_reading_date,
@@ -152,15 +91,80 @@ class ActivitiesController extends Controller
                 }
             }
         } else {
+            UtilitiesReading::create([
+                'utility_id' => $request->utility_id,
+                'bill_id' => $request->bill_id,
+                'present_reading' => $request->present_reading,
+                'previous_reading' => $request->previous_reading,
+                'present_reading_date' => $request->present_reading_date,
+                'previous_reading_date' => $request->previous_reading_date,
+                'consumption' => $request->consumption,
+                'utility_price' => $request->total_reading_charge,
+                'total_reading' => $request->total_reading_charge,
+                'date_reading' => $request->date_reading,
+                'prepare' => 1,
+            ]);
             $response = [
-                'status' => 'danger',
-                'message' => 'Utility Not Found'
+                'status' => 'success',
+                'message' => 'Utilities Reading Prepared Successfully'
             ];
         }
         return response()->json($response);
     }
 
-    public function save(Request $request){
-        return response()->json($request->all());
+    public function save(Request $request)
+    {
+        $bill_ids = $request->input('bill_id', []);
+        $data = [];
+
+        foreach ($bill_ids as $id) {
+            $billingRecords = UtilitiesReading::where('bill_id', $id)->get();
+
+            if ($billingRecords->isEmpty()) {
+                $data[] = [
+                    'status' => 'warning',
+                    'message' => "No record found for Bill ID $id."
+                ];
+                continue;
+            }
+
+            foreach ($billingRecords as $billing) {
+                if ($billing->prepare == 0) {
+                    $data[] = [
+                        'status' => 'danger',
+                        'message' => "Reading for Bill ID $id is not prepared."
+                    ];
+                } else if($billing->prepare == 2){
+                    $data[] = [
+                        'status' => 'warning',
+                        'message' => "Reading for Bill ID $id is already prepared."
+                    ];
+                } else {
+                    $billing->update(['prepare' => 2]);
+                    BillReading::create([
+                        'reading_id' => $billing->id,
+                        'bill_id' => $billing->bill_id,
+                        'utility_id' => $billing->utility_id,
+                        'present_reading' => $billing->present_reading,
+                        'previous_reading' => $billing->previous_reading,
+                        'present_reading_date' => $billing->present_reading_date,
+                        'previous_reading_date' => $billing->previous_reading_date,
+                        'consumption' => $billing->consumption,
+                        'utility_price' => $billing->utility_price,
+                        'total_reading' => $billing->total_reading,
+                        'date_reading' => $billing->date_reading,
+                        'status' => 1,
+                    ]);
+
+                    $data[] = [
+                        'status' => 'success',
+                        'message' => "Reading for Bill ID $id has been updated and saved."
+                    ];
+                }
+            }
+        }
+
+        return response()->json($data);
     }
+
 }

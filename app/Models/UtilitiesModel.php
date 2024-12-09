@@ -17,4 +17,9 @@ class UtilitiesModel extends Model
         'utility_description',
         'utility_price',
     ];
+
+    public function selected()
+    {
+        return $this->belongsTo(UtilitiesSelected::class, 'utility_id');
+    }
 }

@@ -3,10 +3,6 @@
 </div>
 <script>
     $(document).ready(function () {
-        var table = $("#utilityreading-datatable").DataTable({
-            pageLength: 10,
-        });
-
         const currentYear = (new Date()).getFullYear();
         const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + (i * step));
         const years = range(currentYear + 1, currentYear - 50, -1);
@@ -62,106 +58,9 @@
                         </div>
                     `);
                 }
-
-                $('.utilityReadingModal').click(function () {
-                    proceedFunction($(this).data('date'));
-                });
             });
 
         });
-
-        function proceedFunction(date) {
-            $.ajax({
-                url: "{{ route('utility.reading.get') }}",
-                method: 'GET',
-                dataType: 'json',
-                data: {
-                    date: date
-                },
-                success: function (data) {
-                    table.clear();
-                    $('#appendInputHere').empty();
-                    $.each(data, function (key, value) {
-                        if (value.proposal.length !== 0) {
-                            let nestedTableRows = '';
-                            $.map(value.proposal, function (val, index) {
-                                nestedTableRows += `
-                                <tr>
-                                    <td>${val.contract_uid}</td>
-                                    <td>${val.bill_status == 2 ? 'Bill Prepared' : val.bill_status == 1 ? 'Bill Paid' : 'Bill Pending'}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#contractUtilityLists" data-date="${date}" 
-                                            data-proposal-id="${val.proposal_id}" 
-                                            data-id="${val.bill_id}">
-                                        <i class="fa fa-pen"></i>
-                                        </button>
-                                    </td>
-                                </tr>`;
-
-                                $('#appendInputHere').append(`
-                                    <input type="text" value="${val.bill_id}" name="bill_id[]" hidden/>
-                                `);
-                            });
-
-                            table.row.add([
-                                `<div data-bs-toggle="collapse" data-bs-target="#utility_bill${key}" aria-expanded="false" aria-controls="utility_bill${key}" style="cursor: pointer;">
-                                    ${value.acc_id}
-                                </div>
-                                <div class="collapse mt-4" id="utility_bill${key}">
-                                    <table class="table table-bordered">
-                                        <thead class="thead-light">
-                                            <tr>   
-                                                <th>Contract #</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${nestedTableRows}
-                                        </tbody>
-                                    </table>
-                                </div>`,
-                            ]);
-                        }
-                    });
-                    table.draw();
-                    // table.clear();
-                    // $.each(data, function (key, value) {
-                    //     table.row.add([
-                    //         `<div data-bs-toggle="collapse" data-bs-target="#utility_bill${key}" aria-expanded="false" aria-controls="utility_bill${key}" style="cursor: pointer;">
-                    //             ${value.proposal.company.acc_id}
-                    //         </div>
-                    //         <div class="collapse mt-4" id="utility_bill${key}">
-                    //             <table class="table table-bordered">
-                    //                 <thead class="thead-light">
-                    //                         <tr>
-                    //                             <th>Contract #</th>
-                    //                             <th>Status</th>
-                    //                             <th>Action</th>
-                    //                         </tr>
-                    //                     </thead>
-                    //                 <tbody>
-                    //                     <tr>
-                    //                         <td>${value.proposal.proposal_uid}</td>
-                    //                         <td>${value.status == 0 ? '<span class="badge bg-warning">Pending</span>' : '<span class="badge bg-success">Prepared</span>' }</td>
-                    //                         <td>
-                    //                             <button class="btn btn-sm btn-warning contractUtil" data-bs-toggle="modal" data-bs-target="#contractUtilityLists" data-id="${value.bill_details.billing_id}">
-                    //                                 <i class="fa fa-pen"></i>
-                    //                             </button>
-                    //                         </td>
-                    //                     </tr>
-                    //                 </tbody>
-                    //             </table>
-                    //         </div>`,
-                    //     ]);
-                    // });
-                    // table.draw();
-                },
-                error: function (status, xhr, error) {
-                    console.log(xhr.responseText);
-                }
-            });
-        }
 
         $('#period').on('show.bs.collapse', function (e) {
             $(e.target).prev('.card-header').find('.rotate-icon').addClass('rotate-up');

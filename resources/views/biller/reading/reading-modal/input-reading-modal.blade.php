@@ -48,8 +48,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary backbtn" data-bs-target="#contractUtilityLists"
-                        data-bs-toggle="modal">Back</button>
+                    <button type="button" class="btn btn-secondary" id="back" data-bs-toggle="modal" data-bs-target="#contractUtilityLists">Back</button>
                     <button type="button" class="btn btn-sta createReading">Update</button>
                 </div>
             </div>
@@ -59,41 +58,35 @@
 <script>
     $(document).ready(function () {
         $('#utilityReadingModal').on('show.bs.modal', function (e) {
-            var bill_id = $(e.relatedTarget).data('id');
             var util_id = $(e.relatedTarget).data('utility-id');
-            var date_reading = $(e.relatedTarget).data('date-reading');
+            var date = $(e.relatedTarget).data('date');
+            var bill_id = $(e.relatedTarget).data('bill-id');
+            var id = $(e.relatedTarget).data('proposal-id');
 
-            $('.backbtn').attr('data-id', bill_id);
-            $('.backbtn').attr('data-date', date_reading);
-            
+            $('#back').attr('data-proposal-id', id);
+
             $('#readingForm')[0].reset();
-
             $.ajax({
                 url: "{{ route('utility.reading.bills') }}",
                 type: "GET",
                 data: {
                     id: util_id,
-                    bill_id: bill_id,
-                    date_reading: date_reading
+                    bill_id:bill_id
                 },
                 success: function (data) {
                     $('#previous_reading').val('');
                     $('#previous_reading_date').val('');
                     $('#bill_id').val(bill_id);
-                    $('#utility_id').val(data.selected_utility_id);
-                    $('#date_reading').val(date_reading);
+                    $('#utility_id').val(util_id);
+                    $('#date_reading').val(date);
 
-                    if(data.reading != null){
-                        $('#previous_reading').val(data.reading.present_reading);
-                        $('#previous_reading_date').val(data.reading.present_reading_date);
-                    }else{
+                    if (data != null) {
+                        $('#previous_reading').val(data.present_reading);
+                        $('#previous_reading_date').val(data.present_reading_date);
+                    } else {
                         $('#previous_reading').val('');
                         $('#previous_reading_date').val('');
                     }
-
-                    // $('#utility_id').val(data[0].id);
-                    // $('#bill_id').val(bill_id);
-                    // $('#utility_name').val(data[0].utility_name);
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr.responseText);
@@ -113,6 +106,7 @@
                 processData: false,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data);
                     // var content = {
                     //     message: data.message,
                     //     title: data.status,
@@ -126,9 +120,8 @@
                     //     },
                     //     time: 1000,
                     //     delay: 2000,
-                    // })
-                    
-                    console.log(data);
+                    // });
+                    // $('#utilityReadingModal').modal('hide');
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr.responseText);
@@ -136,58 +129,4 @@
             });
         });
     });
-    // $(document).ready(function () {
-    //     $('#utilityReadingModal').on('show.bs.modal', function (e) {
-    //         var id = $(e.relatedTarget).data('id');
-    //         var bill_id = $(e.relatedTarget).data('bill-id');
-    //         $('#bill_id').val('');
-    //         $('#utility_id').val('');
-    //         $('#readingForm')[0].reset();
-
-    //         $.ajax({
-    //             url: "{{ route('utility.reading.bills') }}",
-    //             type: "GET",
-    //             data: {
-    //                 id: id
-    //             },
-    //             success: function (data) {
-    //                 // console.log(data);
-    //                 if(data[0].reading != null){
-    //                     $('#previous_reading').val(data[0].reading.present_reading);
-    //                     $('#previous_reading_date').val(data[0].reading.present_reading_date);
-    //                 }else{
-    //                     $('#previous_reading').val('');
-    //                     $('#previous_reading_date').val('');
-    //                 }
-    //                 $('#utility_id').val(data[0].id);
-    //                 $('#bill_id').val(bill_id);
-    //                 $('#utility_name').val(data[0].utility_name);
-    //             },
-    //             error: function (xhr, status, error) {
-    //                 console.log(xhr.responseText);
-    //             }
-    //         });
-    //     });
-
-    //     $('.createReading').click(function() {
-    //         var form = $('#readingForm')[0];
-    //         var formData = new FormData(form);
-
-    //         $.ajax({
-    //             url: "{{ route('utility.reading.store') }}",
-    //             type: "POST",
-    //             data: formData,
-    //             contentType: false,
-    //             cache: false,
-    //             processData: false,
-    //             dataType: "json",
-    //             success: function (data) {
-    //                 console.log(data);
-    //             },
-    //             error: function (xhr, status, error) {
-    //                 console.log(xhr.responseText);
-    //             }
-    //         });
-    //     });
-    // });
 </script>

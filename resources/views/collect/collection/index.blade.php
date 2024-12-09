@@ -1,9 +1,7 @@
 @extends('layouts')
 
 @section('content')
-@include('collect.collection.collect-modal.create-collect-modal')
-@include('collect.collection.collect-modal.utility-reading-modal')
-@include('collect.collection.collect-modal.select-reading-modal')
+
 <div class="page-inner">
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>
@@ -38,20 +36,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($billing as $collect)
-                                    <tr>
-                                        <td>{{ $collect->details[0]->bill_no }}</td>
-                                        <td>{{ $collect->proposal[0]->proposal_uid }}</td>
-                                        <td>{{ $collect->details[0]->remarks ?? 'No Remarks' }}</td>
-                                        <td>₱ {{ number_format($collect->details[0]->total_amount_payable, 2) }}</td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm utilityList" data-bs-toggle="modal"
-                                                data-bs-target="#utilityListModal" data-id="{{ $collect->id }}">
-                                                <i class="fa fa-eye"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                
                             </tbody>
                             <!-- <tfoot>
                                 <tr>
@@ -66,5 +51,11 @@
         </div>
     </div>
 </div>
-
+<script>
+    $(document).ready(function() {
+       $('#collect-datatables').DataTable({
+           pageLength: 10,
+       }); 
+    });
+</script>
 @endsection

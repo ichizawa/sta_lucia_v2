@@ -70,7 +70,7 @@
                         <p>Billing Period</p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('utility.reading') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->routeIs('utility.reading') || request()->routeIs('utility.reading.lists') ? 'active' : '' }}">
                     <a href="{{ route('utility.reading') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
                         <p>Utility Reading</p>

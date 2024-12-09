@@ -22,8 +22,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sta" data-bs-toggle="modal"
-                    data-bs-target="#utilityListModal">Back</button>
+                <button type="button" class="btn btn-sta" data-bs-toggle="modal" data-bs-target="#utilityListModal"
+                    id="backbtn">Back</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -32,25 +32,31 @@
 <script>
     $(document).ready(function () {
         $('#contractUtilityLists').on('show.bs.modal', function (event) {
-            var id = $(event.relatedTarget).data('id');
+            var id = $(event.relatedTarget).data('proposal-id');
             var date = $(event.relatedTarget).data('date');
+            $('#backbtn').attr('data-date', date);
 
             $.ajax({
                 url: "{{ route('utility.reading.lists') }}",
                 type: "GET",
                 dataType: "json",
                 data: {
-                    id: id
+                    proposal_id: id
                 },
                 success: function (data) {
                     $('#contractTableUtility').empty();
                     $.each(data.utilities, function (key, value) {
                         $('#contractTableUtility').append(`
                             <tr>
-                                <td>${value.utility_name}</td>
-                                <td>${value.reading == null ? '-' : parseFloat(value.reading.total_reading).toFixed(2)}</td>
+                                <td>${value.util_desc.utility_name}</td>
+                                <td>${value.utilities_reading == null ? 'No Reading Yet' : value.utilities_reading?.prepare == 2 ? 'Prepared Reading' : value.utilities_reading.prepare == 0 ? 'Pending Reading' : 'Paid Reading'}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning" data-id="${data.id}" data-date-reading="${date}" data-utility-id="${value.selected_utility_id}" data-bs-toggle="modal" data-bs-target="#utilityReadingModal">
+                                <button class="btn btn-sm btn-warning"
+                                    data-date="${date}"
+                                    data-proposal-id="${id}"
+                                    data-bill-id="${data.billing.id}"
+                                    data-utility-id="${value.id}" 
+                                    data-bs-toggle="modal" data-bs-target="#utilityReadingModal">
                                         <i class="fa fa-pen"></i>
                                     </button>
                                 </td>

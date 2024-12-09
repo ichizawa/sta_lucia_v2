@@ -5,7 +5,7 @@
     $(document).ready(function () {
         const currentYear = (new Date()).getFullYear();
         const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + (i * step));
-        const years = range(currentYear + 1, currentYear - 50, -1);
+        const years = range(currentYear + 1, currentYear - 10, -1);
 
         $('#period').empty();
 

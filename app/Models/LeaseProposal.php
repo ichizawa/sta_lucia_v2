@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\bill\Billing;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,4 +30,22 @@ class LeaseProposal extends Model
         'status'
     ];
 
+    public function billing()
+    {
+        return $this->hasOne(Billing::class, 'proposal_id');
+    }
+
+    public function owner(){
+        return $this->belongsTo(Owner::class, 'id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'owner_id');
+    }
+
+    public function utilities()
+    {
+        return $this->hasMany(UtilitiesSelected::class, 'lease_id');
+    }
 }

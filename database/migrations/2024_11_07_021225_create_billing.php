@@ -13,16 +13,18 @@ return new class extends Migration
     {
         Schema::create('billing', function (Blueprint $table) {
             $table->id();
-            // $table->bigInteger('tenant_id');
             $table->unsignedBigInteger('proposal_id');
             $table->foreign('proposal_id')->references('id')->on('proposal')->cascadeOnDelete();
+            $table->string('billing_uid')->nullable();
             $table->string('date_start')->nullable();
             $table->string('date_end')->nullable();
-            $table->boolean('status');
+            $table->string('remarks')->nullable();
+            $table->smallInteger('is_prepared')->nullable()->default(0);
+            $table->smallInteger('is_paid')->nullable()->default(0);
+            $table->smallInteger('status')->nullable()->default(0);
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

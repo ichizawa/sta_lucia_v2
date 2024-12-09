@@ -24,7 +24,6 @@ return new class extends Migration
             $table->float('utility_price')->nullable();
             $table->float('total_reading')->nullable();
             $table->string('date_reading')->nullable();
-            $table->smallInteger('status');
             $table->smallInteger('prepare');
             $table->timestamps();
         });

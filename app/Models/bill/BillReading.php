@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\bill;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UtilitiesReading extends Model
+class BillReading extends Model
 {
-    use HasFactory;
-
-    protected $table = "utilities_reading";
+    protected $table = 'bill_reading';
 
     protected $fillable = [
+        'reading_id',
         'bill_id',
         'utility_id',
         'present_reading',
@@ -22,13 +20,6 @@ class UtilitiesReading extends Model
         'utility_price',
         'total_reading',
         'date_reading',
-        'prepare'
+        'status',
     ];
-
-    public function util_selected()
-    {
-        return $this->belongsTo(UtilitiesSelected::class, 'utility_id');
-    }
-
-    
 }

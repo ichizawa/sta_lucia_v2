@@ -56,10 +56,6 @@
             });
         });
 
-        // $('#prop_num').change(function () {
-        //     var data = @json($proposal);
-        // });
-
         $('#comm-date-form').submit(function (e) {
             e.preventDefault();
             var form = new FormData(this);

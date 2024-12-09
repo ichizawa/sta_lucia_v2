@@ -13,12 +13,18 @@ return new class extends Migration
     {
         Schema::create('bill_reading', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('billing_id');
-            $table->foreign('billing_id')->references('id')->on('billing')->cascadeOnDelete();
-            $table->string('reading_name');
-            $table->string('reading_value');
-            $table->string('remarks');
-            $table->dateTime('reading_date');
+            $table->integer('reading_id');
+            $table->bigInteger('bill_id');
+            $table->unsignedBigInteger('utility_id')->nullable();
+            $table->float('present_reading')->nullable();
+            $table->float('previous_reading')->nullable();
+            $table->date('present_reading_date')->nullable();
+            $table->date('previous_reading_date')->nullable();
+            $table->float('consumption')->nullable();
+            $table->float('utility_price')->nullable();
+            $table->float('total_reading')->nullable();
+            $table->string('date_reading')->nullable();
+            $table->smallInteger('status');
             $table->timestamps();
         });
     }

@@ -36,4 +36,5 @@ class Owner extends Model
     {
         return $this->hasMany(TenantDocuments::class, 'owner_id');
     }
+
 }
