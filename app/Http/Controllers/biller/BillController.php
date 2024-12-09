@@ -30,7 +30,10 @@ class BillController extends Controller
     public function contractLists(Request $request)
     {
         $company = Company::with(['proposals.billing'])
-            ->whereRelation('proposals.billing', $request->date ? 'date_end' : 'date_start', $request->date)
+            ->whereHas('proposals.billing', function ($query) use ($request) {
+                $query->where('date_end', $request->date)
+                    ->orWhere(fn($q) => $q->whereNull('date_end')->where('date_start', $request->date));
+            })
             ->get();
 
         return response()->json($company);
@@ -72,7 +75,7 @@ class BillController extends Controller
                     ];
                 }
             }
-        }else{
+        } else {
             $response = [
                 'response' => 400,
                 'status' => 'danger',
@@ -139,7 +142,7 @@ class BillController extends Controller
         // }
         // return back()->with($response);
 
-    
+
     }
 
     public function checkBills(Request $request)
@@ -148,7 +151,6 @@ class BillController extends Controller
             ->whereRelation('proposals.billing', $request->date ? 'date_end' : 'date_start', $request->date)
             ->get();
         return response()->json($company);
-
     }
     public function period()
     {

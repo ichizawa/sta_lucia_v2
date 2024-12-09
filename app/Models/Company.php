@@ -23,7 +23,7 @@ class Company extends Model
 
     public function owner()
     {
-        return $this->belongsTo(Owner::Class, 'owner_id');
+        return $this->belongsTo(Owner::class, 'owner_id');
     }
 
     public function representatives()

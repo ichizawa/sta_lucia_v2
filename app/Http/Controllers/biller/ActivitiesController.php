@@ -24,12 +24,14 @@ class ActivitiesController extends Controller
 
     public function lists(Request $request)
     {
-        $company = Company::with(['proposals.billing.util_reading'])
-            ->whereRelation('proposals.billing', $request->date ? 'date_end' : 'date_start', $request->date)
+        $company = Company::with(['proposals.billing','proposals.utilities.util_desc', 'proposals.utilities.utilities_reading'])
+            ->whereHas('proposals.billing', function ($query) use ($request) {
+                $query->where('date_end', $request->date)
+                    ->orWhere(fn($q) => $q->whereNull('date_end')->where('date_start', $request->date));
+            })
             ->get();
 
         return response()->json($company);
-
     }
 
     public function utilityLists(Request $request)
@@ -45,7 +47,6 @@ class ActivitiesController extends Controller
             ['utility_id', $request->id]
         ])->first();
         return response()->json($utility);
-
     }
 
     public function prepare(Request $request)
@@ -60,7 +61,7 @@ class ActivitiesController extends Controller
                     'status' => 'danger',
                     'message' => 'Utility Already Prepared'
                 ];
-            } else if($find->prepare == 2) {
+            } else if ($find->prepare == 2) {
                 $response = [
                     'status' => 'danger',
                     'message' => 'Utility Already Prepared, Waiting for Payment'
@@ -134,7 +135,7 @@ class ActivitiesController extends Controller
                         'status' => 'danger',
                         'message' => "Reading for Bill ID $id is not prepared."
                     ];
-                } else if($billing->prepare == 2){
+                } else if ($billing->prepare == 2) {
                     $data[] = [
                         'status' => 'warning',
                         'message' => "Reading for Bill ID $id is already prepared."
@@ -166,5 +167,4 @@ class ActivitiesController extends Controller
 
         return response()->json($data);
     }
-
 }

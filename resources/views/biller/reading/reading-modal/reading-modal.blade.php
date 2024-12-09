@@ -32,12 +32,12 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         const table = $("#utilityreading-datatable").DataTable({
             pageLength: 10,
         });
 
-        $('#utilityListModal').on('show.bs.modal', function (event) {
+        $('#utilityListModal').on('show.bs.modal', function(event) {
             var date = $(event.relatedTarget).data('date');
 
             $.ajax({
@@ -47,18 +47,31 @@
                 data: {
                     date: date
                 },
-                success: function (data) {
+                success: function(data) {
                     $('#appendInputHere').empty();
                     table.clear();
-                    $.each(data, function (key, value) {
+                    $.each(data, function(key, value) {
                         let nestedRows = '';
+                        let utilRows = '';
+                        let utilTDRows = '';
+                        console.log(value);
+                        $.map(value.proposals, function(util, ind) {
+                            $.each(util.utilities, function(k, v){
+                                utilRows += `
+                                    <th>${v.util_desc.utility_name}</th>
+                                `;
+                                utilTDRows += `
+                                    <td>${v.utilities_reading == null ? 'No Reading Yet' : ''}</td>
+                                `;
+                            });
+                        });
 
-                        $.each(value.proposals, function (ke, val) {
+                        $.each(value.proposals, function(ke, val) {
                             nestedRows += `
                                 <tr>
                                     <td>${val.proposal_uid}</td>
                                     <td>${val.billing.is_prepared == 0 ? 'Not Prepared' : val.billing.is_prepared == 1 ? 'Processed' : 'Prepared'}</td>
-                                    <td>${val.billing.util_reading == null ? 'No Reading Yet' : ''}</td>
+                                    <td></td>
                                     <td>
                                         <a class="btn btn-sm btn-warning"
                                             data-bs-toggle="modal"
@@ -83,7 +96,7 @@
                                         <tr>   
                                             <th>Contract #</th>
                                             <th>Status</th>
-                                            <th>Reading Status</th>
+                                            ${utilRows}
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -168,13 +181,13 @@
                     // });
 
                 },
-                error: function (status, xhr, error) {
+                error: function(status, xhr, error) {
                     console.log(xhr.responseText);
                 }
             });
         });
 
-        $('.prepareBilling').click(function () {
+        $('.prepareBilling').click(function() {
             var form = $('#billReadingForm')[0];
             var formdata = new FormData(form);
 
@@ -186,10 +199,10 @@
                 cache: false,
                 processData: false,
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                 },
-                error: function (status, xhr, error) {
+                error: function(status, xhr, error) {
                     console.log(xhr.responseText);
                 }
             });
