@@ -30,8 +30,9 @@ class Billing extends Model
         return $this->belongsTo(LeaseProposal::class, 'proposal_id');
     }
 
-    public function util_reading()
+    public function util_read()
     {
-        return $this->hasMany(UtilitiesReading::class, 'bill_id');
+        return $this->hasMany(UtilitiesReading::class, 'bill_id', 'id');
     }
+
 }

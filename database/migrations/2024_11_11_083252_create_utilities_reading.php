@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('utilities_reading', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('bill_id');
+            $table->bigInteger('proposal_id');
             $table->unsignedBigInteger('utility_id')->nullable();
             // $table->foreign('utility_id')->references('id')->on('utilities_selected');
             $table->float('present_reading')->nullable();

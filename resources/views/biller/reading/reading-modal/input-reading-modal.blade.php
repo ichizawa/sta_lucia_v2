@@ -30,7 +30,7 @@
                                 <input type="text" id="bill_id" class="form-control" name="bill_id" hidden/>
                                 <input type="text" id="utility_id" class="form-control" name="utility_id" hidden/>
                                 <input type="text" id="date_reading" class="form-control" name="date_reading" hidden/>
-
+                                <input type="text" id="proposal_id" class="form-control" name="proposal_id" hidden />
                                 <input type="text" class="form-control" id="present_reading" name="present_reading"
                                     placeholder="Enter Present Meter Reading" />
                             </div>
@@ -71,7 +71,7 @@
                 type: "GET",
                 data: {
                     id: util_id,
-                    bill_id:bill_id
+                    bill_id:bill_id,
                 },
                 success: function (data) {
                     $('#previous_reading').val('');
@@ -79,7 +79,8 @@
                     $('#bill_id').val(bill_id);
                     $('#utility_id').val(util_id);
                     $('#date_reading').val(date);
-
+                    $('#proposal_id').val(id);
+                    
                     if (data != null) {
                         $('#previous_reading').val(data.present_reading);
                         $('#previous_reading_date').val(data.present_reading_date);

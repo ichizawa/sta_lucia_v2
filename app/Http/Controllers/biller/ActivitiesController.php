@@ -24,7 +24,10 @@ class ActivitiesController extends Controller
 
     public function lists(Request $request)
     {
-        $company = Company::with(['proposals.billing','proposals.utilities.util_desc', 'proposals.utilities.utilities_reading'])
+        $company = Company::with([
+            'proposals.billing',
+            'proposals.utilities.util_desc',
+        ])
             ->whereHas('proposals.billing', function ($query) use ($request) {
                 $query->where('date_end', $request->date)
                     ->orWhere(fn($q) => $q->whereNull('date_end')->where('date_start', $request->date));
@@ -36,7 +39,16 @@ class ActivitiesController extends Controller
 
     public function utilityLists(Request $request)
     {
-        $proposals = LeaseProposal::with(['utilities.util_desc', 'billing', 'utilities.utilities_reading'])->where('id', $request->proposal_id)->first();
+        $proposals = LeaseProposal::with([
+            'utilities.util_desc',
+            'billing',
+            'utilities.util_read' => function ($query) use ($request) {
+                $query->where('proposal_id', $request->proposal_id);
+            }
+        ])
+            ->where('id', $request->proposal_id)
+            ->first();
+
         return response()->json($proposals);
     }
 
@@ -94,6 +106,7 @@ class ActivitiesController extends Controller
         } else {
             UtilitiesReading::create([
                 'utility_id' => $request->utility_id,
+                'proposal_id' => $request->proposal_id,
                 'bill_id' => $request->bill_id,
                 'present_reading' => $request->present_reading,
                 'previous_reading' => $request->previous_reading,

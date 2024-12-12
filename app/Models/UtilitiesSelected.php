@@ -11,13 +11,24 @@ class UtilitiesSelected extends Model
 
     protected $table = 'utilities_selected';
 
+    protected $fillable = [
+        'lease_id',
+        'utility_id',
+    ];
+
     public function util_desc()
     {
-        return $this->belongsTo(UtilitiesModel::class, 'utility_id');
+        return $this->belongsTo(UtilitiesModel::class, 'utility_id', 'id');
     }
 
-    public function utilities_reading()
+    public function util_read()
     {
-        return $this->belongsTo(UtilitiesReading::class, 'utility_id');
+        return $this->hasOne(UtilitiesReading::class, 'utility_id', 'utility_id');
     }
+
+    public function reading()
+    {
+        return $this->belongsTo(UtilitiesReading::class, 'lease_id', 'proposal_id');
+    }
+
 }

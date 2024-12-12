@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\bill\Billing;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,7 @@ class UtilitiesReading extends Model
 
     protected $fillable = [
         'bill_id',
+        'proposal_id',
         'utility_id',
         'present_reading',
         'previous_reading',
@@ -24,11 +26,4 @@ class UtilitiesReading extends Model
         'date_reading',
         'prepare'
     ];
-
-    public function util_selected()
-    {
-        return $this->belongsTo(UtilitiesSelected::class, 'utility_id');
-    }
-
-    
 }

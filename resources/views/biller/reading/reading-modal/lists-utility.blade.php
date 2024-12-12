@@ -49,7 +49,8 @@
                         $('#contractTableUtility').append(`
                             <tr>
                                 <td>${value.util_desc.utility_name}</td>
-                                <td>${value.utilities_reading == null ? 'No Reading Yet' : value.utilities_reading?.prepare == 2 ? 'Prepared Reading' : value.utilities_reading.prepare == 0 ? 'Pending Reading' : 'Paid Reading'}</td>
+                                <td>${value.util_read ? parseFloat(value.util_read.total_reading).toFixed(2) : 'No Reading Yet'}</td>
+                                <td>${value.util_read ? value.util_read.prepare ? 'Prepared' : 'Not Prepared' : 'No Reading Yet'}</td>
                                 <td>
                                 <button class="btn btn-sm btn-warning"
                                     data-date="${date}"
