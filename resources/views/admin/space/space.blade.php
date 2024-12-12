@@ -53,10 +53,13 @@
                                             data-spaceid="{{$spaces->id}}">
                                             <i class="fa fa-pen" aria-hidden="true"></i>
                                         </a>
+<<<<<<< HEAD
                                         <a class="btn btn-sm btn-danger deleteSpace"
                                             data-space-uid="{{ $spaces->id }}">
                                             <i class="fa fa-trash"></i>
                                         </a>
+=======
+>>>>>>> a9c2f5259a4308a09242058ddbb8b5554aa47f4f
                                     </td>
                                 </tr>
                                 @endforeach
@@ -68,11 +71,16 @@
         </div>
     </div>
 </div>
+@vite('resources/js/app.js')
 @if (session('status'))
 <script>
     $(document).ready(function() {
         var content = {
+<<<<<<< HEAD
             message: '{{ session(' status ') }}',
+=======
+            message: "{{ session('status') }}",
+>>>>>>> a9c2f5259a4308a09242058ddbb8b5554aa47f4f
             title: 'Success',
             icon: "fa fa-bell"
         };
