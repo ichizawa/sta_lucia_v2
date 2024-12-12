@@ -26,4 +26,9 @@ class SpaceBuilding extends Model
     {
         return $this->hasMany(SpaceLevel::class, 'bldgnumid');
     }
+    
+    public function scopeVisible($query)
+    {
+        return $query->where('status', 0);
+    }
 }

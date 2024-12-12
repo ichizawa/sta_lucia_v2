@@ -17,5 +17,8 @@ class Charge extends Model
         'frequency',
     ];
 
-
+    public function scopeVisible($query)
+    {
+        return $query->where('status', 0);
+    }
 }

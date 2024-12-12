@@ -67,33 +67,34 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('.deleteMall').click(function () {
-            swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this mall code!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: '{{ route('space.delete.mall', 'mall') }}',
-                        method: 'POST',
-                        data: {
-                            id: $(this).data('mall-id'),
-                        },
-                        success: function (response) {
-                            toastr.success('Mall code deleted successfully.');
-                            location.reload();
-                            
-                        },
-                        error: function () {
-                            toastr.error('An error occurred while deleting the mall code.');
-                        }
-                    });
-                }
-            });
+    $('.deleteMall').click(function () {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, this mall code will be permanently removed!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: "{{ route('space.delete.mall', 'mall') }}", 
+                    method: 'POST',
+                    data: {
+                        id: $(this).data('mall-id'),
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        toastr.success('Mall code hidden successfully.'); 
+                        location.reload(); 
+                    },
+                    error: function () {
+                        toastr.error('An error occurred while hiding the mall code.');
+                    }
+                });
+            }
         });
     });
+});
+
 </script>
 @endsection

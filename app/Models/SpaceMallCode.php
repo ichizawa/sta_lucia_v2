@@ -26,4 +26,9 @@ class SpaceMallCode extends Model
     {
         return $this->hasMany(SpaceBuilding::class, 'id');
     }
+
+    public function scopeVisible($query)
+    {
+        return $query->where('status', 0);
+    }
 }

@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/add-space', [SpaceController::class, 'adminAddSpace'])->name('space.add.space');
             Route::post('/submit-space', [SpaceController::class, 'sumbmitSpace'])->name('space.submit.space');
             Route::get('/view-space-modal', [SpaceController::class, 'adminViewSpace'])->name('space.view.space');
+            Route::post('/space/update', [SpaceController::class, 'SpaceUpdate'])->name('space.update.space');
 
             Route::get('/mall-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.mall');
             Route::get('/building-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.building');
@@ -56,6 +57,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/mall-delete/{setup}', [SpaceController::class, 'adminSpaceCodes'])->name('space.delete.mall');
             Route::post('/building-delete/{setup}', [SpaceController::class, 'adminSpaceCodes'])->name('space.delete.building');
             Route::post('/level-delete/{setup}', [SpaceController::class, 'adminSpaceCodes'])->name('space.delete.level');
+            Route::post('/space-delete/{setup}', [SpaceController::class, 'adminSpaceCodes'])->name('space.delete.space');
 
             Route::post('/space-options/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.option.space');
             Route::get('/get-level', [SpaceController::class, 'adminShowLevel'])->name('space.get.level');
@@ -72,7 +74,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/submit-tenant-documents', [TenantsController::class, 'adminAddDocuments'])->name('admin.submit.documents');
             Route::post('/approve-tenant-documents', [TenantsController::class, 'adminApproveDocuments'])->name('admin.tenant.documents.approve');
 
-            Route::post('/delete-tenant', [TenantsController::class, 'adminDeleteTenants'])->name('admin.delete.tenants');
+            Route::post('/delete-tenant', [TenantsController::class, 'deleteTenants'])->name('admin.delete.tenants');
         });
 
         Route::prefix('leases')->group(function () {

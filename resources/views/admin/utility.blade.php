@@ -65,7 +65,8 @@
 @if (session('success'))
 <script>
     $(document).ready(function() {
-        var content = { 'testing',
+        var content = {
+            'testing',
             message: "{{ session('success ') }}",
             title: "Success",
             icon: "fa fa-bell"
@@ -89,8 +90,8 @@
         swal("Deleting Utility!", "Are you sure you want to delete this utility?", "danger");
     }
 
-    $(document).ready(function () {
-        $('#addBtn').on('click', function (e) {
+    $(document).ready(function() {
+        $('#addBtn').on('click', function(e) {
             e.preventDefault();
 
             let isValid = true;
@@ -129,32 +130,35 @@
                 }
             });
         });
-        
+
         $('.deleteBTN').click(function() {
             console.log($(this).data('id'));
             swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this utility!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: '{{ route("admin.delete.utility") }}',
-                        method: 'POST',
-                        data: { id: $(this).data('id') },
-                        success: function (response) {
-                            toastr.success('Utility deleted successfully.');
-                            location.reload();
-                        },
-                        error: function () {
-                            toastr.error('An error occurred while deleting the utility.');
-                        }
-                    });
-                }
-            });
+                    title: "Are you sure?",
+                    text: "Once deleted, this utility will be permanently removed!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '{{ route("admin.delete.utility") }}',
+                            method: 'POST',
+                            data: {
+                                id: $(this).data('id'),
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                toastr.success('Utility hidden successfully.');
+                                location.reload();
+                            },
+                            error: function() {
+                                toastr.error('An error occurred while hiding the utility.');
+                            }
+                        });
+                    }
+                });
         });
     });
 </script>

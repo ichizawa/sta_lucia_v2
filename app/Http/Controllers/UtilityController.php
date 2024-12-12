@@ -10,7 +10,7 @@ class UtilityController extends Controller
 
     public function adminUtility()
     {
-        $all = UtilitiesModel::all();
+        $all = UtilitiesModel::where('status', 0)->get();
         return view('admin.utility', compact('all'));
     }
 
@@ -26,15 +26,27 @@ class UtilityController extends Controller
     }
 
     public function deleteUtility(Request $request){
-     
+
+        // $utility = UtilitiesModel::find($request->id);
+
+        // if ($utility){
+        //     $utility->delete();
+        //      return response()->json(['message', 'Utility successfully deleted']);
+        // }
+        // else{
+        //     return response()->json(['message' => 'Utility not Found'], 404);
+        // }
+
         $utility = UtilitiesModel::find($request->id);
 
-        if ($utility){
-            $utility->delete();
-             return response()->json(['message', 'Utility successfully deleted']);
+        if ($utility) {
+            $utility->status = 1;
+            $utility->save();
+
+            return response()->json(['message' => 'Utility successfully deleted']);
+        } else {
+            return response()->json(['message' => 'Utility not found'], 404);
         }
-        else{
-            return response()->json(['message' => 'Utility not Found'], 404);
-        }
+
     }
 }

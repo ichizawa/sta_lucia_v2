@@ -39,22 +39,26 @@
                             </thead>
                             <tbody id="spaceList">
                                 @foreach ($all as $spaces)
-                                    <tr>
-                                        <td>{{ ucwords($spaces->space_name) }}</td>
-                                        <td>{{ $spaces->store_type }}</td>
-                                        <td>{{ $spaces->space_area }} per sqm</td>
-                                        <td>{{ $spaces->property_code }}</td>
-                                        <td>{{ $spaces->store_type }}</td>
-                                        <td>{{ $spaces->space_type }}</td>
-                                        <td>{!! $spaces->status ? '<span class="badge bg-warning">Unavailable</span>' : '<span class="badge bg-success">Available</span>' !!} </td>
-                                        <td>{!! $spaces->space_tag == 1 ? '<span class="badge bg-success">Available</span>' : ($spaces->space_tag == 2 ? '<span class="badge bg-warning">Unavailable</span>' : '<span class="badge bg-danger">Reserved</span>') !!} </td>
-                                        <td>
-                                            <a class="btn btn-warning btn-sm space-view"
-                                                data-spaceid="{{$spaces->id}}">
-                                                <i class="fa fa-pen" aria-hidden="true"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ ucwords($spaces->space_name) }}</td>
+                                    <td>{{ $spaces->store_type }}</td>
+                                    <td>{{ $spaces->space_area }} per sqm</td>
+                                    <td>{{ $spaces->property_code }}</td>
+                                    <td>{{ $spaces->store_type }}</td>
+                                    <td>{{ $spaces->space_type }}</td>
+                                    <td>{!! $spaces->status ? '<span class="badge bg-warning">Unavailable</span>' : '<span class="badge bg-success">Available</span>' !!} </td>
+                                    <td>{!! $spaces->space_tag == 1 ? '<span class="badge bg-success">Available</span>' : ($spaces->space_tag == 2 ? '<span class="badge bg-warning">Unavailable</span>' : '<span class="badge bg-danger">Reserved</span>') !!} </td>
+                                    <td>
+                                        <a class="btn btn-warning btn-sm space-view"
+                                            data-spaceid="{{$spaces->id}}">
+                                            <i class="fa fa-pen" aria-hidden="true"></i>
+                                        </a>
+                                        <a class="btn btn-sm btn-danger deleteSpace"
+                                            data-space-uid="{{ $spaces->id }}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -65,30 +69,30 @@
     </div>
 </div>
 @if (session('status'))
-    <script>
-        $(document).ready(function () {
-            var content = {
-                message: '{{ session('status') }}',
-                title: 'Success',
-                icon: "fa fa-bell"
-            };
+<script>
+    $(document).ready(function() {
+        var content = {
+            message: '{{ session(' status ') }}',
+            title: 'Success',
+            icon: "fa fa-bell"
+        };
 
-            $.notify(content, {
-                type: 'success',
-                placement: {
-                    from: 'top',
-                    align: 'right',
-                },
-                time: 1000,
-                delay: 1200,
-            });
+        $.notify(content, {
+            type: 'success',
+            placement: {
+                from: 'top',
+                align: 'right',
+            },
+            time: 1000,
+            delay: 1200,
         });
-    </script>
+    });
+</script>
 @endif
 <script>
     // $('#multi-filter-select').DataTable({});
 
-    $(".space-view").on('click', function () {
+    $(".space-view").on('click', function() {
         var spaceId = $(this).data('spaceid');
         $('.modal-body').empty();
         $.ajax({
@@ -97,7 +101,7 @@
                 space_id: spaceId,
             },
             type: 'GET',
-            success: function (response) {
+            success: function(response) {
                 var content = `
             <div class="text-center ">
                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5f7JudMO8epnKMScVsWibdWV2Fk53D55dSQ&s" alt="Space Image" class="img-fluid rounded w-75 mb-2" />
@@ -150,13 +154,44 @@
                     $('.col').find('input').prop('readonly', false);
                 });
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error(error);
                 $('.modal-body').html('<p>Error retrieving data. Please try again later.</p>');
             }
         });
     });
-
 </script>
 
+<script>
+    $(document).ready(function () {
+    $('.deleteSpace').click(function () {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this space code!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '{{ route('space.delete.space', 'space') }}',
+                    method: 'POST',
+                    data: {
+                        id: $(this).data('space-uid'),
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        toastr.success('Spae code deleted successfully.'); 
+                        location.reload(); 
+                    },
+                    error: function () {
+                        toastr.error('An error occurred while deleting the space code.');
+                    }
+                });
+            }
+        });
+    });
+});
+
+</script>
 @endsection

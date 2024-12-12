@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('utility_type', 60);
             $table->string('utility_description');
             $table->float('utility_price', 15, 2);
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

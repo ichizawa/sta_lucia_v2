@@ -17,4 +17,9 @@ class UtilitiesModel extends Model
         'utility_description',
         'utility_price',
     ];
+
+    public function scopeVisible($query)
+    {
+        return $query->where('status', 0);
+    }
 }

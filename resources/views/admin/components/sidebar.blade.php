@@ -239,12 +239,12 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item {{ request()->routeIs('admin.bill.period') ? 'active' : '' }}">
+                {{-- <li class="nav-item {{ request()->routeIs('admin.bill.period') ? 'active' : '' }}">
                     <a href="{{ route('admin.bill.period') }}" aria-expanded="false">
                         <i class="fa-solid fa-file-invoice"></i>
                         <p>Billing Periods</p>
                     </a>
-                </li>
+                </li> --}}
                 {{-- <li class="nav-item {{ request()->routeIs('admin.invoices') ? 'active' : '' }}">
                     <a href="{{ route('admin.invoices') }}" aria-expanded="false">
                         <i class="fa-solid fa-file-invoice"></i>

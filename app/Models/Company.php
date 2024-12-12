@@ -14,7 +14,7 @@ class Company extends Model
 
     public function owner()
     {
-        return $this->belongsTo(Owner::Class, 'owner_id');
+        return $this->belongsTo(Owner::class, 'owner_id');
     }
 
     public function representatives()
@@ -32,4 +32,9 @@ class Company extends Model
     {
         return $this->belongsTo(SubCategory::class, 'company_id');
     }
+
+    // public function scopeVisible($query)
+    // {
+    //     return $query->where('status', 0);
+    // }
 }

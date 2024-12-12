@@ -21,4 +21,9 @@ class SpaceLevel extends Model
     {
         return $this->belongsTo(SpaceBuilding::class, 'id');
     }
+    
+    public function scopeVisible($query)
+    {
+        return $query->where('status', 0);
+    }
 }

@@ -38,7 +38,7 @@ class AdminController extends Controller
 
     public function adminAmenities()
     {
-        $all = Amenities::all();
+        $all = Amenities::where('status', 0)->get();
         return view('admin.amenities', compact('all'));
     }
 
@@ -56,10 +56,12 @@ class AdminController extends Controller
         $ameneties = Amenities::find($request->id);
 
         if ($ameneties) {
-            $ameneties->delete();
-            return response()->json(['message', 'Utility successfully deleted']);
+            $ameneties->status = 1;
+            $ameneties->save();
+
+            return response()->json(['message', 'Amenities successfully deleted']);
         } else {
-            return response()->json(['message' => 'Utility not Found'], 404);
+            return response()->json(['message' => 'Amenities not Found'], 404);
         }
     }
 

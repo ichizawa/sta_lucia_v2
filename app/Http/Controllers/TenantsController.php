@@ -267,8 +267,6 @@ class TenantsController extends Controller
                         $user->delete();
                     }
                 }
-        
-                // Delete the tenant
                 $tenant->delete();
         
                 return response()->json(['message' => 'Tenant and associated user successfully deleted']);

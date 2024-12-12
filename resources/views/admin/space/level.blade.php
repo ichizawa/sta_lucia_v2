@@ -35,22 +35,22 @@
 
                             <tbody>
                                 @foreach ($levelCode as $levels)
-                                    <tr>
-                                        <td>{{ $levels->mallnum }}</td>
-                                        <td>{{ $levels->bldgnum }}</td>
-                                        <td>{{ $levels->lvlnum }}</td>
-                                        <td>
-                                            <a class="btn btn-sm btn-warning editspecificLevels"
-                                                data-level-id="{{ $levels->lvlnumid }}" data-bs-toggle="modal"
-                                                data-bs-target="#editLevelModal">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <a class="btn btn-sm btn-danger deletespecificLevels"
-                                                data-level-id="{{ $levels->lvlnumid }}">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ $levels->mallnum }}</td>
+                                    <td>{{ $levels->bldgnum }}</td>
+                                    <td>{{ $levels->lvlnum }}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-warning editspecificLevels"
+                                            data-level-id="{{ $levels->lvlnumid }}" data-bs-toggle="modal"
+                                            data-bs-target="#editLevelModal">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-sm btn-danger deletespecificLevels"
+                                            data-level-id="{{ $levels->lvlnumid }}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -61,26 +61,30 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        $('.deletespecificLevels').click(function (e) {
+    $(document).ready(function() {
+        $('.deletespecificLevels').click(function(e) {
             swal({
                 title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this imaginary file!",
+                text: "Once deleted, you will not be able to recover this level!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
             }).then((willDelete) => {
                 if (willDelete) {
                     $.ajax({
-                        url: "{{ route('space.delete.level', 'level') }}",
+                        url: '{{ route('space.delete.level', 'level') }}',
                         type: "POST",
                         data: {
-                            id: $(this).data('level-id')
+                            id: $(this).data('level-id'),
+                            _token: '{{ csrf_token() }}'
                         },
-                        success: function (data) {
+                        success: function(data) {
+                            toastr.success('Level successfully marked as deleted.');
                             location.reload();
                         },
-
+                        error: function() {
+                            swal("Error", "Unable to delete the level.", "error");
+                        }
                     });
                 }
             });
