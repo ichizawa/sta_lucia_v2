@@ -14,4 +14,9 @@ class Amenities extends Model
         'amenity_name', 
         'amenity_status'
     ];
+
+    public function scopeVisible($query)
+    {
+        return $query->where('status', 0);
+    }
 }

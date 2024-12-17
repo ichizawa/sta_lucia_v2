@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string("company_name");
             $table->string("store_name");
             $table->string("company_address");
+            // $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

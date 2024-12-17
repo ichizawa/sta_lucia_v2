@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('amenity_name')->nullable();
             $table->boolean('amenity_status')->nullable();
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

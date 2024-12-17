@@ -36,19 +36,19 @@
 
                             <tbody>
                                 @foreach ($all as $charges)
-                                    <tr>
-                                        <td>{{ $charges->charge_name}}</td>
-                                        <td>{{ $charges->charge_fee }}</td>
-                                        <td>{{ $charges->frequency }}</td>
-                                        <td>
-                                            <a class="btn btn-sm btn-warning editCharge" data-bs-toggle="modal" data-bs-target="#editChargeModal" data-charges="{{ $charges }}">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <a class="btn btn-sm btn-danger deleteCharge" data-charge-id="{{ $charges->id }}">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ $charges->charge_name}}</td>
+                                    <td>{{ $charges->charge_fee }}</td>
+                                    <td>{{ $charges->frequency }}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-warning editCharge" data-bs-toggle="modal" data-bs-target="#editChargeModal" data-charges="{{ $charges }}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-sm btn-danger deleteCharge" data-charge-id="{{ $charges->id }}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -86,7 +86,7 @@
         $('.deleteCharge').click(function() {
             swal({
                 title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this charge!",
+                text: "Once deleted, this charge will be permanently removed!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -95,13 +95,16 @@
                     $.ajax({
                         url: '{{ route("admin.delete.charges") }}',
                         method: 'POST',
-                        data: { id: $(this).data('charge-id') },
+                        data: {
+                            id: $(this).data('charge-id'),
+                            _token: '{{ csrf_token() }}'
+                        },
                         success: function(response) {
-                            toastr.success('Charge deleted successfully.');
+                            toastr.success('Charge removed successfully.');
                             location.reload();
                         },
                         error: function() {
-                            toastr.error('An error occurred while deleting the charge.');
+                            toastr.error('An error occurred while removing the charge.');
                         }
                     });
                 }

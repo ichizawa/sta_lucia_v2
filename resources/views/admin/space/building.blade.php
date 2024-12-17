@@ -60,32 +60,33 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('.deleteBuilding').click(function () {
-            swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this building code!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: '{{ route('space.delete.building', 'building') }}',
-                        method: 'POST',
-                        data: {
-                            id: $(this).data('building-uid'),
-                        },
-                        success: function (response) {
-                            toastr.success('Building code deleted successfully.');
-                            location.reload();
-                        },
-                        error: function () {
-                            toastr.error('An error occurred while deleting the building code.');
-                        }
-                    });
-                }
-            });
+    $('.deleteBuilding').click(function () {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this building code!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '{{ route('space.delete.building', 'building') }}',
+                    method: 'POST',
+                    data: {
+                        id: $(this).data('building-uid'),
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        toastr.success('Building code deleted successfully.'); 
+                        location.reload(); 
+                    },
+                    error: function () {
+                        toastr.error('An error occurred while deleting the building code.');
+                    }
+                });
+            }
         });
     });
+});
 </script>
 @endsection

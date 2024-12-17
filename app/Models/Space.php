@@ -23,7 +23,8 @@ class Space extends Model
         "location",
         "remarks",
         "space_img",
-        "space_tag"
+        "space_tag",
+        "status"
 
     ];
 
@@ -35,5 +36,10 @@ class Space extends Model
     public function utilities()
     {
         return $this->hasMany(SpaceUtility::class, 'space_id');
+    }
+
+    public function scopeVisible($query)
+    {
+        return $query->where('status', 0);
     }
 }

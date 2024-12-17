@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->string('remarks')->nullable();
             $table->string("space_img")->nullable();
             $table->integer("space_tag");
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
 

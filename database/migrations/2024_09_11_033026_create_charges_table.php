@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("charge_name");
             $table->float("charge_fee");
             $table->string("frequency");
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

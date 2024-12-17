@@ -74,39 +74,41 @@
     </script>
 @endif
 <script>
-    $('.deleteBTN').on('click', function() {
-        var id = $(this).data('id');
-        swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this amenity!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                $.ajax({
-                    url: "{{ route('admin.delete.amenities') }}",
-                    type: 'POST',
-                    data: {
-                        id: id
-                    },
-                    success: function(response) {
-                        swal("Poof! Your amenities has been deleted!", {
-                            icon: "success",
-                        }).then(() => {
-                            location.reload(); 
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        swal("Error deleting ameninities", {
-                            icon: "error",
-                        });
-                    }
-                });
-            } else {
-                swal("Your amenity is safe!");
-            }
-        });
+   $('.deleteBTN').on('click', function() {
+    var id = $(this).data('id');
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, this amenity will be hidden and not permanently removed!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                url: "{{ route('admin.delete.amenities') }}", 
+                type: 'POST',
+                data: {
+                    id: id,
+                    _token: '{{ csrf_token() }}' 
+                },
+                success: function(response) {
+                    swal("Success! Your amenity has been hidden!", { 
+                        icon: "success",
+                    }).then(() => {
+                        location.reload(); 
+                    });
+                },
+                error: function(xhr, status, error) {
+                    swal("Error hiding amenity", { 
+                        icon: "error",
+                    });
+                }
+            });
+        } else {
+            swal("Your amenity is safe!");
+        }
     });
+});
+
 </script>
 @endsection

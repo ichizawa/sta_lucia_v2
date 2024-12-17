@@ -41,8 +41,15 @@ class Company extends Model
         return $this->belongsTo(SubCategory::class, 'company_id');
     }
 
+<<<<<<< HEAD
     public function proposals()
     {
         return $this->hasMany(LeaseProposal::class, 'tenant_id');
     }
+=======
+    // public function scopeVisible($query)
+    // {
+    //     return $query->where('status', 0);
+    // }
+>>>>>>> 8538d82c60b85f408d2661c6656da384e96b46ad
 }
