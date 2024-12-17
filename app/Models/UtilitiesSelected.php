@@ -26,9 +26,16 @@ class UtilitiesSelected extends Model
         return $this->hasOne(UtilitiesReading::class, 'utility_id', 'utility_id');
     }
 
+    // public function reading()
+    // {
+    //     return $this->belongsTo(UtilitiesReading::class, 'lease_id', 'proposal_id');
+    // }
+
     public function reading()
     {
-        return $this->belongsTo(UtilitiesReading::class, 'lease_id', 'proposal_id');
+
+        return $this->hasMany(UtilitiesReading::class, 'utility_id', 'utility_id');
     }
+
 
 }

@@ -26,4 +26,10 @@ class UtilitiesReading extends Model
         'date_reading',
         'prepare'
     ];
+    
+    public function utility()
+    {
+        return $this->belongsTo(UtilitiesSelected::class, 'utility_id', 'utility_id');
+    }
+
 }

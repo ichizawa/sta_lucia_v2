@@ -22,17 +22,81 @@ class ActivitiesController extends Controller
         return view('biller.reading.index');
     }
 
+    // public function lists(Request $request)
+    // {
+    //     $company = Company::with([
+    //         'proposals.billing',
+    //         'proposals.utilities.util_desc',
+    //         'proposals.utilities.reading'
+    //     ])
+    //         ->whereHas('proposals.billing', function ($query) use ($request) {
+    //             $query->where('date_end', $request->date)
+    //                 ->orWhere(fn($q) => $q->whereNull('date_end')->where('date_start', $request->date));
+    //         })
+    //         ->get();
+
+    //     return response()->json($company);
+    // }
+
+    // public function lists(Request $request)
+    // {
+    //     $company = Company::with([
+    //         'proposals.billing',
+    //         'proposals.utilities.util_desc',
+    //         'proposals.utilities.reading',
+    //     ])
+    //     ->whereHas('proposals.billing', function ($query) use ($request) {
+    //         $query->where('date_end', $request->date)
+    //             ->orWhere(fn($q) => $q->whereNull('date_end')->where('date_start', $request->date));
+    //     })
+    //     ->get();
+
+    //     foreach ($company as $companyItem) {
+    //         foreach ($companyItem->proposals as $proposal) {
+    //             foreach ($proposal->utilities as $utility) {
+    //                 $utilitiesSelected = UtilitiesSelected::with(['readings' => function ($query) use ($utility) {
+    //                     $query->where('utility_id', $utility->utility_id);  
+    //                 }])
+    //                     ->where('lease_id', $proposal->lease_id)
+    //                     ->where('utility_id', $utility->utility_id)
+    //                     ->get();
+
+    //                 if ($utilitiesSelected->isNotEmpty()) {
+    //                     $utility->utilities_readings = $utilitiesSelected->flatMap(function ($item) {
+    //                         return $item->readings;  
+    //                     });
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return response()->json($company);
+    // }
+
     public function lists(Request $request)
     {
         $company = Company::with([
             'proposals.billing',
             'proposals.utilities.util_desc',
         ])
-            ->whereHas('proposals.billing', function ($query) use ($request) {
-                $query->where('date_end', $request->date)
-                    ->orWhere(fn($q) => $q->whereNull('date_end')->where('date_start', $request->date));
-            })
-            ->get();
+        ->whereHas('proposals.billing', function ($query) use ($request) {
+            $query->where('date_end', $request->date)
+                ->orWhere(fn($q) => $q->whereNull('date_end')->where('date_start', $request->date));
+        })
+        ->get();
+
+        foreach ($company as $companyItem) {
+            foreach ($companyItem->proposals as $proposal) {
+                foreach ($proposal->utilities as $utility) {
+                    $utility->utilities_readings = UtilitiesReading::where('utility_id', $utility->utility_id)
+                        ->where('proposal_id', $proposal->id) 
+                        ->get();
+
+                    if ($utility->utilities_readings->isEmpty()) {
+                        $utility->utilities_readings = null;
+                    }
+                }
+            }
+        }
 
         return response()->json($company);
     }
