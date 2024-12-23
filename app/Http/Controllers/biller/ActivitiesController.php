@@ -89,7 +89,7 @@ class ActivitiesController extends Controller
     public function reading(Request $request)
     {
         $utility = UtilitiesReading::where([
-            ['bill_id', $request->bill_id],
+            ['proposal_id', $request->prop_id],
             ['utility_id', $request->id]
         ])->first();
         return response()->json($utility);

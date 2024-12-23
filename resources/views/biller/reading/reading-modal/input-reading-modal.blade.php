@@ -72,7 +72,7 @@
                 type: "GET",
                 data: {
                     id: util_id,
-                    bill_id:bill_id,
+                    prop_id: id,
                 },
                 success: function (data) {
                     $('#previous_reading').val('');
