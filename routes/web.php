@@ -192,8 +192,13 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
     Route::prefix('collector')->group(function () {
         Route::get('/dashboard', [CollectionController::class, 'index'])->name('collect.dashboard');
-
+        
         Route::get('/collect', [CollectionController::class, 'collect'])->name('collect.invoices');
+
+        Route::prefix('ledger-bill')->group(function () {
+            Route::get('/ledger', [CollectionController::class, 'get'])->name('collect.ledger.index');
+            Route::get('/contract-info', [CollectionController::class, 'view'])->name('collect.get.bills');
+        });
     });
 
 });

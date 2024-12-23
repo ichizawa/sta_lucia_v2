@@ -50,17 +50,38 @@
                 success: function (data) {
                     $('#appendInputHere').empty();
                     table.clear();
-                    console.log(data);
-
                     $.each(data, function (key, value) {
                         let nestedRows = '';
 
                         $.each(value.proposals, function (ke, val) {
+                            let hasReading = false;
+                            let noReading = true;
+
+                            $.each(val.utilities, function (idx, utility) {
+                                if (utility.readings !== null) {
+                                    hasReading = true;
+                                    noReading = false;
+                                }
+                            });
+
+                            let readingStatus = '';
+                            if (noReading) {
+                                readingStatus = 'No reading yet';
+                            } else if (hasReading && val.utilities.length === 1) {
+                                readingStatus = 'All have readings';
+                            } else {
+                                readingStatus = 'Some have readings';
+                            }
+
+                            $('#appendInputHere').append(`
+                                <input type="text" name="bill_id[]" value="${val.billing.id}" hidden/>
+                            `);
+
                             nestedRows += `
                                 <tr>
                                     <td>${val.proposal_uid}</td>
                                     <td>${val.billing.is_prepared == 0 ? 'Not Prepared' : val.billing.is_prepared == 1 ? 'Processed' : 'Prepared'}</td>
-                                    <td></td>
+                                    <td>${readingStatus}</td>
                                     <td>
                                         <a class="btn btn-sm btn-warning"
                                             data-bs-toggle="modal"
@@ -96,7 +117,7 @@
                             </div>`
                         ]);
                     });
-                    
+
                     table.draw();
                 },
                 error: function (status, xhr, error) {

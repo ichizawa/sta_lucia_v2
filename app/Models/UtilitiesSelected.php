@@ -28,7 +28,12 @@ class UtilitiesSelected extends Model
 
     public function reading()
     {
-        return $this->belongsTo(UtilitiesReading::class, 'lease_id', 'proposal_id');
+        return $this->hasOne(UtilitiesReading::class, 'utility_id', 'utility_id')
+            ->where('proposal_id', function ($query) {
+                $query->select('lease_id')
+                    ->from('utilities_selected')
+                    ->whereColumn('lease_id', 'utilities_reading.proposal_id')
+                    ->limit(1);
+            });
     }
-
 }

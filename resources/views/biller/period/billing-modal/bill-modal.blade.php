@@ -45,9 +45,9 @@
           table.clear();
           $.each(response, function (key, value) {
             $.each(value.proposals, function(key, proposal) {
-              const date = new Date(proposal.billing.date_end + "-01");
+              const date = new Date(proposal.billing.date_end);
               const datefrom = new Date(proposal.billing.date_start);
-              date.setDate(date.getDate() + 4);
+              // date.setDate(date.getDate() + 4);
               const formattedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
               const formattedDatefrom = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(datefrom);
 

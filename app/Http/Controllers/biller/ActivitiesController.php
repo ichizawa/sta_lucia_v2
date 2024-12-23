@@ -24,15 +24,49 @@ class ActivitiesController extends Controller
 
     public function lists(Request $request)
     {
+        // $company = Company::with([
+        //         'proposals.billing',
+        //         'proposals.utilities.util_desc',
+        //         'proposals.utilities.reading'
+        //     ])
+        //     ->whereHas('proposals.billing', function ($query) use ($request) {
+        //         $query->where('date_end', 'like', "{$request->date}%")
+        //             ->orWhere(function ($q) use ($request) {
+        //                 $q->whereNull('date_end')
+        //                     ->where('date_start', 'like', "{$request->date}%");
+        //             })
+        //             ->where('is_prepared', Billing::PREPARED);
+        //     })
+        //     ->get();
+
+        // return response()->json($company);
         $company = Company::with([
             'proposals.billing',
             'proposals.utilities.util_desc',
         ])
             ->whereHas('proposals.billing', function ($query) use ($request) {
-                $query->where('date_end', $request->date)
-                    ->orWhere(fn($q) => $q->whereNull('date_end')->where('date_start', $request->date));
+                $query->where('date_end', 'like', "{$request->date}%")
+                    ->orWhere(function ($q) use ($request) {
+                        $q->whereNull('date_end')
+                            ->where('date_start', 'like', "{$request->date}%");
+                    })
+                    ->where('is_prepared', Billing::PREPARED);
             })
             ->get();
+
+        foreach ($company as $companyItem) {
+            foreach ($companyItem->proposals as $proposal) {
+                foreach ($proposal->utilities as $utility) {
+                    $utility->readings = UtilitiesReading::where('utility_id', $utility->utility_id)
+                        ->where('proposal_id', $proposal->id)
+                        ->get();
+
+                    if ($utility->readings->isEmpty()) {
+                        $utility->readings = null;
+                    }
+                }
+            }
+        }
 
         return response()->json($company);
     }
@@ -130,10 +164,8 @@ class ActivitiesController extends Controller
     {
         $bill_ids = $request->input('bill_id', []);
         $data = [];
-
         foreach ($bill_ids as $id) {
             $billingRecords = UtilitiesReading::where('bill_id', $id)->get();
-
             if ($billingRecords->isEmpty()) {
                 $data[] = [
                     'status' => 'warning',
@@ -155,20 +187,20 @@ class ActivitiesController extends Controller
                     ];
                 } else {
                     $billing->update(['prepare' => 2]);
-                    BillReading::create([
-                        'reading_id' => $billing->id,
-                        'bill_id' => $billing->bill_id,
-                        'utility_id' => $billing->utility_id,
-                        'present_reading' => $billing->present_reading,
-                        'previous_reading' => $billing->previous_reading,
-                        'present_reading_date' => $billing->present_reading_date,
-                        'previous_reading_date' => $billing->previous_reading_date,
-                        'consumption' => $billing->consumption,
-                        'utility_price' => $billing->utility_price,
-                        'total_reading' => $billing->total_reading,
-                        'date_reading' => $billing->date_reading,
-                        'status' => 1,
-                    ]);
+                    // BillReading::create([
+                    //     'reading_id' => $billing->id,
+                    //     'bill_id' => $billing->bill_id,
+                    //     'utility_id' => $billing->utility_id,
+                    //     'present_reading' => $billing->present_reading,
+                    //     'previous_reading' => $billing->previous_reading,
+                    //     'present_reading_date' => $billing->present_reading_date,
+                    //     'previous_reading_date' => $billing->previous_reading_date,
+                    //     'consumption' => $billing->consumption,
+                    //     'utility_price' => $billing->utility_price,
+                    //     'total_reading' => $billing->total_reading,
+                    //     'date_reading' => $billing->date_reading,
+                    //     'status' => 1,
+                    // ]);
 
                     $data[] = [
                         'status' => 'success',
@@ -177,7 +209,6 @@ class ActivitiesController extends Controller
                 }
             }
         }
-
         return response()->json($data);
     }
 }

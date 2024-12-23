@@ -48,4 +48,9 @@ class LeaseProposal extends Model
     {
         return $this->hasMany(UtilitiesSelected::class, 'lease_id');
     }
+
+    public function selected_space()
+    {
+        return $this->hasMany(LeasableInfoModel:: class, 'proposal_id', 'id');
+    }
 }

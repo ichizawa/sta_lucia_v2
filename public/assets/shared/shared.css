@@ -1,0 +1,12 @@
+.monthLists {
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+.monthLists:hover {
+    transform: scale(1.15);
+}
+.monthLists:hover .monthNames {
+    background-color: #8c825b;
+    font-weight: bold;
+    color: #fff;
+}

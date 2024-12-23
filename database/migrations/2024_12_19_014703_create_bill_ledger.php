@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -19,16 +18,12 @@ return new class extends Migration
             $table->unsignedBigInteger('billing_id');
             $table->foreign('billing_id')->references('id')->on('billing');
             $table->string('bill_no')->nullable();
-            $table->string('total_sales')->nullable();
-            $table->string('brent')->nullable();
-            $table->string('total_brent')->nullable();
-            $table->string('mgr')->nullable();
-            $table->string('total_mgr')->nullable();
-            $table->string('amount_payable')->nullable();
-            $table->float('total_amount_payable')->nullable();
+            $table->float('ammount')->nullable();
             $table->dateTime('date_from')->nullable();
             $table->dateTime('date_to')->nullable();
             $table->string('remarks')->nullable();
+            $table->smallInteger('status')->nullable()->default(0);
+            $table->smallInteger('is_paid')->nullable()->default(0);
             $table->timestamps();
         });
     }

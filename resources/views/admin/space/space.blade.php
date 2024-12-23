@@ -46,7 +46,7 @@
                                         <td>{{ $spaces->property_code }}</td>
                                         <td>{{ $spaces->store_type }}</td>
                                         <td>{{ $spaces->space_type }}</td>
-                                        <td>{!! $spaces->status ? '<span class="badge bg-warning">Unavailable</span>' : '<span class="badge bg-success">Available</span>' !!} </td>
+                                        <td>{!! $spaces->status ? '<span class="badge bg-warning">Occupied</span>' : '<span class="badge bg-success">Available</span>' !!} </td>
                                         <td>{!! $spaces->space_tag == 1 ? '<span class="badge bg-success">Available</span>' : ($spaces->space_tag == 2 ? '<span class="badge bg-warning">Unavailable</span>' : '<span class="badge bg-danger">Reserved</span>') !!} </td>
                                         <td>
                                             <a class="btn btn-warning btn-sm space-view"

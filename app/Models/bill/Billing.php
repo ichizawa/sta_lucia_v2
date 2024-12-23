@@ -32,7 +32,7 @@ class Billing extends Model
 
     public function util_read()
     {
-        return $this->hasMany(UtilitiesReading::class, 'bill_id', 'id');
+        return $this->hasMany(UtilitiesReading::class, 'proposal_id', 'proposal_id');
     }
 
 }

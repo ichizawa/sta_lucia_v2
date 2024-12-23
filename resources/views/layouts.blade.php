@@ -23,7 +23,7 @@
     <link href="{{ URL::asset('assets/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/plugins.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/kaiadmin.min.css') }}" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="{{ URL::asset('assets/css/demo.css') }}" /> -->
+    <link rel="stylesheet" href="{{ URL::asset('assets/shared/shared.css') }}" />
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -173,90 +173,9 @@
     <script src="{{ asset('assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
     <script src="{{ asset('assets/js/demo.js') }}"></script>
-    <script>
-        $(document).ready(function () {
-            toastr.options = {
-                'closeButton': true,
-                'debug': false,
-                'newestOnTop': false,
-                'progressBar': false,
-                'positionClass': 'toast-top-right',
-                'preventDuplicates': false,
-                'showDuration': '1000',
-                'hideDuration': '1000',
-                'timeOut': '5000',
-                'extendedTimeOut': '1000',
-                'showEasing': 'swing',
-                'hideEasing': 'linear',
-                'showMethod': 'fadeIn',
-                'hideMethod': 'fadeOut',
-            }
-
-
-            var fixedWidth = '200px';
-
-            $('#basic-datatables thead th').css('min-width', fixedWidth);
-
-            $('#basic-datatables tbody td').css('min-width', fixedWidth);
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            // $('#search-mall-code').selectize({
-            //     sortField: 'text'
-            // });
-            // $('#search-bldg-number').selectize({
-            //     sortField: 'text'
-            // });
-            // $('#search-level-number').selectize({
-            //     sortField: 'text'
-            // });
-
-            if (!$.fn.DataTable.isDataTable('#basic-datatables')) {
-                $("#basic-datatables").DataTable({
-                });
-            }
-
-            $('#client').DataTable({
-                pageLength: 10
-            });
-
-            if (!$.fn.DataTable.isDataTable('#multi-filter-select')) {
-                $("#multi-filter-select").DataTable({
-                    pageLength: 10,
-                    // initComplete: function () {
-                    //     this.api()
-                    //         .columns()
-                    //         .every(function () {
-                    //             var column = this;
-                    //             var select = $(
-                    //                 '<select class="form-select"><option value=""></option></select>',
-                    //             )
-                    //                 .appendTo($(column.footer()).empty())
-                    //                 .on('change', function () {
-                    //                     var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                    //                     column
-                    //                         .search(val ? '^' + val + '$' : '', true, false)
-                    //                         .draw();
-                    //                 });
-
-                    //             column
-                    //                 .data()
-                    //                 .unique()
-                    //                 .sort()
-                    //                 .each(function (d, j) {
-                    //                     select.append(
-                    //                         '<option value="' + d + '">' + d + '</option>',
-                    //                     );
-                    //                 });
-                    //         });
-                    // },
-                });
-            }
-        });
-    </script>
-
+    <script src="{{ asset('assets/js/shared/global.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/collection.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/collect.js') }}"></script>
 </body>
 
 </html>

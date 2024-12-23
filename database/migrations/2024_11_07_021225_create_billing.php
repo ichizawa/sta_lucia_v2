@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('proposal_id')->references('id')->on('proposal')->cascadeOnDelete();
             $table->string('billing_uid')->nullable();
             $table->string('date_start')->nullable();
-            $table->string('date_end')->nullable();
+            $table->date('date_end')->nullable();
             $table->string('remarks')->nullable();
             $table->smallInteger('is_prepared')->nullable()->default(0);
             $table->smallInteger('is_paid')->nullable()->default(0);

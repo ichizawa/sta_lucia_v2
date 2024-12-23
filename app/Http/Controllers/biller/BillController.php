@@ -13,6 +13,7 @@ use App\Models\Contracts;
 use App\Models\LeaseProposal;
 use App\Models\UtilitiesReading;
 use App\Models\UtilitiesSelected;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BillController extends Controller
@@ -31,12 +32,16 @@ class BillController extends Controller
     {
         $company = Company::with(['proposals.billing'])
             ->whereHas('proposals.billing', function ($query) use ($request) {
-                $query->where('date_end', $request->date)
-                    ->orWhere(fn($q) => $q->whereNull('date_end')->where('date_start', $request->date));
+                $query->where('date_end', 'like', "{$request->date}%")
+                    ->orWhere(function ($q) use ($request) {
+                        $q->whereNull('date_end')
+                            ->where('date_start', 'like', "{$request->date}%");
+                    });
             })
             ->get();
-
         return response()->json($company);
+
+
     }
 
     public function prepare(Request $request)
@@ -49,7 +54,8 @@ class BillController extends Controller
 
         $billDate = new \DateTime($date);
         $billDate->modify('+1 month');
-        $billing_date = $billDate->format('Y-m');
+        $billDate->modify('+4 days');
+        $billing_date = $billDate->format('Y-m-d');
 
         $response = [];
 
@@ -57,9 +63,10 @@ class BillController extends Controller
             foreach ($bill_ids as $id) {
                 $billing = Billing::find($id);
                 if ($billing->is_prepared == Billing::PENDING) {
+                    $billing->billing_uid = rand(100000, 999999).'-' . $nextId;
                     $billing->date_end = $billing_date;
                     $billing->is_prepared = Billing::PREPARED;
-                    $billing->status == Billing::PREPARED;
+                    $billing->status = Billing::PREPARED;
                     $billing->save();
 
                     $response = [
@@ -67,6 +74,8 @@ class BillController extends Controller
                         'status' => 'success',
                         'message' => 'Bill prepared successfully'
                     ];
+
+                    
                 } else {
                     $response = [
                         'response' => 400,
@@ -83,74 +92,23 @@ class BillController extends Controller
             ];
         }
         return back()->with($response);
-
-        // $data = [];
-        // $response = [
-        //     'response' => 400,
-        //     'status' => 'danger',
-        //     'message' => 'No bills to prepare',
-        // ];
-        // if (!empty($bill_ids)) {
-        //     foreach ($bill_ids as $bill_id) {
-        //         $billing = Billing::find($bill_id);
-        //         if (!$billing) {
-        //             continue;
-        //         }
-        //         $bill_num = 'STL-' . rand(10000, 99999) . '-' . $nextId;
-        //         if ($billing->status == 0) {
-        //             $billing->date_end = $billing_date;
-        //             $billing->status = 2;
-        //             $billing->save();
-        //             BillingDetails::create([
-        //                 'billing_id' => $bill_id,
-        //                 'bill_no' => $bill_num,
-        //                 'date_from' => $date,
-        //                 'date_to' => $billing_date,
-        //                 'remarks' => null,
-        //                 'status' => 0,
-        //             ]);
-        //             $response = [
-        //                 'response' => 200,
-        //                 'status' => 'success',
-        //                 'message' => 'Bills prepared successfully',
-        //             ];
-        //         } else if ($billing->status == 1) {
-        //             $billnumber = 'STL-' . rand(10000, 99999) . '-' . $nextId;
-        //             $billingDetails = BillingDetails::where('billing_id', $bill_id)->get();
-        //             foreach ($billingDetails as $detail) {
-        //                 $detail->update([
-        //                     'bill_no' => $billnumber,
-        //                     'date_from' => $date,
-        //                     'date_to' => $billing_date,
-        //                     'remarks' => null,
-        //                     'status' => 0,
-        //                 ]);
-        //             }
-        //             $response = [
-        //                 'response' => 200,
-        //                 'status' => 'success',
-        //                 'message' => 'Bills updated successfully',
-        //             ];
-        //         } else {
-        //             $response = [
-        //                 'response' => 400,
-        //                 'status' => 'danger',
-        //                 'message' => 'Some bills are already prepared',
-        //             ];
-        //         }
-        //     }
-        // }
-        // return back()->with($response);
-
-
     }
 
     public function checkBills(Request $request)
     {
         $company = Company::with(['proposals.billing'])
-            ->whereRelation('proposals.billing', $request->date ? 'date_end' : 'date_start', $request->date)
+            ->whereHas('proposals.billing', function ($query) use ($request) {
+                $query->where('date_end', 'like', "{$request->date}%")
+                    ->orWhere(function ($q) use ($request) {
+                        $q->whereNull('date_end')
+                            ->where('date_start', 'like', "{$request->date}%");
+                    })
+                    ->where('is_prepared', Billing::PREPARED);
+            })
             ->get();
+
         return response()->json($company);
+
     }
     public function period()
     {
