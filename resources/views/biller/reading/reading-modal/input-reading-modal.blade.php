@@ -62,8 +62,9 @@
             var date = $(e.relatedTarget).data('date');
             var bill_id = $(e.relatedTarget).data('bill-id');
             var id = $(e.relatedTarget).data('proposal-id');
+            // console.log('id from reaidng:' + id);
 
-            $('#back').attr('data-proposal-id', id);
+            $('#back').data('proposal-id', id);
 
             $('#readingForm')[0].reset();
             $.ajax({

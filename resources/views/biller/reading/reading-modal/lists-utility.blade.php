@@ -34,6 +34,9 @@
         $('#contractUtilityLists').on('show.bs.modal', function (event) {
             var id = $(event.relatedTarget).data('proposal-id');
             var date = $(event.relatedTarget).data('date');
+
+            // console.log('id from list utility:' + id);
+            
             $('#backbtn').attr('data-date', date);
 
             $.ajax({
