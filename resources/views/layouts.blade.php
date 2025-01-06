@@ -63,7 +63,6 @@
         }
     </style>
     <script>
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -177,5 +176,4 @@
     <script src="{{ asset('assets/js/shared/collection.js') }}"></script>
     <script src="{{ asset('assets/js/shared/collect.js') }}"></script>
 </body>
-
 </html>

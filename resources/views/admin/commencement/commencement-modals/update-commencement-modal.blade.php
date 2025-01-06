@@ -68,6 +68,9 @@
                 success: function (response) {
                     console.log(response);
                     $('#comm-date-modal').modal('hide');
+                    if(response.status == 'success'){
+                        swal('Success', 'Commencement Date Updated', 'success');
+                    }
                 }
             });
         });

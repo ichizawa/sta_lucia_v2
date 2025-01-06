@@ -3,6 +3,7 @@
 @section('content')
 @include('collect.collection.collect-modal.collection-modal')
 @include('collect.collection.collect-modal.collection-ledger-modal')
+@include('collect.collection.collect-modal.collection-option-modal')
 <div class="page-inner">
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>

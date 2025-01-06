@@ -41,12 +41,12 @@ class CommencementController extends Controller
                     'status' => 0
                 ]);
 
-                $data[] = [
+                $data = [
                     'status' => 'success',
                     'message' => "Commencement date and billing created successfully for proposal ID $prop."
                 ];
             } else {
-                $data[] = [
+                $data = [
                     'status' => 'error',
                     'message' => "Billing already exists for proposal ID $prop."
                 ];

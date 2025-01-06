@@ -62,9 +62,21 @@ class BillController extends Controller
         if (!empty($bill_ids)) {
             foreach ($bill_ids as $id) {
                 $billing = Billing::find($id);
+                $proposal = LeaseProposal::with(['selected_space.space'])->find($billing->proposal_id);
+                $amount = 0;
+
                 if ($billing->is_prepared == Billing::PENDING) {
+
+                    if ($proposal->min_mgr == 0) {
+                        $amount = $proposal->total_mgr;
+                    }else{
+                        $amount = 0;
+                    }
+
                     $billing->billing_uid = rand(100000, 999999).'-' . $nextId;
+                    $billing->amount = $amount;
                     $billing->date_end = $billing_date;
+                    $billing->is_paid = Billing::PENDING;
                     $billing->is_prepared = Billing::PREPARED;
                     $billing->status = Billing::PREPARED;
                     $billing->save();
@@ -75,7 +87,7 @@ class BillController extends Controller
                         'message' => 'Bill prepared successfully'
                     ];
 
-                    
+
                 } else {
                     $response = [
                         'response' => 400,

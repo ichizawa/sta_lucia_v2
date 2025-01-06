@@ -36,7 +36,6 @@ Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth', [AuthController::class, 'login'])->name('authenticate');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-// Route::get('/pdf-check', [PublicController::class, 'checkPdf'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
@@ -198,6 +197,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::prefix('ledger-bill')->group(function () {
             Route::get('/ledger', [CollectionController::class, 'get'])->name('collect.ledger.index');
             Route::get('/contract-info', [CollectionController::class, 'view'])->name('collect.get.bills');
+            Route::post('/collect-bill', [CollectionController::class, 'store'])->name('collect.store.bills');
         });
     });
 

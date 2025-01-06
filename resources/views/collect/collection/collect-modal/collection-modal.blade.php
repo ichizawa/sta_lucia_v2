@@ -1,4 +1,4 @@
-<form method="POST">
+<form id="collectionForm" method="POST">
     @csrf
     <div class="offcanvas offcanvas-end" tabindex="-1" id="paymentCanvas" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
@@ -7,7 +7,7 @@
         </div>
         <div class="offcanvas-body">
             <div class="container-fluid mt--3">
-                <div class="row">
+                <div class="row" id="tenantInfo">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Select Contract</label>
@@ -21,8 +21,35 @@
                         <div class="form-group">
                             <label class="form-label">Bill Number</label>
                             <input type="text" class="form-control billnumber text-danger fw-bold" name="bill_num" id="bill_num"
-                                placeholder="Billing Number" readonly />
+                                placeholder="Billing Number" readonly/>
+                            <!-- <input type="text" class="form-control" name="billing_id" id="billing_id"
+                                placeholder="#" hidden/> -->
                         </div>
+                    </div>
+                    <div class="col-md-12" id="tenantSales" hidden>
+                        <div class="form-group">
+                            <label class="form-label">Enter Total Sales</label>
+                            <input type="text" class="form-control" name="total_sales" id="total_sales"
+                                placeholder="Enter Total Sales" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h5 class="text-center">Space Breakdown</h5>
+                    <div class="table-responsive">
+                        <table id="spaceTableShow" class="table-striped table-hover" style="cursor: pointer;">
+                            <thead class="bg-secondary text-white">
+                                <tr>
+                                    <th colspan="2">Item Desc</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">No Data Yet!</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -74,7 +101,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-end">
-                    <button type="button" class="btn btn-sta">Pay Bill</button>
+                    <button type="button" id="bill_pay_btn" class="btn btn-sta">Collect Bill</button>
                 </div>
             </div>
         </div>
@@ -82,4 +109,5 @@
 </form>
 <script>
     const BILL_PAY = "{{ route('collect.get.bills') }}";
+    const BILL_PAY_STORE = "{{ route('collect.store.bills') }}";
 </script>

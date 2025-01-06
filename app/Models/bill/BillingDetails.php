@@ -11,6 +11,10 @@ class BillingDetails extends Model
     protected $fillable = [
         'billing_id',
         'bill_no',
+        'total_sales',
+        'amount',
+        'reference_num',
+        'payment_option',
         'date_from',
         'date_to',
         'remarks',

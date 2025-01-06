@@ -2,7 +2,7 @@ $(document).ready(function () {
     const currentYear = new Date().getFullYear();
     const range = (start, stop, step) =>
         Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
-    const years = range(currentYear + 1, currentYear - 10, -1);
+    const years = range(currentYear, currentYear - 10, -1);
     const table = years.map((year) => ({ index: year }));
 
     $('#collect-datatables').DataTable({
@@ -75,12 +75,21 @@ $(document).ready(function () {
     function format(data) {
         let year = data.index;
         let dataRows = '';
+        const d = new Date();
+        let year_now = d.getFullYear();
+        let month_now = d.getMonth();
 
         for (let month = 0; month < 12; month++) {
             const monthNumber = String(month + 1).padStart(2, '0');
             const monthName = new Date(year, month).toLocaleString('default', { month: 'short' });
-            dataRows += `<div class="col-sm-4 monthLists" data-date="${year}-${month + 1}">
-                <p class="text-center border rounded monthNames">${monthName}</p>
+            let badge;
+
+            if (month_now == month && year_now == year) {
+                badge = 'bg-success text-white';
+            }
+
+            dataRows += `<div class="col-sm-4 monthLists" data-date="${year}-${monthNumber}">
+                <p class="text-center border rounded monthNames ${badge}">${monthName}</p>
             </div>`;
         }
 
@@ -105,7 +114,7 @@ $(document).ready(function () {
                 tenant_table.clear();
                 tenant_table.rows.add(response);
                 tenant_table.draw();
-                if(response.length == 0){
+                if (response.length == 0) {
                     $.notify(
                         {
                             message: 'No Bills Were Found For This Month',

@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
             Category::class,
             Charges::class,
             Utility::class,
-            UserSeeder::class,
             Amenities::class,
             SubCategory::class,
             Space::class,
             MallOptions::class,
-            Documents::class
+            Documents::class,
+            UserSeeder::class
         ]);
     }
 }

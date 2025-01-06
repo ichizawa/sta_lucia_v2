@@ -16,7 +16,7 @@
                                 <th>Remarks</th>
                                 <th>Ammount</th>
                                 <th>Status</th>
-                                <th>Date</th>
+                                <th>Due Date</th>
                             </tr>
                         </thead>
                         <tbody>

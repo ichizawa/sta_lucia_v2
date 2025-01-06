@@ -221,37 +221,9 @@
                                     </ul>
                                 </div>
                             </li>
-                            {{-- <li class="{{ request()->routeIs('admin.amenities') ? 'active' : '' }}">
-                                <a href="{{ route('admin.amenities') }}">
-                                    <span class="sub-item">Mall</span>
-                                </a>
-                            </li>
-                            <li class="{{ request()->routeIs('admin.amenities') ? 'active' : '' }}">
-                                <a href="{{ route('admin.amenities') }}">
-                                    <span class="sub-item">Building</span>
-                                </a>
-                            </li>
-                            <li class="{{ request()->routeIs('admin.amenities') ? 'active' : '' }}">
-                                <a href="{{ route('admin.amenities') }}">
-                                    <span class="sub-item">Level</span>
-                                </a>
-                            </li> --}}
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item {{ request()->routeIs('admin.bill.period') ? 'active' : '' }}">
-                    <a href="{{ route('admin.bill.period') }}" aria-expanded="false">
-                        <i class="fa-solid fa-file-invoice"></i>
-                        <p>Billing Periods</p>
-                    </a>
-                </li>
-                {{-- <li class="nav-item {{ request()->routeIs('admin.invoices') ? 'active' : '' }}">
-                    <a href="{{ route('admin.invoices') }}" aria-expanded="false">
-                        <i class="fa-solid fa-file-invoice"></i>
-                        <p>Invoices</p>
-                    </a>
-                </li> --}}
-
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>

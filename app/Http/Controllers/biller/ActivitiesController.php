@@ -24,22 +24,6 @@ class ActivitiesController extends Controller
 
     public function lists(Request $request)
     {
-        // $company = Company::with([
-        //         'proposals.billing',
-        //         'proposals.utilities.util_desc',
-        //         'proposals.utilities.reading'
-        //     ])
-        //     ->whereHas('proposals.billing', function ($query) use ($request) {
-        //         $query->where('date_end', 'like', "{$request->date}%")
-        //             ->orWhere(function ($q) use ($request) {
-        //                 $q->whereNull('date_end')
-        //                     ->where('date_start', 'like', "{$request->date}%");
-        //             })
-        //             ->where('is_prepared', Billing::PREPARED);
-        //     })
-        //     ->get();
-
-        // return response()->json($company);
         $company = Company::with([
             'proposals.billing',
             'proposals.utilities.util_desc',
@@ -100,6 +84,8 @@ class ActivitiesController extends Controller
         $find = UtilitiesReading::where('bill_id', $request->bill_id)
             ->where('date_reading', $request->date_reading)
             ->where('utility_id', $request->utility_id)->first();
+        $bill = Billing::find($request->bill_id);
+
         $response = [];
         if (!empty($find)) {
             if ($find->prepare == 1) {
@@ -126,6 +112,8 @@ class ActivitiesController extends Controller
                 ]);
 
                 if ($reading) {
+                    $bill->amount = $bill->amount + $request->total_reading_charge;
+                    $bill->save();
                     $response = [
                         'status' => 'success',
                         'message' => 'Reading Prepared Successfully'
@@ -152,6 +140,10 @@ class ActivitiesController extends Controller
                 'date_reading' => $request->date_reading,
                 'prepare' => 1,
             ]);
+
+            $bill->amount = $bill->amount + $request->total_reading_charge;
+            $bill->save();
+            
             $response = [
                 'status' => 'success',
                 'message' => 'Utilities Reading Prepared Successfully'

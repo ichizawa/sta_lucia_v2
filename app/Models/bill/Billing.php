@@ -16,6 +16,7 @@ class Billing extends Model
 
     protected $fillable = [
         'proposal_id',
+        'amount',
         'billing_uid',
         'date_start',
         'date_end',
