@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('billing_id');
             $table->foreign('billing_id')->references('id')->on('billing')->cascadeOnDelete();
+            $table->string('contract_id')->nullable();
             $table->string('bill_no')->nullable();
-            $table->float('total_sales')->nullable();
+            // $table->float('total_sales')->nullable();
             $table->float('amount')->nullable();
-            $table->string('reference_num')->nullable();
-            $table->string('payment_option')->nullable();
-            $table->string('date_from')->nullable();
+            // $table->string('reference_num')->nullable();
+            // $table->string('payment_option')->nullable();
+            // $table->string('date_from')->nullable();
             $table->string('date_to')->nullable();
             $table->string('remarks')->nullable();
             $table->smallInteger('status')->nullable()->default(0);

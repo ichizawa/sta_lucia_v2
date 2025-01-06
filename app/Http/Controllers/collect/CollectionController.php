@@ -28,8 +28,10 @@ class CollectionController extends Controller
 
     public function get(Request $request)
     {
+        $billing_id = LeaseProposal::with(['billing'])->where('tenant_id', $request->id)->get()->first()->billing->id;
         return response()->json(
-            LeaseProposal::with(['billing'])->where('tenant_id', $request->id)->get()
+            // LeaseProposal::with(['billing.bill_details'])->where('tenant_id', $request->id)->get()
+            BillingDetails::where('billing_id', $billing_id)->get()
         );
     }
 
@@ -41,6 +43,7 @@ class CollectionController extends Controller
 
         $readings = UtilitiesReading::whereIn('utility_id', $proposals->pluck('utilities.*.utility_id')->flatten())
             ->whereIn('proposal_id', $proposals->pluck('id'))
+            ->where('prepare', 2)
             ->get()
             ->groupBy('utility_id');
 
@@ -62,8 +65,7 @@ class CollectionController extends Controller
         $bill = Billing::find($request->billing_id);
         $response = [];
 
-        $response[] = $request->all();
-
+        // $response[] = $request->all();
         if($bill){
             if ($bill->is_paid == 1) {
                 $response = [
@@ -88,11 +90,11 @@ class CollectionController extends Controller
                 BillingDetails::create([
                     'billing_id' => $request->billing_id,
                     'bill_no' => $request->biller_num,
-                    'total_sales' => null,
+                    // 'total_sales' => null,
                     'amount' => $request->amount_payment,
-                    'reference_num' => $request->ref_num ?? null,
-                    'payment_option' => $request->payment_method,
-                    'date_from' => $bill->date_start,
+                    // 'reference_num' => $request->ref_num ?? null,
+                    // 'payment_option' => $request->payment_method,
+                    // 'date_from' => $bill->date_start,
                     'date_to' => $bill->date_end,
                     'remarks' => $request->remarks,
                     'status' => 0,

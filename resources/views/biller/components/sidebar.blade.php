@@ -64,10 +64,10 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
-                <li class="nav-item {{ request()->routeIs('bill.period') ? 'active' : '' }}">
-                    <a href="{{ route('bill.period') }}" aria-expanded="false">
+                <li class="nav-item {{ request()->routeIs('bill.billing') ? 'active' : '' }}">
+                    <a href="{{ route('bill.billing') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
-                        <p>Billing Period</p>
+                        <p>Billing</p>
                     </a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('utility.reading') || request()->routeIs('utility.reading.lists') ? 'active' : '' }}">
@@ -76,10 +76,10 @@
                         <p>Utility Reading</p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('bill.billing') ? 'active' : '' }}">
-                    <a href="{{ route('bill.billing') }}" aria-expanded="false">
+                <li class="nav-item {{ request()->routeIs('bill.period') ? 'active' : '' }}">
+                    <a href="{{ route('bill.period') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
-                        <p>Billing</p>
+                        <p>Billing Period</p>
                     </a>
                 </li>
                 <!-- <li class="nav-item {{ request()->routeIs('bill.cashier') ? 'active' : '' }}">

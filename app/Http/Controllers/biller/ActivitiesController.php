@@ -5,10 +5,11 @@ namespace App\Http\Controllers\biller;
 use App\Http\Controllers\Controller;
 use App\Models\bill\BillReading;
 use App\Models\bill\Billing;
-use App\Models\BillingDetails;
+use App\Models\bill\BillingDetails;
 use App\Models\CommencementProposal;
 use App\Models\Company;
 use App\Models\LeaseProposal;
+use App\Models\UtilitiesModel;
 use App\Models\UtilitiesReading;
 use App\Models\UtilitiesSelected;
 use Illuminate\Http\Request;
@@ -112,7 +113,9 @@ class ActivitiesController extends Controller
                 ]);
 
                 if ($reading) {
-                    $bill->amount = $bill->amount + $request->total_reading_charge;
+                    // $bill->amount = $bill->amount + $request->total_reading_charge;
+                    // $bill->total_amount = $bill->total_amount + $request->total_reading_charge;
+
                     $bill->save();
                     $response = [
                         'status' => 'success',
@@ -141,7 +144,9 @@ class ActivitiesController extends Controller
                 'prepare' => 1,
             ]);
 
-            $bill->amount = $bill->amount + $request->total_reading_charge;
+            // $bill->amount = $bill->amount + $request->total_reading_charge;
+            // $bill->total_amount = $bill->total_amount + $request->total_reading_charge;
+
             $bill->save();
             
             $response = [
@@ -157,6 +162,7 @@ class ActivitiesController extends Controller
         $bill_ids = $request->input('bill_id', []);
         $data = [];
         foreach ($bill_ids as $id) {
+            $bill = Billing::find($id);
             $billingRecords = UtilitiesReading::where('bill_id', $id)->get();
             if ($billingRecords->isEmpty()) {
                 $data[] = [
@@ -179,6 +185,26 @@ class ActivitiesController extends Controller
                     ];
                 } else {
                     $billing->update(['prepare' => 2]);
+                    $bill->amount = $bill->amount + $billing->total_reading_charge;
+                    $bill->total_amount = $bill->total_amount + $billing->total_reading_charge;
+                    $bill->save();
+
+                    $utility_name = UtilitiesModel::find($billing->utility_id)->name;
+
+                    BillingDetails::create([
+                        'billing_id' => $bill->id,
+                        'bill_no' => $bill->billing_uid,
+                        // 'total_sales' => null,
+                        'amount' => $bill->amount,
+                        // 'reference_num' => $request->ref_num ?? null,
+                        // 'payment_option' => $request->payment_method,
+                        // 'date_from' => $bill->date_start,
+                        'date_to' => $bill->date_end,
+                        'remarks' => 'Reading for ' . $utility_name . ' - ' . $billing->date_reading,
+                        'status' => 0,
+                        'is_paid' => 0
+                    ]);
+
                     // BillReading::create([
                     //     'reading_id' => $billing->id,
                     //     'bill_id' => $billing->bill_id,

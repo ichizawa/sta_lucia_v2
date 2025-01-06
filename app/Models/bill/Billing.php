@@ -16,6 +16,7 @@ class Billing extends Model
 
     protected $fillable = [
         'proposal_id',
+        'total_amount',
         'amount',
         'billing_uid',
         'date_start',
@@ -36,4 +37,7 @@ class Billing extends Model
         return $this->hasMany(UtilitiesReading::class, 'proposal_id', 'proposal_id');
     }
 
+    public function bill_details(){
+        return $this->hasMany(BillingDetails::class, 'billing_id');
+    }
 }

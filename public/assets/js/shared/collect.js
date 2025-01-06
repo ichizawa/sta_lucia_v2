@@ -21,19 +21,16 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
+                console.log(data);
                 ledgertable.clear();
                 $.each(data, function (key, value) {
                     ledgertable.row.add([
-                        value.billing.billing_uid,
-                        value.proposal_uid,
-                        value.billing.remarks,
-                        null,
-                        value.billing.is_paid == 0
-                            ? 'Waiting Payment'
-                            : value.billing.is_paid == 1
-                            ? 'Paid'
-                            : 'Pending Process',
-                        value.billing.date_end,
+                        value.bill_no,
+                        value.contract_id,
+                        value.remarks,
+                        value.amount,
+                        value.status,
+                        value.date_to,
                     ]);
                 });
                 ledgertable.draw();
@@ -169,6 +166,7 @@ $(document).ready(function () {
             $('#total_amount_payable').val($('#totalamount').val());
 
             $('#bill_num').val(rand(10000, 99999) + '-' + data?.billing_id);
+            // $('#bill_num').val(data?.billing_id);
             $('#biller_num').val($('#bill_num').val());
             $('#billing_id').val(data?.optional.billing.id);
         }

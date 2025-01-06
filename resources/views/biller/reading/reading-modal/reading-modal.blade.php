@@ -86,7 +86,7 @@
                                         <a class="btn btn-sm btn-warning"
                                             data-bs-toggle="modal"
                                             data-bs-target="#contractUtilityLists"
-                                            data-date="${date}" 
+                                            data-date="${date}"
                                             data-proposal-id="${val.id}" 
                                             data-id="${val.billing.id}">
                                         <i class="fa fa-pen"></i>

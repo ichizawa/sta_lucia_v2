@@ -14,7 +14,7 @@
                                 <th>Billing #</th>
                                 <th>Contract #</th>
                                 <th>Remarks</th>
-                                <th>Ammount</th>
+                                <th>Amount</th>
                                 <th>Status</th>
                                 <th>Due Date</th>
                             </tr>

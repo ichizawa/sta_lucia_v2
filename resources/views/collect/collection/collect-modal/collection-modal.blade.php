@@ -19,9 +19,9 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-label">Bill Number</label>
+                            <label class="form-label">Transaction #</label>
                             <input type="text" class="form-control billnumber text-danger fw-bold" name="bill_num" id="bill_num"
-                                placeholder="Billing Number" readonly/>
+                                placeholder="Transaction Number" readonly/>
                             <!-- <input type="text" class="form-control" name="billing_id" id="billing_id"
                                 placeholder="#" hidden/> -->
                         </div>

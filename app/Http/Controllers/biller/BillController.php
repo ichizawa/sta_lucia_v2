@@ -40,8 +40,6 @@ class BillController extends Controller
             })
             ->get();
         return response()->json($company);
-
-
     }
 
     public function prepare(Request $request)
@@ -66,28 +64,41 @@ class BillController extends Controller
                 $amount = 0;
 
                 if ($billing->is_prepared == Billing::PENDING) {
-
                     if ($proposal->min_mgr == 0) {
                         $amount = $proposal->total_mgr;
-                    }else{
+                    } else {
                         $amount = 0;
                     }
 
-                    $billing->billing_uid = rand(100000, 999999).'-' . $nextId;
+                    $billing->billing_uid = rand(100000, 999999) . '-' . $nextId;
+                    $billing->total_amount = $amount;
                     $billing->amount = $amount;
                     $billing->date_end = $billing_date;
+                    $billing->remarks = 'Bill prepared as of ' . Carbon::now();
                     $billing->is_paid = Billing::PENDING;
                     $billing->is_prepared = Billing::PREPARED;
                     $billing->status = Billing::PREPARED;
                     $billing->save();
+
+                    BillingDetails::create([
+                        'billing_id' => $billing->id,
+                        'bill_no' => $billing->billing_uid,
+                        // 'total_sales' => null,
+                        'amount' => $billing->amount,
+                        // 'reference_num' => $request->ref_num ?? null,
+                        // 'payment_option' => $request->payment_method,
+                        // 'date_from' => $bill->date_start,
+                        'date_to' => $billing->date_end,
+                        'remarks' => 'Bill prepared as of ' . Carbon::now(),
+                        'status' => 0,
+                        'is_paid' => 0
+                    ]);
 
                     $response = [
                         'response' => 200,
                         'status' => 'success',
                         'message' => 'Bill prepared successfully'
                     ];
-
-
                 } else {
                     $response = [
                         'response' => 400,
@@ -120,7 +131,6 @@ class BillController extends Controller
             ->get();
 
         return response()->json($company);
-
     }
     public function period()
     {

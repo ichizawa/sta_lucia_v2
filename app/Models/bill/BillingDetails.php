@@ -10,12 +10,13 @@ class BillingDetails extends Model
 
     protected $fillable = [
         'billing_id',
+        'contract_id',
         'bill_no',
-        'total_sales',
+        // 'total_sales',
         'amount',
-        'reference_num',
-        'payment_option',
-        'date_from',
+        // 'reference_num',
+        // 'payment_option',
+        // 'date_from',
         'date_to',
         'remarks',
         'status',

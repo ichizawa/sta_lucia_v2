@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('proposal_id');
             $table->foreign('proposal_id')->references('id')->on('proposal')->cascadeOnDelete();
             $table->string('billing_uid')->nullable();
+            $table->float('total_amount')->nullable();
             $table->float('amount')->nullable();
             $table->string('date_start')->nullable();
             $table->date('date_end')->nullable();
