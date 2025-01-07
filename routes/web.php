@@ -13,6 +13,7 @@ use App\Http\Controllers\client\ClientProposalController;
 use App\Http\Controllers\client\ClientSpaceController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\collect\CollectionController;
+use App\Http\Controllers\collect\CollectionLedgerController;
 use App\Http\Controllers\CommencementController;
 use App\Http\Controllers\LeasesController;
 use App\Http\Controllers\PublicController;
@@ -194,11 +195,16 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         
         Route::get('/collect', [CollectionController::class, 'collect'])->name('collect.invoices');
 
-        Route::prefix('ledger-bill')->group(function () {
+        Route::prefix('collection')->group(function () {
             Route::get('/ledger', [CollectionController::class, 'get'])->name('collect.ledger.index');
             Route::get('/contract-info', [CollectionController::class, 'view'])->name('collect.get.bills');
             Route::post('/collect-bill', [CollectionController::class, 'store'])->name('collect.store.bills');
         });
+
+        Route::prefix('ledger')->group(function () {
+            Route::get('/ledger-table', [CollectionLedgerController::class, 'collect_index'])->name('collect.ledger.table');
+        });
+        
     });
 
 });

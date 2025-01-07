@@ -27,8 +27,8 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="">Present Meter Reading</label>
-                                <input type="text" id="bill_id" class="form-control" name="bill_id" hidden/>
-                                <input type="text" id="utility_id" class="form-control" name="utility_id" hidden/>
+                                <input type="text" id="bill_id" class="form-control" name="bill_id" hidden />
+                                <input type="text" id="utility_id" class="form-control" name="utility_id" hidden />
                                 <input type="text" id="date_reading" class="form-control" name="date_reading" hidden/>
                                 <input type="text" id="proposal_id" class="form-control" name="proposal_id" hidden />
                                 <input type="text" class="form-control" id="present_reading" name="present_reading"
@@ -48,7 +48,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="back" data-bs-toggle="modal" data-bs-target="#contractUtilityLists">Back</button>
+                    <button type="button" class="btn btn-secondary" id="back" data-bs-toggle="modal"
+                        data-bs-target="#contractUtilityLists">Back</button>
                     <button type="button" class="btn btn-sta createReading">Update</button>
                 </div>
             </div>
@@ -65,6 +66,7 @@
             // console.log('id from reaidng:' + id);
 
             $('#back').data('proposal-id', id);
+            $('#back').data('date', date);
 
             $('#readingForm')[0].reset();
             $.ajax({
@@ -81,7 +83,7 @@
                     $('#utility_id').val(util_id);
                     $('#date_reading').val(date);
                     $('#proposal_id').val(id);
-                    
+
                     if (data != null) {
                         $('#previous_reading').val(data.present_reading);
                         $('#previous_reading_date').val(data.present_reading_date);
@@ -108,7 +110,12 @@
                 processData: false,
                 dataType: "json",
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
+                    if(data.status == 'success'){
+                        swal('Success', data.message, 'success').then(() => {
+                            $('#back').trigger('click');
+                        });
+                    }
                     // var content = {
                     //     message: data.message,
                     //     title: data.status,

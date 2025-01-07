@@ -5,8 +5,17 @@ $(document).ready(function () {
         placeholder: 'Select Contract',
     });
 
-    const ledgertable = $('#ledgerTable').DataTable({
+    const contractLists = $('#contractListTable').DataTable({
         pageLength: 10,
+        columns: [{ data: 'proposal_uid' }],
+        rowCallback: function (row, data, index) {
+            $(row).attr({
+                style: 'cursor: pointer',
+                'data-bs-toggle': 'modal',
+                'data-bs-target': '#ledgerTableModal',
+                'data-id': data.id,
+            });
+        },
     });
     var proposals = $('#cntr_search')[0].selectize;
 
@@ -21,19 +30,19 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-                console.log(data);
-                ledgertable.clear();
-                $.each(data, function (key, value) {
-                    ledgertable.row.add([
-                        value.bill_no,
-                        value.contract_id,
-                        value.remarks,
-                        value.amount,
-                        value.status,
-                        value.date_to,
-                    ]);
-                });
-                ledgertable.draw();
+                contractLists.clear();
+                // $.each(data, function (key, value) {
+                //     contractLists.row.add([
+                //         value.proposal_uid,
+                //         // value.contract_id,
+                //         // value.remarks,
+                //         // value.amount,
+                //         // value.status,
+                //         // value.date_to,
+                //     ]);
+                // });
+                contractLists.rows.add(data);
+                contractLists.draw();
             },
             error: function (xhr, status, error) {
                 console.log(xhr.responseText);
@@ -109,9 +118,9 @@ $(document).ready(function () {
             });
 
             $.each(data?.optional.selected_space, function (key, value) {
-                if(value.space.space_type == 'Fixed Rental') {
+                if (value.space.space_type == 'Fixed Rental') {
                     $('#tenantSales').attr('hidden', true);
-                }else{
+                } else {
                     $('#tenantSales').attr('hidden', false);
                 }
 
@@ -180,40 +189,18 @@ $(document).ready(function () {
         let form = new FormData($('#collectionForm')[0]);
 
         $('#collectOptionModal').modal('show');
-        // $.ajax({
-        //     url: BILL_PAY_STORE,
-        //     type: 'POST',
-        //     data: form,
-        //     contentType: false,
-        //     cache: false,
-        //     processData: false,
-        //     dataType: 'json',
-        //     success: function (response) {
-        //         console.log(response);
-        //         if(response.status == 'success'){
-        //             swal('Success', response.message, 'success').then(() => {
-        //                 // ledgertable.ajax.reload();
-        //             });
-        //         }else{
-        //             swal('Error', response.message, 'error');
-        //         }
-        //     },
-        //     error: function (status, xhr, error) {
-        //         console.log(xhr.responseText);
-        //     },
-        // });
     });
 
-    $('#payment_method').change(function() {
+    $('#payment_method').change(function () {
         var val = $(this).val();
         $('#ref_num_div').attr('hidden', true);
 
-        if(val !== 'Cash'){
+        if (val !== 'Cash') {
             $('#ref_num_div').attr('hidden', false);
         }
     });
 
-    $('#proceedPaymentFinal').click(function() {
+    $('#proceedPaymentFinal').click(function () {
         var form = new FormData($('#finalOptionForm')[0]);
 
         $.ajax({
@@ -225,13 +212,15 @@ $(document).ready(function () {
             processData: false,
             dataType: 'json',
             success: function (response) {
-                console.log(response);
-                // if(response.status == 'success'){
-                //     swal('Success', response.message, 'success').then(() => {
-                //     });
-                // }else{
-                //     swal('Error', response.message, 'error');
-                // }
+                // console.log(response);
+                if(response.status == 'success'){
+                    swal('Success', response.message, 'success').then(() => {
+                        // $('#finalOptionForm')[0].reset();
+                        $('#collectOptionModal').modal('hide');
+                    });
+                }else{
+                    swal('Error', response.message, 'error');
+                }
             },
             error: function (status, xhr, error) {
                 console.log(xhr.responseText);

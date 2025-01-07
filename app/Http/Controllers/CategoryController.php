@@ -46,7 +46,7 @@ class CategoryController extends Controller
             'name' => $validateData['name'],
         ]);
 
-        event(new CategoryUpdated($category));
+        // event(new CategoryUpdated($category));
 
 
         return response()->json([

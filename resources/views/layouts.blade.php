@@ -175,5 +175,7 @@
     <script src="{{ asset('assets/js/shared/global.js') }}"></script>
     <script src="{{ asset('assets/js/shared/collection.js') }}"></script>
     <script src="{{ asset('assets/js/shared/collect.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/ledger.js') }}"></script>
+
 </body>
 </html>

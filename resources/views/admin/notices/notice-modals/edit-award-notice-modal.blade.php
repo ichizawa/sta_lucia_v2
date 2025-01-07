@@ -32,7 +32,6 @@
     $(document).ready(function() {
         $('.approversModal').click(function() {
             var data = $(this).data('approvers');
-            // console.log(data);
             $('#checkFileFooter').show();
 
             var pdfFileName = `award_notice_${data.id}.pdf`;
@@ -46,6 +45,12 @@
             .fail(function () {
                 $('#award-notice-pdf').attr('src', '');
             });
+
+            if(data.award_notice_status == 1){
+                $('#checkFileFooter').hide();
+            }else{
+                $('#checkFileFooter').show();
+            }
 
         });
 

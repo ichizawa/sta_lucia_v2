@@ -30,8 +30,8 @@ class CollectionController extends Controller
     {
         $billing_id = LeaseProposal::with(['billing'])->where('tenant_id', $request->id)->get()->first()->billing->id;
         return response()->json(
-            // LeaseProposal::with(['billing.bill_details'])->where('tenant_id', $request->id)->get()
-            BillingDetails::where('billing_id', $billing_id)->get()
+            LeaseProposal::where('tenant_id', $request->id)->select('proposal_uid', 'id')->get()
+            // BillingDetails::where('billing_id', $billing_id)->get()
         );
     }
 
@@ -65,7 +65,6 @@ class CollectionController extends Controller
         $bill = Billing::find($request->billing_id);
         $response = [];
 
-        // $response[] = $request->all();
         if($bill){
             if ($bill->is_paid == 1) {
                 $response = [
@@ -74,22 +73,14 @@ class CollectionController extends Controller
                     'response' => 404
                 ];
             } else {
-                if($bill->amount > 0){
-                    $bill->is_paid = Billing::PENDING;
-                    $bill->amount = $bill->amount - $request->amount_payment;
-                    // $bill->is_prepared = Billing::PENDING;
-                    // $bill->status = Billing::PENDING;
-                    $bill->save();
-                }else{
-                    $bill->is_paid = Billing::PAID;
-                    // $bill->is_prepared = Billing::PENDING;
-                    // $bill->status = Billing::PENDING;
-                    $bill->save();
-                }
+                $bill->is_paid = Billing::PAID;
+                $bill->amount = $bill->amount - $request->amount_payment;
+                $bill->save();
 
                 BillingDetails::create([
-                    'billing_id' => $request->billing_id,
-                    'bill_no' => $request->biller_num,
+                    'billing_id' => $request->billing_uid,
+                    'bill_no' => $bill->biller_num,
+                    'transaction_id' => $request->biller_num,
                     // 'total_sales' => null,
                     'amount' => $request->amount_payment,
                     // 'reference_num' => $request->ref_num ?? null,

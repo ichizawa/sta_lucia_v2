@@ -23,7 +23,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display table table-striped table-hover commencement-table">
+                        <table id="comm_table" class="display table table-striped table-hover commencement-table">
                             <thead>
                                 <tr>
                                     <th>Proposal Number</th>
@@ -39,11 +39,6 @@
                                         <td>{{ $commence->store_name }}</td>
                                         <td>{{ date('F d, Y', strtotime($commence->created_at)) }}</td>
                                         <td>{{ $commence->commencement_date ? date('F Y', strtotime($commence->commencement_date)) : 'N/A' }}</td>
-                                        <!-- <td>
-                                                <button class="btn btn-warning btn-sm edit-comm-date" data-id="{{ $commence->id }}" data-bs-toggle="modal"
-                                                    data-bs-target="#comm-date-modal"><i class="fa fa-edit"></i>
-                                                </button>
-                                            </td> -->
                                     </tr>
                                 @endforeach
                             </tbody>

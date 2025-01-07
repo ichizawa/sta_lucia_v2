@@ -37,11 +37,16 @@
 </div>
 <script>
     $(document).ready(function () {
+        $('#comm_table').DataTable({
+            pagelength: 10,
+        });
+
         var $prop = $('#prop_num').selectize({
             sortField: 'text',
             maxItems: null,
             placeholder: 'Select Proposal Number'
         });
+
         $('.edit-comm-date').click(function () {
             var data = @json($proposal);
             var select = $prop[0].selectize;
@@ -66,10 +71,11 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    console.log(response);
                     $('#comm-date-modal').modal('hide');
                     if(response.status == 'success'){
-                        swal('Success', 'Commencement Date Updated', 'success');
+                        swal('Success', 'Commencement Date Updated', 'success').then(() => {
+                            window.location.reload();
+                        });
                     }
                 }
             });

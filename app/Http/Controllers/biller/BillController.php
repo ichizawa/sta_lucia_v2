@@ -83,6 +83,7 @@ class BillController extends Controller
                     BillingDetails::create([
                         'billing_id' => $billing->id,
                         'bill_no' => $billing->billing_uid,
+                        'transaction_id' => rand(10000, 99999) . '-' . $billing->billing_uid,
                         // 'total_sales' => null,
                         'amount' => $billing->amount,
                         // 'reference_num' => $request->ref_num ?? null,

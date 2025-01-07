@@ -12,6 +12,7 @@ use App\Models\LeaseProposal;
 use App\Models\UtilitiesModel;
 use App\Models\UtilitiesReading;
 use App\Models\UtilitiesSelected;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use function PHPUnit\Framework\isEmpty;
@@ -185,26 +186,31 @@ class ActivitiesController extends Controller
                     ];
                 } else {
                     $billing->update(['prepare' => 2]);
-                    $bill->amount = $bill->amount + $billing->total_reading_charge;
-                    $bill->total_amount = $bill->total_amount + $billing->total_reading_charge;
+                    $bill->amount = $bill->amount + $billing->total_reading;
+                    $bill->total_amount = $bill->total_amount + $billing->total_reading;
                     $bill->save();
 
-                    $utility_name = UtilitiesModel::find($billing->utility_id)->name;
+                    $utility_name = UtilitiesModel::find($billing->utility_id)->utility_name;
 
                     BillingDetails::create([
                         'billing_id' => $bill->id,
                         'bill_no' => $bill->billing_uid,
+                        'transaction_id' => rand(10000, 99999) . '-' . $bill->billing_uid,
                         // 'total_sales' => null,
-                        'amount' => $bill->amount,
+                        'amount' => $billing->total_reading,
                         // 'reference_num' => $request->ref_num ?? null,
                         // 'payment_option' => $request->payment_method,
                         // 'date_from' => $bill->date_start,
                         'date_to' => $bill->date_end,
-                        'remarks' => 'Reading for ' . $utility_name . ' - ' . $billing->date_reading,
+                        'remarks' => 'Reading for ' . $utility_name . 'on' . Carbon::now() . ' - ' . $billing->date_reading,
                         'status' => 0,
                         'is_paid' => 0
                     ]);
 
+                    // BillReading::create([
+                        
+                    // ]);
+                    
                     // BillReading::create([
                     //     'reading_id' => $billing->id,
                     //     'bill_id' => $billing->bill_id,
