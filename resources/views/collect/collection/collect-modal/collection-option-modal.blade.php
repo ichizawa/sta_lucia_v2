@@ -46,7 +46,7 @@
                                 <div class="form-group">
                                     <label class="form-label">Remarks</label>
                                     <textarea class="form-control" name="remarks" id="remarks" rows="3"
-                                        placeholder="Remarks" required></textarea>
+                                        placeholder="Remarks" required>Paid for </textarea>
                                 </div>
                             </div>
                         </div>

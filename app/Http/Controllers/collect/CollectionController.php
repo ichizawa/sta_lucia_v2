@@ -61,44 +61,74 @@ class CollectionController extends Controller
 
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $bill = Billing::find($request->billing_id);
         $response = [];
 
-        if($bill){
-            if ($bill->is_paid == 1) {
-                $response = [
-                    'status' => 'danger',
-                    'message' => 'Bill already paid',
-                    'response' => 404
-                ];
-            } else {
+        if ($bill) {
+            // if ($bill->is_paid == 1) {
+            //     $response = [
+            //         'status' => 'danger',
+            //         'message' => 'Bill already paid',
+            //         'response' => 404
+            //     ];
+            // } else {
+            //     $bill->is_paid = Billing::PAID;
+            //     $bill->amount = $bill->amount - $request->amount_payment;
+            //     $bill->save();
+
+            //     BillingDetails::create([
+            //         'billing_id' => $request->billing_uid,
+            //         'bill_no' => $bill->biller_num,
+            //         'transaction_id' => $request->biller_num,
+            //         // 'total_sales' => null,
+            //         'amount' => $request->amount_payment,
+            //         // 'reference_num' => $request->ref_num ?? null,
+            //         // 'payment_option' => $request->payment_method,
+            //         // 'date_from' => $bill->date_start,
+            //         'date_to' => $bill->date_end,
+            //         'remarks' => $request->remarks,
+            //         'status' => 0,
+            //         'is_paid' => 1
+            //     ]);
+
+            //     $response = [
+            //         'status' => 'success',
+            //         'message' => 'Bill paid successfully',
+            //         'response' => 200
+            //     ];
+            // }
+            $bill->is_paid = Billing::PAID;
+            if($request->amount_payment == $bill->amount){
                 $bill->is_paid = Billing::PAID;
-                $bill->amount = $bill->amount - $request->amount_payment;
-                $bill->save();
-
-                BillingDetails::create([
-                    'billing_id' => $request->billing_uid,
-                    'bill_no' => $bill->biller_num,
-                    'transaction_id' => $request->biller_num,
-                    // 'total_sales' => null,
-                    'amount' => $request->amount_payment,
-                    // 'reference_num' => $request->ref_num ?? null,
-                    // 'payment_option' => $request->payment_method,
-                    // 'date_from' => $bill->date_start,
-                    'date_to' => $bill->date_end,
-                    'remarks' => $request->remarks,
-                    'status' => 0,
-                    'is_paid' => 1
-                ]);
-
-                $response = [
-                    'status' => 'success',
-                    'message' => 'Bill paid successfully',
-                    'response' => 200
-                ];
             }
-        }else{
+            
+            $bill->amount = $bill->amount - $request->amount_payment;
+            $bill->save();
+
+            BillingDetails::create([
+                'billing_id' => $request->billing_id,
+                'bill_no' => $bill->billing_uid,
+                'transaction_id' => $request->biller_num,
+                // 'total_sales' => null,
+                'amount' => $request->amount_payment,
+                // 'reference_num' => $request->ref_num ?? null,
+                // 'payment_option' => $request->payment_method,
+                // 'date_from' => $bill->date_start,
+                'date_to' => $bill->date_end,
+                'remarks' => $request->remarks,
+                'status' => 0,
+                'is_paid' => 1
+            ]);
+
+            $response = [
+                'status' => 'success',
+                'message' => 'Bill paid successfully',
+                'amount' => $bill->amount,
+                'response' => 200
+            ];
+        } else {
             $response = [
                 'status' => 'danger',
                 'message' => 'Billing not found',

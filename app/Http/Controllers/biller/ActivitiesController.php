@@ -202,7 +202,7 @@ class ActivitiesController extends Controller
                         // 'payment_option' => $request->payment_method,
                         // 'date_from' => $bill->date_start,
                         'date_to' => $bill->date_end,
-                        'remarks' => 'Reading for ' . $utility_name . 'on' . Carbon::now() . ' - ' . $billing->date_reading,
+                        'remarks' => 'Reading for ' . $utility_name . ' on ' . Carbon::now() . ' - ' . $billing->date_reading,
                         'status' => 0,
                         'is_paid' => 0
                     ]);

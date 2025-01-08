@@ -212,14 +212,14 @@ $(document).ready(function () {
             processData: false,
             dataType: 'json',
             success: function (response) {
-                // console.log(response);
                 if(response.status == 'success'){
-                    swal('Success', response.message, 'success').then(() => {
+                    swal('Success', 'Bill paid successfuly, you can now proceed', 'success').then(() => {
                         // $('#finalOptionForm')[0].reset();
                         $('#collectOptionModal').modal('hide');
+                        $('#totalamount').val(parseFloat(response.amount).toFixed(2));
                     });
                 }else{
-                    swal('Error', response.message, 'error');
+                    swal('Error', 'Something went wrong, please try again!', 'error');
                 }
             },
             error: function (status, xhr, error) {
