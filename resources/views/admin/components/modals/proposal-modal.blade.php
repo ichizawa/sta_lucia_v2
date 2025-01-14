@@ -261,7 +261,11 @@
                         delay: 1200,
                         z_index: 10000
                     });
-
+                    
+                    if(set == 'new'){
+                        var row = $('a[data-show-proposal-id="' + proposal_id + '"]').closest('tr');
+                        row.find('td:nth-child(5)').html('<span class="badge bg-success">Approved</span>');
+                    }
                 }
             });
         }
