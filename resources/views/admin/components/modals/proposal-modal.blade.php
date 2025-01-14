@@ -171,17 +171,18 @@
                     proposal_id: proposal_id
                 },
                 success: function (data) {
-                    if(data.data[0].status == 1){
+                    if(data.data[0].is_counter == 1){
                         $('#counterProposalBTN').hide();
                     }
-
+                    
                     $('#counter-proposal-footer').show();
                     if (!data.counter_proposal) {
                         $.each(data.counter_proposals, function (key, value) {
+                            
                             $('.table-group-divider').append(
                                 `<tr>
                                 <td>Counter Proposal #${value.id}</td>
-                                <td>${value.status ? '<span class="badge bg-success">Approved</span>' : '<span class="badge bg-warning">Pending</span>'}</td>
+                                <td>${value.status == 0 ? '<span class="badge bg-warning">Pending</span>' : '<span class="badge bg-success">Approved</span>'}</td>
                                 <td>
                                     <a class="btn btn-sm btn-success getCounterProposal" data-counter-proposal-id="${value.id}" data-bs-toggle="modal" data-bs-target="#viewCounterProposal">
                                     <i class="fa fa-pen"></i>
@@ -246,7 +247,7 @@
 
                     var content = {
                         message: `${data.message}`,
-                        title: `${data.status ? 'Proposal Successfully Approved' : 'Something went wrong!'}`,
+                        title: `${data.status}`,
                         icon: "fa fa-bell"
                     };
 
@@ -258,12 +259,9 @@
                         },
                         time: 1000,
                         delay: 1200,
+                        z_index: 10000
                     });
 
-                    // if (data.status == 'success') {
-                    //     $('#proposals_table').find('td').eq(4).html('<span class="badge bg-success">Approved</span>');
-                    //     // $('.table-group-divider').find('td').eq(2)('<span class="badge bg-success">Approved</span>');
-                    // }
                 }
             });
         }

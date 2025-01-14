@@ -42,11 +42,46 @@
                                         placeholder="Enter Amount" required />
                                 </div>
                             </div>
+                            <div class="col-sm-9">
+                                <div class="form-group">
+                                    <label class="form-label">Change</label>
+                                    <input type="text" class="form-control" name="change" id="change" placeholder="0.00"
+                                        readonly />
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="form-label">Deposit Credit</label>
+                                    <div class="selectgroup selectgroup-pills">
+                                        <label class="selectgroup-item">
+                                            <input type="checkbox" id="deposit_credit" name="deposit_credit" value="true"
+                                                class="selectgroup-input" />
+                                            <span class="selectgroup-button">Deposit</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <div class="selectgroup selectgroup-pills">
+                                        <label class="selectgroup-item">
+                                            <input type="checkbox" id="deposit_credit" name="deposit_credit" value=""
+                                                class="selectgroup-input" />
+                                            <span class="selectgroup-button">Deposit Credit</span>
+                                        </label>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label">Total New Balance</label>
+                                    <input type="text" class="form-control" name="new_bal" id="new_bal"
+                                        placeholder="0.00" readonly />
+                                </div>
+                            </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label class="form-label">Remarks</label>
                                     <textarea class="form-control" name="remarks" id="remarks" rows="3"
-                                        placeholder="Remarks" required>Paid for </textarea>
+                                        placeholder="Remarks" required></textarea>
                                 </div>
                             </div>
                         </div>

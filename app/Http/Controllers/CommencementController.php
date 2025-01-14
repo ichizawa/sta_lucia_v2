@@ -22,6 +22,7 @@ class CommencementController extends Controller
     {
         $propid = $request->input('prop_num', []);
         $data = [];
+        $status = true;
 
         foreach ($propid as $prop) {
             $billingExists = Billing::where('proposal_id', $prop)->exists();
@@ -33,24 +34,35 @@ class CommencementController extends Controller
 
                 Billing::create([
                     'proposal_id' => $prop,
+                    'total_amount' => null,
+                    'debit' => null,
+                    'credit' => null,
+                    'amount' => null,
+                    'billing_uid' => null,
                     'date_start' => $request->comm_date,
                     'date_end' => null,
-                    'remarks' => null,
                     'is_prepared' => 0,
                     'is_paid' => 0,
+                    'is_reading' => 0,
                     'status' => 0
                 ]);
 
-                $data = [
-                    'status' => 'success',
-                    'message' => "Commencement date and billing created successfully for proposal ID $prop."
-                ];
+                $status = true;
             } else {
-                $data = [
-                    'status' => 'error',
-                    'message' => "Billing already exists for proposal ID $prop."
-                ];
+                $status = false;
             }
+        }
+
+        if($status){
+            $data = [
+                'status' => 'success',
+                'message' => "Commencement date and billing created successfully."
+            ];
+        }else{
+            $data = [
+                'status' => 'error',
+                'message' => "Billing already exists."
+            ];
         }
 
         return response()->json($data);

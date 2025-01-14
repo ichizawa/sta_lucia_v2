@@ -27,6 +27,7 @@ class LeaseProposal extends Model
         'rent_deposit',
         'sec_dep',
         'escalation_rate',
+        'is_counter',
         'status'
     ];
 
@@ -36,17 +37,25 @@ class LeaseProposal extends Model
     }
 
     public function owner(){
-        return $this->belongsTo(Owner::class, 'id');
+        return $this->belongsTo(Owner::class, 'tenant_id', 'id');
+    }
+    
+    public function representative(){
+        return $this->belongsTo(Representative::class, 'tenant_id', 'owner_id');
     }
 
     public function company()
     {
-        return $this->belongsTo(Company::class, 'owner_id');
+        return $this->belongsTo(Company::class, 'tenant_id', 'owner_id');
     }
 
     public function utilities()
     {
         return $this->hasMany(UtilitiesSelected::class, 'lease_id');
+    }
+
+    public function charges(){
+        return $this->hasMany(ChargesSelected::class, 'lease_id');
     }
 
     public function selected_space()

@@ -3,7 +3,19 @@ $(document).ready(function () {
         pageLength: 10,
         columns: [
             { data: 'bill_no' },
-            { data: 'amount' },
+            { data: 'transaction_id' },
+            {
+                data: 'debit',
+                render: function (data) {
+                    return parseFloat(data).toFixed(2);
+                },
+            },
+            {
+                data: 'credit',
+                render: function (data) {
+                    return parseFloat(data).toFixed(2);
+                },
+            },
             { data: 'remarks' },
             // { data: 'status' },
             {
@@ -12,7 +24,7 @@ $(document).ready(function () {
                     return formatDate(data);
                 },
             },
-            { data: 'date_to' },
+            // { data: 'date_to' },
         ],
     });
 
@@ -30,6 +42,7 @@ $(document).ready(function () {
                 ledger.clear();
                 ledger.rows.add(data);
                 ledger.draw();
+                $('#backtocontractlist').data('id', id);
             },
             error: function (xhr, status, error) {
                 console.log(xhr.responseText);

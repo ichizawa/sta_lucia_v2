@@ -36,4 +36,8 @@ class Space extends Model
     {
         return $this->hasMany(SpaceUtility::class, 'space_id');
     }
+
+    public function amenities(){
+        return $this->hasMany(AmenitySelected::class, 'space_id');
+    }
 }

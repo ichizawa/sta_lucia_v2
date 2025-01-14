@@ -18,6 +18,7 @@ class CounterProposal extends Model
         'brent',
         'total_rent',
         'min_mgr',
+        'total_mgr',
         'lease_term',
         'commencement',
         'end_contract',
@@ -27,5 +28,11 @@ class CounterProposal extends Model
         'escalation_rate',
         'status'
     ];
+
+    public function proposal()
+    {
+        return $this->belongsTo(LeaseProposal::class, 'proposal_id');
+    }
+
 
 }

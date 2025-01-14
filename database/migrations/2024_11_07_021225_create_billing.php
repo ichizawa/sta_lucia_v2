@@ -17,12 +17,16 @@ return new class extends Migration
             $table->foreign('proposal_id')->references('id')->on('proposal')->cascadeOnDelete();
             $table->string('billing_uid')->nullable();
             $table->float('total_amount')->nullable();
-            $table->float('amount')->nullable();
+            $table->float('debit')->nullable();
+            $table->float('credit')->nullable();
+            $table->float('change')->nullable();
             $table->string('date_start')->nullable();
             $table->date('date_end')->nullable();
-            $table->string('remarks')->nullable();
+            // $table->string('remarks')->nullable();
             $table->smallInteger('is_prepared')->nullable()->default(0);
             $table->smallInteger('is_paid')->nullable()->default(0);
+            $table->smallInteger('is_penal')->nullable()->default(0);
+            $table->smallInteger('is_reading')->nullable()->default(0);
             $table->smallInteger('status')->nullable()->default(0);
             $table->timestamps();
         });

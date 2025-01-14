@@ -22,8 +22,6 @@
         </select>
 
     </div> -->
-
-
 </div>
 
 <div class="row">
@@ -37,8 +35,9 @@
             placeholder="Payment Discount (Leave empty if no discount)"/>
     </div>
 </div>
-<input type="text" id="selected_rent" name="total_rent" hidden/>
 <input type="text" name="minmgr" id="minimumMGR" hidden/>
+<input type="text" id="selected_rent" name="total_rent" hidden/>
+<input type="text" id="ttl_gr_rnt" name="total_mgr" hidden/>
 
 <div class="table-container-rate rentalRates" style="cursor: pointer;">
     <table>

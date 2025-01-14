@@ -116,8 +116,9 @@ class ActivitiesController extends Controller
                 if ($reading) {
                     // $bill->amount = $bill->amount + $request->total_reading_charge;
                     // $bill->total_amount = $bill->total_amount + $request->total_reading_charge;
-
+                    $bill->is_reading = 2;
                     $bill->save();
+
                     $response = [
                         'status' => 'success',
                         'message' => 'Reading Prepared Successfully'
@@ -147,9 +148,9 @@ class ActivitiesController extends Controller
 
             // $bill->amount = $bill->amount + $request->total_reading_charge;
             // $bill->total_amount = $bill->total_amount + $request->total_reading_charge;
-
+            $bill->is_reading = 2;
             $bill->save();
-            
+
             $response = [
                 'status' => 'success',
                 'message' => 'Utilities Reading Prepared Successfully'
@@ -162,32 +163,27 @@ class ActivitiesController extends Controller
     {
         $bill_ids = $request->input('bill_id', []);
         $data = [];
+        $status = 0;
+
         foreach ($bill_ids as $id) {
             $bill = Billing::find($id);
             $billingRecords = UtilitiesReading::where('bill_id', $id)->get();
             if ($billingRecords->isEmpty()) {
-                $data[] = [
-                    'status' => 'warning',
-                    'message' => "No record found for Bill ID $id."
-                ];
+                $status = 4;
                 continue;
             }
 
             foreach ($billingRecords as $billing) {
                 if ($billing->prepare == 0) {
-                    $data[] = [
-                        'status' => 'danger',
-                        'message' => "Reading for Bill ID $id is not prepared."
-                    ];
+                    $status = 3;
                 } else if ($billing->prepare == 2) {
-                    $data[] = [
-                        'status' => 'warning',
-                        'message' => "Reading for Bill ID $id is already prepared."
-                    ];
+                    $status = 2;
                 } else {
                     $billing->update(['prepare' => 2]);
-                    $bill->amount = $bill->amount + $billing->total_reading;
+                    $bill->debit = $bill->debit + $billing->total_reading;
+                    $bill->change = 0;
                     $bill->total_amount = $bill->total_amount + $billing->total_reading;
+                    $bill->is_reading = 1;
                     $bill->save();
 
                     $utility_name = UtilitiesModel::find($billing->utility_id)->utility_name;
@@ -197,7 +193,9 @@ class ActivitiesController extends Controller
                         'bill_no' => $bill->billing_uid,
                         'transaction_id' => rand(10000, 99999) . '-' . $bill->billing_uid,
                         // 'total_sales' => null,
-                        'amount' => $billing->total_reading,
+                        'debit' => $billing->total_reading,
+                        'credit' => 0,
+                        'change' => 0,
                         // 'reference_num' => $request->ref_num ?? null,
                         // 'payment_option' => $request->payment_method,
                         // 'date_from' => $bill->date_start,
@@ -208,31 +206,41 @@ class ActivitiesController extends Controller
                     ]);
 
                     // BillReading::create([
-                        
-                    // ]);
-                    
-                    // BillReading::create([
-                    //     'reading_id' => $billing->id,
-                    //     'bill_id' => $billing->bill_id,
-                    //     'utility_id' => $billing->utility_id,
-                    //     'present_reading' => $billing->present_reading,
-                    //     'previous_reading' => $billing->previous_reading,
-                    //     'present_reading_date' => $billing->present_reading_date,
-                    //     'previous_reading_date' => $billing->previous_reading_date,
-                    //     'consumption' => $billing->consumption,
-                    //     'utility_price' => $billing->utility_price,
-                    //     'total_reading' => $billing->total_reading,
-                    //     'date_reading' => $billing->date_reading,
-                    //     'status' => 1,
+
                     // ]);
 
-                    $data[] = [
-                        'status' => 'success',
-                        'message' => "Reading for Bill ID $id has been updated and saved."
-                    ];
+                    $status = 1;
                 }
             }
         }
+
+        if ($status == 1) {
+            $data = [
+                'status' => 'success',
+                'message' => "Reading for Bill has been updated and saved."
+            ];
+        } else if ($status == 2) {
+            $data = [
+                'status' => 'warning',
+                'message' => "Reading for Bill is already prepared."
+            ];
+        } else if ($status == 3) {
+            $data = [
+                'status' => 'danger',
+                'message' => "Reading for Bill is not prepared."
+            ];
+        } else if($status == 4) {
+            $data = [
+                'status' => 'warning',
+                'message' => "No record found for Bill"
+            ];
+        }else{
+            $data = [
+                'status' => 'danger',
+                'message' => "Something went wrong."
+            ];
+        }
+        
         return response()->json($data);
     }
 }

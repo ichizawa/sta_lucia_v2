@@ -31,16 +31,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 contractLists.clear();
-                // $.each(data, function (key, value) {
-                //     contractLists.row.add([
-                //         value.proposal_uid,
-                //         // value.contract_id,
-                //         // value.remarks,
-                //         // value.amount,
-                //         // value.status,
-                //         // value.date_to,
-                //     ]);
-                // });
                 contractLists.rows.add(data);
                 contractLists.draw();
             },
@@ -85,7 +75,6 @@ $(document).ready(function () {
         var data = $('#cntr_search')[0].selectize.options[$(this).val()]?.data;
         var util_rows = '';
         const check = true;
-
         if (data == null || data == undefined) {
             $('#total_amount_payable').val('');
             $('#totalamount').val('');
@@ -93,6 +82,8 @@ $(document).ready(function () {
             $('#bill_num').val('');
             $('#biller_num').val('');
             $('#tenantSales').attr('hidden', true);
+            $('#recent_payments').attr('hidden', true);
+            $('#recentPaymentsTable tbody').empty();
             $('#billTableShow tbody').html(`
                 <tr>
                     <td colspan="3">No Data Yet!</td>
@@ -116,6 +107,30 @@ $(document).ready(function () {
                     </tr>
                 `;
             });
+
+            if (
+                data?.optional.billing.bill_details !== null ||
+                data?.optional.billing.bill_details !== undefined
+            ) {
+                $('#recent_payments').attr('hidden', false);
+                $.each(
+                    data?.optional.billing.bill_details.sort((a, b) => b.id - a.id).slice(0, 5),
+                    function (key, value) {
+                        if (value.is_paid == 1) {
+                            $('#recentPaymentsTable tbody').append(`
+                                <tr>
+                                    <td>${value.transaction_id}</td>
+                                    <td>-${parseFloat(value.credit).toFixed(2)}</td>
+                                    <td>${formatDate(value.created_at)}</td>
+                                </tr>
+                            `);
+                        }
+                    },
+                );
+                // if ($('#recentPaymentsTable tbody tr').length > 5) {
+                //     $('#recentPaymentsTable tbody tr:last').remove();
+                // }
+            }
 
             $.each(data?.optional.selected_space, function (key, value) {
                 if (value.space.space_type == 'Fixed Rental') {
@@ -171,7 +186,7 @@ $(document).ready(function () {
                 ${util_rows}
             `);
 
-            $('#totalamount').val(parseFloat(data?.optional.billing.amount).toFixed(2));
+            $('#totalamount').val(parseFloat(data?.optional.billing.debit).toFixed(2));
             $('#total_amount_payable').val($('#totalamount').val());
 
             $('#bill_num').val(rand(10000, 99999) + '-' + data?.billing_id);
@@ -185,10 +200,41 @@ $(document).ready(function () {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    $('#bill_pay_btn').click(function () {
-        let form = new FormData($('#collectionForm')[0]);
+    function formatDate(date) {
+        const options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+        };
+        return new Date(date).toLocaleDateString('en-US', options);
+    }
 
-        $('#collectOptionModal').modal('show');
+    $('#bill_pay_btn').click(function () {
+        var data = $('#cntr_search').val();
+        var check = data ? true : false;
+        if (check == true) {
+            $('#collectOptionModal').modal('show');
+        } else {
+            $.notify(
+                {
+                    title: 'Warning!',
+                    message: 'Please select a contract first!',
+                    icon: 'fa fa-bell',
+                },
+                {
+                    type: 'warning',
+                    placement: {
+                        from: 'top',
+                        align: 'left',
+                    },
+                    time: 1000,
+                    delay: 1500,
+                    z_index: 999999,
+                },
+            );
+        }
     });
 
     $('#payment_method').change(function () {
@@ -197,6 +243,28 @@ $(document).ready(function () {
 
         if (val !== 'Cash') {
             $('#ref_num_div').attr('hidden', false);
+        }
+    });
+
+    $('#amount_payment').keyup(function () {
+        var amount = $(this).val();
+        var payable = $('#total_amount_payable').val();
+        var change = parseFloat(amount) - parseFloat(payable);
+        var new_bal = parseFloat(payable) - parseFloat(amount);
+        $('#change').val('');
+        $('#new_bal').val('');
+        if (amount != '') {
+            if (change >= 0) {
+                $('#change').val(parseFloat(change).toFixed(2));
+            }else{
+                $('#change').val(0);
+            }
+
+            if (new_bal >= 0) {
+                $('#new_bal').val(parseFloat(new_bal).toFixed(2));
+            }else{
+                $('#new_bal').val(0);
+            }
         }
     });
 
@@ -212,13 +280,26 @@ $(document).ready(function () {
             processData: false,
             dataType: 'json',
             success: function (response) {
-                if(response.status == 'success'){
-                    swal('Success', 'Bill paid successfuly, you can now proceed', 'success').then(() => {
-                        // $('#finalOptionForm')[0].reset();
-                        $('#collectOptionModal').modal('hide');
-                        $('#totalamount').val(parseFloat(response.amount).toFixed(2));
-                    });
-                }else{
+                console.log(response);
+                if (response.status == 'success') {
+                    swal('Success', 'Bill paid successfuly, you can now proceed', 'success').then(
+                        () => {
+                            $('#collectOptionModal').modal('hide');
+                            $('#totalamount').val(parseFloat(response.amount ?? 0).toFixed(2));
+                            $('#recentPaymentsTable tbody').prepend(`
+                                <tr>
+                                    <td>${response.transaction_id}</td>
+                                    <td>-${parseFloat(response.val).toFixed(2)}</td>
+                                    <td>${formatDate(response.transaction_date)}</td>
+                                </tr>
+                            `);
+
+                            if ($('#recentPaymentsTable tbody tr').length > 5) {
+                                $('#recentPaymentsTable tbody tr:last').remove();
+                            }
+                        },
+                    );
+                } else {
                     swal('Error', 'Something went wrong, please try again!', 'error');
                 }
             },

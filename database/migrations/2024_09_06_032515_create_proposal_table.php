@@ -22,14 +22,15 @@ return new class extends Migration
             $table->float("min_mgr")->nullable();
             $table->float("total_rent")->nullable();
             $table->float("total_mgr")->nullable();
-            $table->string("lease_term");
-            $table->string("commencement");
-            $table->string("end_contract");
-            $table->string("const_period");
-            $table->float("rent_deposit");
-            $table->float("sec_dep");
-            $table->float("escalation_rate");
-            $table->string("status");
+            $table->string("lease_term")->nullable();
+            $table->string("commencement")->nullable();
+            $table->string("end_contract")->nullable();
+            $table->string("const_period")->nullable();
+            $table->float("rent_deposit")->nullable();
+            $table->float("sec_dep")->nullable();
+            $table->float("escalation_rate")->nullable();
+            $table->string("status")->nullable();
+            $table->smallInteger('is_counter')->nullable()->default(0);
             $table->timestamps();
         });
     }

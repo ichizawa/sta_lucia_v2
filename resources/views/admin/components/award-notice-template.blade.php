@@ -66,7 +66,8 @@
 </head>
 
 <body>
-        <div class="container">
+
+    <div class="container">
         <div>
             <p>
                 <span>
@@ -83,13 +84,13 @@
             <h2 class="center_h2">AWARD NOTICE</h2>
         </div>
         <div>
-            <p><strong>{{ $award[0]->owner_fname . ' ' . $award[0]->owner_lname}}</strong>
+            <p><strong>{{ $proposal->owner->owner_fname . ' ' . $proposal->owner->owner_lname}}</strong>
             </p>
             <!-- <p>Business Development Supervisor</p> -->
-            <p><strong>{{ $award[0]->store_name }}</strong></p>
-            <p><strong>{{ $award[0]->company_name }}</strong></p>
-            <p>{{ $award[0]->company_address }}</p>
-            <p style="text-align: right;">{{ date('d F Y', strtotime($award[0]->created_at)) }}</p>
+            <p><strong>{{ $proposal->company->store_name }}</strong></p>
+            <p><strong>{{ $proposal->company->company_name }}</strong></p>
+            <p>{{ $proposal->company->company_address }}</p>
+            <p style="text-align: right;">{{ date('d F Y', strtotime($proposal->created_at)) }}</p>
             <p style="margin-top: 20px;">Dear Ms. Enaluz,</p>
             <p style="margin-top: 20px; margin-bottom: 20px;">This is to formalize our discussion regarding your outlet
                 at Sta Lucia Mall of Davao. We have outlined our terms and conditions for your conformity.</p>
@@ -99,17 +100,17 @@
                 <tr>
                     <td>1. Trade Name</td>
                     <td class="separator">:</td>
-                    <td><strong>{{ $award[0]->store_name }}</strong></td>
+                    <td><strong>{{ $proposal->company->store_name }}</strong></td>
                 </tr>
                 <tr>
                     <td>2. Location</td>
                     <td class="separator">:</td>
-                    <td>{{ $award[0]->space_name }} ({{ $award[0]->store_type }})</td>
+                    <td>{{ collect($proposal->selected_space)->pluck('space.space_name')->implode(', ') }} ({{ collect($proposal->selected_space)->pluck('space.store_type')->implode(', ') }})</td>
                 </tr>
                 <tr>
                     <td>3. Area</td>
                     <td class="separator">:</td>
-                    <td>{{ $award[0]->space_area }} sqm.</td>
+                    <td>{{ collect($proposal->selected_space)->pluck('space.space_area')->implode(', ') }} sqm.</td>
                 </tr>
                 <tr>
                     <td>4. Monthly Rental</td>
@@ -117,7 +118,7 @@
                 <tr>
                     <td class="unique_td">Basic Rent</td>
                     <td class="separator">:</td>
-                    <td><strong>P {{ number_format($award[0]->brent, 2) }}/mo.</strong></td>
+                    <td><strong>P {{ number_format($proposal->brent, 2) }}/mo.</strong></td>
                 </tr>
                 <tr>
                     <td class="unique_td">Percentage Rent</td>
@@ -127,7 +128,7 @@
                 <tr>
                     <td class="unique_td">Minimum Guaranteed Rent</td>
                     <td class="separator">:</td>
-                    <td><strong>P {{ number_format($award[0]->min_mgr, 2) }}/sqm./mo.</strong></td>
+                    <td><strong>P {{ number_format($proposal->min_mgr, 2) }}/sqm./mo.</strong></td>
                 </tr>
                 <tr>
                     <td class="unique_td">Total Monthly Rent</td>
@@ -144,38 +145,21 @@
         <p>6. Other Charges (subject to review/change by Sta Lucia Mall when circumstances demand so)</p>
         <table>
             <tbody>
-                @foreach ($charges as $charge)
+                @foreach ($proposal->charges->unique('charge_id') as $charges)
                     <tr>
-                        <td class="unique_td">{{ $charge->charge_name }}</td>
+                        <td class="unique_td">{{ $charges->charge->charge_name }}</td>
                         <td class="separator">:</td>
-                        <td><strong>P {{ number_format($charge->charge_fee, 2) }}/sqm. {{ $charge->frequency }}</strong></td>
+                        <td><strong>P {{ number_format($charges->charge->charge_fee, 2) }}/sqm. {{ $charges->charge->frequency }}</strong>
+                        </td>
                     </tr>
                 @endforeach
-                <!-- <tr>
-                    <td class="unique_td">CUSA</td>
-                    <td class="separator">:</td>
-                    <td><strong>P 150.00/sqm./mo.</strong></td>
-                </tr>
-                <tr>
-                    <td class="unique_td">Aircon</td>
-                    <td class="separator">:</td>
-                    <td><strong>P 200.00/sqm./mo.</strong></td>
-                </tr>
-                <tr>
-                    <td class="unique_td">Pest Control Charges</td>
-                    <td class="separator">:</td>
-                    <td><strong>10.00/sqm./mo.</strong></td>
-                </tr>
-                <tr>
-                    <td class="unique_td">Marketing Support Fund for Corporative Promotions</td>
-                    <td class="separator">:</td>
-                    <td><strong>P 20.00/sqm./mo.</strong></td>
-                </tr> -->
+
                 <tr>
                     <td class="unique_td">Electricity/Water</td>
                     <td class="separator">:</td>
                     <td>Metered</td>
                 </tr>
+
                 <tr>
                     <td>7. Interest on Unpaid Charges</td>
                     <td class="separator">:</td>
@@ -185,7 +169,7 @@
                 <tr>
                     <td>8. Nature of Business</td>
                     <td class="separator">:</td>
-                    <td>{{ $award[0]->bussiness_nature }}</td>
+                    <td>{{ $proposal->bussiness_nature }}</td>
                 </tr>
                 <tr>
                     <td>9. Items Allowed to Sell</td>
@@ -203,7 +187,8 @@
                 <tr>
                     <td class="unique_td">Security Deposit</td>
                     <td class="separator">:</td>
-                    <td><strong>P {{ number_format($award[0]->sec_dep, 2) }}</strong> – Equivalent to two (2) months basic rent and refundable upon
+                    <td><strong>P {{ number_format($proposal->sec_dep, 2) }}</strong> – Equivalent to two (2) months
+                        basic rent and refundable upon
                         termination
                         of Contract of Lease. This is payable upon signing of the Award Notice. If the LESSEE
                         pre-terminates the
@@ -260,17 +245,17 @@
                 <tr>
                     <td>15. Lease Term</td>
                     <td class="separator">:</td>
-                    <td>{{ $award[0]->lease_term }}</td>
+                    <td>{{ $proposal->lease_term }}</td>
                 </tr>
                 <tr>
                     <td>16. Commencement Date</td>
                     <td class="separator">:</td>
-                    <td><strong>{{ date('F d, Y', strtotime($award[0]->commencement)) }} (tentative)</strong></td>
+                    <td><strong>{{ date('F d, Y', strtotime($proposal->commencement)) }} (tentative)</strong></td>
                 </tr>
                 <tr>
                     <td>17. Termination Date</td>
                     <td class="separator">:</td>
-                    <td><strong>{{ date('F d, Y', strtotime($award[0]->commencement)) }}</strong></td>
+                    <td><strong>{{ date('F d, Y', strtotime($proposal->end_contract)) }}</strong></td>
                 </tr>
             </tbody>
         </table>
@@ -321,8 +306,8 @@
             <p>VP – Marketing and Mall Operations</p>
             <p style="text-indent: 5in;">Date:_________</p>
             <p>cc: Lease Admin. / Accounting / Operations / Clafile</p>
-        <div>
-    </div>
+            <div>
+            </div>
 </body>
 
 </html>

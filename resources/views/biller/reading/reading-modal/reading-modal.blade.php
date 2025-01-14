@@ -24,7 +24,7 @@
                     <input type="text" name="dateToRead" id="dateToRead" hidden />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sta prepareBilling">Prepare Reading</button>
+                    <button type="button" class="btn btn-sta prepareBilling">Process Reading</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -80,7 +80,7 @@
                             nestedRows += `
                                 <tr>
                                     <td>${val.proposal_uid}</td>
-                                    <td>${val.billing.is_prepared == 0 ? 'Not Prepared' : val.billing.is_prepared == 1 ? 'Processed' : 'Prepared'}</td>
+                                    <td>${val.billing.is_reading == 0 ? 'Not Prepared' : val.billing.is_reading == 1 ? 'Processed' : 'Prepared'}</td>
                                     <td>${readingStatus}</td>
                                     <td>
                                         <a class="btn btn-sm btn-warning"
@@ -139,7 +139,31 @@
                 processData: false,
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response);
+                    $('#utilityListModal').modal('hide');
+                    var content;
+
+                    if (response.status == 'success') {
+                        content = {
+                            message: response.message,
+                            title: response.status,
+                            icon: "fa fa-bell"
+                        }
+                    } else {
+                        content = {
+                            message: response.message,
+                            title: response.status,
+                            icon: "fa fa-bell"
+                        }
+                    }
+                    $.notify(content, {
+                        type: response.status,
+                        placement: {
+                            from: 'top',
+                            align: 'right',
+                        },
+                        time: 1000,
+                        delay: 2500,
+                    })
                 },
                 error: function (status, xhr, error) {
                     console.log(xhr.responseText);

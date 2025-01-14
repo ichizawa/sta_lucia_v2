@@ -10,4 +10,8 @@ class ChargesSelected extends Model
     use HasFactory;
 
     protected $table = 'extra_charges_selected';
+
+    public function charge(){
+        return $this->belongsTo(Charge::class, 'charge_id');
+    }
 }

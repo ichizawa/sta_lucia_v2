@@ -55,15 +55,17 @@ class BillController extends Controller
         $billDate->modify('+4 days');
         $billing_date = $billDate->format('Y-m-d');
 
+        $datenow = Carbon::now()->format('Y-m-d');
         $response = [];
 
         if (!empty($bill_ids)) {
             foreach ($bill_ids as $id) {
                 $billing = Billing::find($id);
                 $proposal = LeaseProposal::with(['selected_space.space'])->find($billing->proposal_id);
+                $billing->date_end = new \DateTime($billing->date_end);
                 $amount = 0;
 
-                if ($billing->is_prepared == Billing::PENDING) {
+                if ($billing->is_prepared == Billing::PENDING && $datenow > $billing->date_end->format('Y-m-d')) {
                     if ($proposal->min_mgr == 0) {
                         $amount = $proposal->total_mgr;
                     } else {
@@ -72,11 +74,14 @@ class BillController extends Controller
 
                     $billing->billing_uid = rand(100000, 999999) . '-' . $nextId;
                     $billing->total_amount = $amount;
-                    $billing->amount = $amount;
+                    $billing->credit = 0;
+                    $billing->debit = $amount;
+                    $billing->change = 0;
                     $billing->date_end = $billing_date;
-                    $billing->remarks = 'Bill prepared as of ' . Carbon::now();
+                    // $billing->remarks = 'Bill prepared as of ' . Carbon::now();
                     $billing->is_paid = Billing::PENDING;
                     $billing->is_prepared = Billing::PREPARED;
+                    $billing->is_reading = Billing::PENDING;
                     $billing->status = Billing::PREPARED;
                     $billing->save();
 
@@ -85,7 +90,9 @@ class BillController extends Controller
                         'bill_no' => $billing->billing_uid,
                         'transaction_id' => rand(10000, 99999) . '-' . $billing->billing_uid,
                         // 'total_sales' => null,
-                        'amount' => $billing->amount,
+                        'debit' => $billing->debit,
+                        'credit' => 0,
+                        'change' => 0,
                         // 'reference_num' => $request->ref_num ?? null,
                         // 'payment_option' => $request->payment_method,
                         // 'date_from' => $bill->date_start,
@@ -116,6 +123,7 @@ class BillController extends Controller
             ];
         }
         return back()->with($response);
+        // return response()->json($response);
     }
 
     public function checkBills(Request $request)

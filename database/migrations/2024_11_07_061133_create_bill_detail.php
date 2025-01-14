@@ -18,8 +18,10 @@ return new class extends Migration
             // $table->string('contract_id')->nullable();
             $table->string('bill_no')->nullable();
             $table->string('transaction_id')->nullable();
+            $table->float('debit')->nullable();
+            $table->float('credit')->nullable();
             // $table->float('total_sales')->nullable();
-            $table->float('amount')->nullable();
+            $table->float('change')->nullable();
             // $table->string('reference_num')->nullable();
             // $table->string('payment_option')->nullable();
             // $table->string('date_from')->nullable();

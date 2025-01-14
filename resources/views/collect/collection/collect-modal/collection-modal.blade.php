@@ -34,10 +34,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12" id="recent_payments" hidden>
+                    <h5 class="text-center">Recent Payments</h5>
+                    <div class="table-responsive">
+                        <table id="recentPaymentsTable" class="table-striped table-hover table-sm" style="cursor: pointer;">
+                            <thead class="bg-secondary text-white">
+                                <tr>
+                                    <th>Transaction Number</th>
+                                    <th>Amount</th>
+                                    <th>Transaction Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- <tr>
+                                    <td colspan="3">No Data Yet!</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <h5 class="text-center">Space Breakdown</h5>
                     <div class="table-responsive">
-                        <table id="spaceTableShow" class="table-striped table-hover" style="cursor: pointer;">
+                        <table id="spaceTableShow" class="table-striped table-hover table-sm" style="cursor: pointer;">
                             <thead class="bg-secondary text-white">
                                 <tr>
                                     <th colspan="2">Item Desc</th>
@@ -55,7 +74,7 @@
                 <div class="col-md-12">
                     <h5 class="text-center">Payment Breakdown</h5>
                     <div class="table-responsive">
-                        <table id="billTableShow" class="table-striped table-hover" style="cursor: pointer;">
+                        <table id="billTableShow" class="table-striped table-hover table-sm" style="cursor: pointer;">
                             <thead class="bg-secondary text-white">
                                 <tr>
                                     <th colspan="2">Item Desc</th>
@@ -73,7 +92,7 @@
                 <div class="col-md-12">
                     <h5 class="text-center">Penalties</h5>
                     <div class="table-responsive">
-                        <table id="penaltyTableShow" class="table-striped table-hover" style="cursor: pointer;">
+                        <table id="penaltyTableShow" class="table-striped table-hover table-sm" style="cursor: pointer;">
                             <thead class="bg-danger text-white">
                                 <tr>
                                     <th colspan="2">Item Desc</th>
@@ -94,6 +113,7 @@
             <div class="row">
                 <div class="col-12 col-md-12">
                     <div class="form-group">
+                        <label for="totalamount">Total Balance:</label>
                         <input type="text" class="form-control fw-bold" name="total_amoumnt" id="totalamount"
                             placeholder="Total" readonly/>
                     </div>

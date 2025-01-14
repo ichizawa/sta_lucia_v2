@@ -18,6 +18,7 @@ class ArchivedProposal extends Model
         'brent',
         'total_rent',
         'min_mgr',
+        'total_mgr',
         'lease_term',
         'commencement',
         'end_contract',
@@ -25,6 +26,7 @@ class ArchivedProposal extends Model
         'rent_deposit',
         'sec_dep',
         'escalation_rate',
+        'is_counter',
         'status'
     ];
 }

@@ -37,7 +37,7 @@ class CollectionController extends Controller
 
     public function view(Request $request)
     {
-        $proposals = LeaseProposal::with(['selected_space.space', 'billing.util_read', 'utilities.util_desc'])
+        $proposals = LeaseProposal::with(['selected_space.space', 'billing.util_read', 'utilities.util_desc', 'billing.bill_details'])
             ->where('tenant_id', $request->id)
             ->get();
 
@@ -67,52 +67,37 @@ class CollectionController extends Controller
         $response = [];
 
         if ($bill) {
-            // if ($bill->is_paid == 1) {
-            //     $response = [
-            //         'status' => 'danger',
-            //         'message' => 'Bill already paid',
-            //         'response' => 404
-            //     ];
-            // } else {
-            //     $bill->is_paid = Billing::PAID;
-            //     $bill->amount = $bill->amount - $request->amount_payment;
-            //     $bill->save();
-
-            //     BillingDetails::create([
-            //         'billing_id' => $request->billing_uid,
-            //         'bill_no' => $bill->biller_num,
-            //         'transaction_id' => $request->biller_num,
-            //         // 'total_sales' => null,
-            //         'amount' => $request->amount_payment,
-            //         // 'reference_num' => $request->ref_num ?? null,
-            //         // 'payment_option' => $request->payment_method,
-            //         // 'date_from' => $bill->date_start,
-            //         'date_to' => $bill->date_end,
-            //         'remarks' => $request->remarks,
-            //         'status' => 0,
-            //         'is_paid' => 1
-            //     ]);
-
-            //     $response = [
-            //         'status' => 'success',
-            //         'message' => 'Bill paid successfully',
-            //         'response' => 200
-            //     ];
+            // if ($bill->debit < $bill->total_amount) {
+            //     $bill->is_prepared = Billing::PENDING;
+            //     $bill->status = 1;
             // }
-            $bill->is_paid = Billing::PAID;
-            if($request->amount_payment == $bill->amount){
-                $bill->is_paid = Billing::PAID;
+
+            $deposit = $request->deposit_credit ?? 'false';
+
+            if ($deposit) {
+                if ($bill->change == 0) {
+                    $bill->change = $request->change;
+                } else {
+                    $bill->change = $bill->change + $request->change;
+                }
             }
             
-            $bill->amount = $bill->amount - $request->amount_payment;
+            $bill->is_prepared = Billing::PENDING;
+            $bill->status = 1;
+            $bill->is_paid = Billing::PAID;
+            $bill->credit = $bill->credit + $request->amount_payment;
+            $bill->debit = $request->new_bal;
+            // $bill->change = $request->change ?? 0;
             $bill->save();
 
-            BillingDetails::create([
+            $bills = BillingDetails::create([
                 'billing_id' => $request->billing_id,
                 'bill_no' => $bill->billing_uid,
                 'transaction_id' => $request->biller_num,
                 // 'total_sales' => null,
-                'amount' => $request->amount_payment,
+                'debit' => $request->new_bal,
+                'credit' => $request->amount_payment,
+                'change' => $request->change ?? 0,
                 // 'reference_num' => $request->ref_num ?? null,
                 // 'payment_option' => $request->payment_method,
                 // 'date_from' => $bill->date_start,
@@ -125,7 +110,10 @@ class CollectionController extends Controller
             $response = [
                 'status' => 'success',
                 'message' => 'Bill paid successfully',
-                'amount' => $bill->amount,
+                'amount' => $bill->debit,
+                'val' => $request->amount_payment,
+                'transaction_id' => $request->biller_num,
+                'transaction_date' => $bills->created_at,
                 'response' => 200
             ];
         } else {

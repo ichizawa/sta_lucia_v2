@@ -14,4 +14,8 @@ class AmenitySelected extends Model
         'amenity_id',
         'space_id'
     ];
+
+    public function amenity(){
+        return $this->belongsTo(Amenities::class, 'amenity_id', 'id');
+    }
 }

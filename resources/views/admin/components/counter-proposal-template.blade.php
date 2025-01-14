@@ -8,7 +8,6 @@
     <meta name="supported-color-schemes" content="light">
 
     <title>Lease Proposal</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <style>
         body {
             /* font-size: 6px; */
@@ -80,158 +79,164 @@
     <div class="container" style="margin-top: -100px">
         <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/assets/img/sta_lucia_logo2.png'))) }}"
             alt="" style="width: 15%;">
-        @foreach ($counter_proposal as $proposal)
-            <div class="page-header">
-                <h2 class="text-center" style="font-size: 10px">Counter Lease Proposal as of
-                    {{ date('F j, Y', strtotime($proposal['created_at'])) }}
-                </h2>
-            </div>
+        <div class="page-header">
+            <h2 class="text-center" style="font-size: 10px">Counter Lease Proposal as of
+                {{ date('F j, Y', strtotime($counter_proposal->created_at)) }}
+            </h2>
+        </div>
 
-            <div class="section-title">General Information</div>
-            <table>
+        <div class="section-title">General Information</div>
+        <table>
+            <tr>
+                <th>Trade Name</th>
+                <td>{{ ucwords($counter_proposal->proposal->company->company_name) }}</td>
+            </tr>
+            <tr>
+                <th>Company Lesee</th>
+                <td>{{ ucwords($counter_proposal->proposal->company->store_name) }}</td>
+            </tr>
+            <tr>
+                <th>Nature of Business</th>
+                <td>{{ $counter_proposal->bussiness_nature }}</td>
+            </tr>
+            <tr>
+                <th>Authorized Representative</th>
+                <td>{{ ucfirst($counter_proposal->proposal->representative->rep_fname) . ' ' . ucfirst($counter_proposal->proposal->representative->lname) }}
+                </td>
+            </tr>
+            <tr>
+                <th>Designation</th>
+                <td>{{ ucfirst($counter_proposal->proposal->representative->rep_position) }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ $counter_proposal->proposal->company->company_address }}</td>
+            </tr>
+            <tr>
+                <th>Contact Number</th>
+                <td>{{ ucwords($counter_proposal->proposal->representative->rep_mobile) }}</td>
+            </tr>
+            <tr>
+                <th>Email Address</th>
+                <td>{!! '<a href="#">' . $counter_proposal->proposal->representative->rep_email . '</a>' !!}</td>
+            </tr>
+        </table>
+        <!-- Abbreviated Rate -->
+        <div class="section-title">Area/Rental Rate</div>
+        <table>
+            <tr>
+                <th>Space Name</th>
+                <td>{{ collect($counter_proposal->proposal->selected_space)->pluck('space.space_name')->implode(', ') }}</td>
+            </tr>
+            <tr>
+                <th>Area Code</th>
+                <td>{{ collect($counter_proposal->proposal->selected_space)->pluck('space.property_code')->implode(', ') }}</td>
+            </tr>
+            <tr>
+                <th>Total Floor Area</th>
+                <td>{{ collect($counter_proposal->proposal->selected_space)->sum('space.space_area') . ' sqm' }}</td>
+            </tr>
+            <tr>
+                <th>Basic Rent per sqm</th>
+                <td>PHP {{ $counter_proposal->brent }} per sqm</td>
+            </tr>
+            <tr>
+                <th>Please Select if FOOD,NONFOOD or Percentage</th>
+                <td>-</td>
+            </tr>
+            <tr>
+                <th>Minimum Guaranteed Rent per sqm</th>
+                <td>PHP {{ number_format($counter_proposal->min_mgr, 2) }}</td>
+            </tr>
+            <tr>
+                <th>TOTAL Basic Rent</th>
+                <td>PHP {{ number_format($counter_proposal->total_rent, 2) }}</td>
+            </tr>
+            <tr>
+                <th>TOTAL MGR - Minimum Guaranteed Rent</th>
+                <td>PHP
+                    {{ number_format($counter_proposal->total_mgr, 2) }}
+                </td>
+            </tr>
+        </table>
+
+        @php
+            $uniqueAmenities = collect($counter_proposal->proposal->selected_space)
+                ->pluck('space.amenities')
+                ->flatten()
+                ->pluck('amenity')
+                ->unique('amenity_name');
+        @endphp
+        
+        <div class="section-title">Amenities</div>
+        <table>
+            @foreach ($uniqueAmenities as $amenity)
                 <tr>
-                    <th>Trade Name</th>
-                    <td>{{ ucwords($proposal['company_name']) }}</td>
-                </tr>
-                <tr>
-                    <th>Company Lesee</th>
-                    <td>{{ ucwords($proposal['company_name']) }}</td>
-                </tr>
-                <tr>
-                    <th>Nature of Business</th>
-                    <td>{{ $proposal['bussiness_nature'] }}</td>
-                </tr>
-                <tr>
-                    <th>Authorized Representative</th>
-                    <td>{{ ucfirst($proposal['rep_fname']) . ' ' . ucfirst($proposal['rep_lname']) }}</td>
-                </tr>
-                <tr>
-                    <th>Designation</th>
-                    <td>{{ ucfirst($proposal['rep_position']) }}</td>
-                </tr>
-                <tr>
-                    <th>Address</th>
-                    <td>{{ $proposal['company_address'] }}</td>
-                </tr>
-                <tr>
-                    <th>Contact Number</th>
-                    <td>{{ ucwords($proposal['rep_mobile']) }}</td>
-                </tr>
-                <tr>
-                    <th>Email Address</th>
-                    <td>{!! '<a href="#">' . $proposal['rep_email'] . '</a>' !!}</td>
-                </tr>
-            </table>
-            <!-- Abbreviated Rate -->
-            <div class="section-title">Area/Rental Rate</div>
-            <table>
-                <tr>
-                    <th>Space Name</th>
-                    <td>{{ collect($space_proposals)->pluck('space_name')->implode(', ') }}</td>
-                </tr>
-                <tr>
-                    <th>Area Code</th>
-                    <td>{{ collect($space_proposals)->pluck('property_code')->implode(', ') }}</td>
-                </tr>
-                <tr>
-                    <th>Total Floor Area</th>
-                    <td>{{ collect($space_proposals)->sum('space_area') . ' sqm' }}</td>
-                </tr>
-                <tr>
-                    <th>Basic Rent per sqm</th>
-                    <td>PHP {{ $proposal->brent }} per sqm</td>
-                </tr>
-                <tr>
-                    <th>Please Select if FOOD,NONFOOD or Percentage</th>
+                    <th>{{ $amenity['amenity_name'] }}</th>
                     <td>-</td>
                 </tr>
-                <tr>
-                    <th>Minimum Guaranteed Rent per sqm</th>
-                    <td>PHP {{ number_format($proposal->min_mgr) }}</td>
-                </tr>
-                <tr>
-                    <th>TOTAL Basic Rent</th>
-                    <td>PHP {{ number_format($proposal->total_rent, 2) }}</td>
-                </tr>
-                <tr>
-                    <th>TOTAL MGR - Minimum Guaranteed Rent</th>
-                    <td>PHP
-                        {{ number_format(intval(collect($space_proposals)->sum('space_area')) * intval($proposal->min_mgr), 2) }}
-                    </td>
-                </tr>
-            </table>
+            @endforeach
+        </table>
 
-            <div class="section-title">Amenities</div>
-            <table>
-                @foreach ($getAminities->unique('amenity_name') as $aminities)
-                    <tr>
-                        <th>{{ $aminities->amenity_name }}</th>
-                        <td>-</td>
-                    </tr>
-                @endforeach
-            </table>
+        <div class="section-title">Utilities</div>
+        <table>
+            @foreach ($counter_proposal->proposal->utilities->unique('utility_id') as $utilities)
+                <tr>
+                    <th>{{ $utilities->util_desc->utility_name }}</th>
+                    <td>{{ $utilities->util_desc->utility_price }}/per meter </td>
+                </tr>
+            @endforeach
+        </table>
 
+        <!-- Other Charges -->
+        <div class="section-title">Other Charges</div>
+        <table>
+            @foreach ($counter_proposal->proposal->charges->unique('charge_id') as $charges)
+                <tr>
+                    <th>{{ $charges->charge->charge_name }}</th>
+                    <td>PHP {{ $charges->charge->charge_fee }}/sqm ({{ $charges->charge->frequency }})</td>
+                </tr>
+            @endforeach
+        </table>
 
-            <div class="section-title">Utilities</div>
-            <table>
-                @foreach ($getUtilities as $utilities)
-                    <tr>
-                        <th>{{ $utilities->utility_name }}</th>
-                        <td>{{ $utilities->utility_price }}/per meter </td>
-                    </tr>
-                @endforeach
-            </table>
+        <!-- Lease Term / Construction Period -->
+        <div class="section-title">Lease Term / Construction Period</div>
+        <table>
+            <tr>
+                <th>Lease Term</th>
+                <td>{{ $counter_proposal->lease_term }}</td>
+            </tr>
+            <tr>
+                <th>Commencement</th>
+                <td>{{ date('F Y', strtotime($counter_proposal->commencement)) }}</td>
+            </tr>
+            <tr>
+                <th>End of Lease Contract</th>
+                <td>{{ date('F Y', strtotime($counter_proposal->end_contract)) }}</td>
+            </tr>
+            <tr>
+                <th>Construction Period</th>
+                <td>{{ $counter_proposal->const_period }}</td>
+            </tr>
+        </table>
 
-            <!-- Other Charges -->
-            <div class="section-title">Other Charges</div>
-            <table>
-                @foreach ($getCharges as $charges)
-                    <tr>
-                        <th>{{ $charges->charge_name }}</th>
-                        <td>PHP {{ $charges->charge_fee }}/sqm ({{ $charges->frequency }})</td>
-                    </tr>
-                @endforeach
-            </table>
+        <!-- Rental Deposits / Escalation Rate -->
+        <div class="section-title">Rental Deposits / Escalation Rate</div>
+        <table>
+            <tr>
+                <th>Advance Rent(Equivalent to Two (2) Months Basic Rent)</th>
+                <td>{{ $counter_proposal->rent_deposit }}</td>
+            </tr>
+            <tr>
+                <th>Security Deposit (Equivalent to Two (2) Months Basic Rent)</th>
+                <td>{{ $counter_proposal->sec_dep }}</td>
+            </tr>
+            <tr>
+                <th>Escalation Rate</th>
+                <td>{{ $counter_proposal->escalation_rate }}%</td>
+            </tr>
+        </table>
 
-            <!-- Lease Term / Construction Period -->
-            <div class="section-title">Lease Term / Construction Period</div>
-            <table>
-                <tr>
-                    <th>Lease Term</th>
-                    <td>{{ $proposal['lease_term'] }}</td>
-                </tr>
-                <tr>
-                    <th>Commencement</th>
-                    <td>{{ date('F Y', strtotime($proposal['commencement'])) }}</td>
-                </tr>
-                <tr>
-                    <th>End of Lease Contract</th>
-                    <td>{{ date('F Y', strtotime($proposal['end_contract'])) }}</td>
-                </tr>
-                <tr>
-                    <th>Construction Period</th>
-                    <td>{{ $proposal['const_period'] }}</td>
-                </tr>
-            </table>
-
-            <!-- Rental Deposits / Escalation Rate -->
-            <div class="section-title">Rental Deposits / Escalation Rate</div>
-            <table>
-                <tr>
-                    <th>Advance Rent(Equivalent to Two (2) Months Basic Rent)</th>
-                    <td>{{ $proposal['rent_deposit'] }}</td>
-                </tr>
-                <tr>
-                    <th>Security Deposit (Equivalent to Two (2) Months Basic Rent)</th>
-                    <td>{{ $proposal['sec_dep'] }}</td>
-                </tr>
-                <tr>
-                    <th>Escalation Rate</th>
-                    <td>{{ $proposal['escalation_rate'] }}%</td>
-                </tr>
-            </table>
-
-        @endforeach
         <div class="footer text-center" style="margin-top: 4px; font-size: 6px;">* Monthly Rate and Other Charges are
             VATABLE</div>
 
@@ -277,10 +282,10 @@
                 </div>
                 <div class="col">
                     <p>Conforme:</p>
-                    <div>{{ ucfirst($proposal['rep_fname']) . ' ' . ucfirst($proposal['rep_lname']) }}</div>
-                    <div>{{ ucfirst($proposal['rep_position']) }}</div>
-                    <div>{{ ucwords($proposal['company_name']) }}</div>
-                    <div>Date: <u>{{ date('m/d/Y', strtotime($proposal['created_at'])) }}</u></div>
+                    <div>{{ ucfirst($counter_proposal->proposal->representative->rep_fname) . ' ' . ucfirst($counter_proposal->proposal->representative->lname) }}</div>
+                    <div>{{ ucfirst($counter_proposal->proposal->representative->rep_email) }}</div>
+                    <div>{{ ucwords($counter_proposal->proposal->owner->owner_email) }}</div>
+                    <div>Date: <u>{{ date('m/d/Y', strtotime($counter_proposal->created_at)) }}</u></div>
                 </div>
             </div>
         </div>

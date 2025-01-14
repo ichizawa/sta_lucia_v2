@@ -12,11 +12,14 @@
                         <thead>
                             <tr>
                                 <th>Billing #</th>
-                                <th>Amount</th>
+                                <th>Transaction Number</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <!-- <th>Beginning Balance</th> -->
                                 <th>Remarks</th>
                                 <!-- <th>Status</th> -->
-                                <th>Date Created</th>
-                                <th>Due Date</th>
+                                <th>Transaction Date</th>
+                                <!-- <th>Due Date</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -26,7 +29,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sta" data-bs-toggle="modal" data-bs-target="#collectionLedgerModal">Back</button>
+                <button type="button" class="btn btn-sta" id="backtocontractlist" data-bs-toggle="modal" data-bs-target="#collectionLedgerModal">Back</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

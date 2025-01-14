@@ -12,18 +12,23 @@ class Billing extends Model
 
     public const PREPARED = 2;
     public const PAID = 1;
+    public const FULLY_PAID = 3; 
     public const PENDING = 0;
 
     protected $fillable = [
         'proposal_id',
         'total_amount',
-        'amount',
+        'debit',
+        'credit',
+        'change',
         'billing_uid',
         'date_start',
         'date_end',
-        'remarks',
+        // 'remarks',
         'is_prepared',
         'is_paid',
+        'is_penal',
+        'is_reading',
         'status',
     ];
 
