@@ -12,4 +12,8 @@ class AwardNotice extends Model
     protected $table = 'award_notice';
 
     protected $fillable = ['proposal_id', 'status'];
+
+    public function proposal(){
+        return $this->belongsTo(LeaseProposal::class, 'proposal_id');
+    }
 }

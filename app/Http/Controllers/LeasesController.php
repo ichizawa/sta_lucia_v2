@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\admin\ProposalStatus;
 use App\Models\ArchivedProposal;
 use App\Models\AwardNotice;
 use App\Models\CommencementProposal;
@@ -17,6 +18,7 @@ use App\Models\SpaceMallCode;
 use App\Models\SpacePaymentInformation;
 use App\Models\TenantDocuments;
 use App\Models\User;
+use App\Services\StatusService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SpaceUtility;
 use File;
@@ -92,11 +94,15 @@ class LeasesController extends Controller
     {
         $data = [];
         if ($option == 'proposal') {
-            $this->newProposal($request);
-            $data = [
-                'status' => 'success',
-                'message' => 'Lease proposal added successfully'
-            ];
+            // $this->newProposal($request);
+            // $data = [
+            //     'status' => 'success',
+            //     'message' => 'Lease proposal added successfully'
+            // ];
+            // $notify_proposal->notify($this->newProposal($request));
+
+            ProposalStatus::dispatch($this->newProposal($request));
+
             return redirect()->route('leases.leases.proposal')->with('success', 'Lease proposal added successfully');
         } else {
             return $this->counterProposal($request);
@@ -180,6 +186,8 @@ class LeasesController extends Controller
         }
 
         $this->newProposalPDF($lease_prop);
+
+        return $lease_prop;
     }
 
     public function newProposalPDF($lease_prop)
@@ -386,7 +394,7 @@ class LeasesController extends Controller
         return response()->json($business_type);
     }
 
-    public function adminOptionsProposal(Request $request, $set)
+    public function adminOptionsProposal(Request $request, $set, StatusService $notify_proposal)
     {
         $data = [];
         if ($set == "new") {
@@ -418,6 +426,9 @@ class LeasesController extends Controller
                     'message' => "Proposal has been rejected successfully"
                 ];
             }
+
+            ProposalStatus::dispatch($proposal);
+            
         } else {
             $counter_proposal = CounterProposal::find($request->proposal_id);
             $counter_proposal->status = $request->option;

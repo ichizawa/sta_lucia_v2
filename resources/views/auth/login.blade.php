@@ -10,7 +10,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Tenant Management System</title>
-
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/stlm-logo.jpeg') }}">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -50,7 +51,7 @@
             box-shadow: 0 0 5px rgb(48, 79, 35) !important;
         }
 
-        canvas{
+        canvas {
             overflow: hidden;
             /* position: absolute; */
             background-size: cover;
@@ -59,7 +60,7 @@
             height: 100%;
         }
 
-        #particles-js{
+        #particles-js {
             /* width: 100%;
             height: 100%; */
             /* background-size: cover;
@@ -206,7 +207,7 @@
                                     let redirectUrl;
                                     if (response.status == "admin") {
                                         redirectUrl = "{{ route('admin.dashboard') }}";
-                                    } else if(response.status == "bill") {
+                                    } else if (response.status == "bill") {
                                         redirectUrl = "{{ route('bill.dashboard') }}";
                                     } else {
                                         redirectUrl = "{{ route('client.dashboard') }}";

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Mail\admin\SendRegistrationUpdate;
 use App\Models\AwardNotice;
 use App\Models\DocumentsTable;
 use App\Models\LeaseProposal;
@@ -196,7 +197,7 @@ class TenantsController extends Controller
                 $storedFiles[$fileName] = $originalName;
             }
         }
-        // event(new TenantUpdated($owner, $company, $representative));
+
         $allFilesAreNull = true;
         $files = [];
         if($request->tenant_type == 'Corporate'){

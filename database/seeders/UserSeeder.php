@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Jon Doe',
-                'email' => 'test@example.us',
+                'email' => 'marcialvalerogeptejr@gmail.com',
                 'type' => 'tenant',
                 'status' => 0,
                 'password' => Hash::make('123456789'),
@@ -102,7 +102,7 @@ class UserSeeder extends Seeder
                 'rep_lname' => 'Doe',
                 'rep_position' => 'dsadsa',
                 'rep_address' => '1600 Fake Street',
-                'rep_email' => 'test@example.us',
+                'rep_email' => 'marcialvalerogeptejr@gmail.com',
                 'rep_telephone' => '6019521325',
                 'rep_officehrs' => '10:10:00',
                 'rep_afterofficehrs' => '10:10:00',

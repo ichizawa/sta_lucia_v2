@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\bill\Billing;
 use App\Models\CommencementProposal;
 use App\Models\LeaseProposal;
+use Barryvdh\DomPDF\Facade\Pdf;
+use File;
 use Illuminate\Http\Request;
 
 class CommencementController extends Controller
@@ -46,6 +48,19 @@ class CommencementController extends Controller
                     'is_reading' => 0,
                     'status' => 0
                 ]);
+                
+                $pdf = PDF::loadview('admin.components.commencement-letter')->setPaper('legal', 'portrait');
+
+                $dompdf = $pdf->getDomPDF();
+                $canvas = $dompdf->getCanvas();
+
+                $pdfFileName = 'commencement_' . $prop . '.pdf';
+                $directoryPath = storage_path('app/public/lease-proposals/commencements/');
+
+                if (!File::exists($directoryPath)) {
+                    File::makeDirectory($directoryPath, 0755, true, true);
+                }
+                $pdf->save($directoryPath . $pdfFileName);
 
                 $status = true;
             } else {
