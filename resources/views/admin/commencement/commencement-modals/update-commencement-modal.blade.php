@@ -51,7 +51,7 @@
             var data = @json($proposal);
             var select = $prop[0].selectize;
             $.each(data, function (key, value) {
-                if(value.commencement_date == null){
+                if(value.commencement_proposal.commencement_date == null){
                     select.addOption({
                         value: value.id,
                         text: value.proposal_uid
@@ -71,6 +71,7 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
+                    console.log(response);
                     $('#comm-date-modal').modal('hide');
                     if(response.status == 'success'){
                         swal('Success', 'Commencement Date Updated', 'success').then(() => {

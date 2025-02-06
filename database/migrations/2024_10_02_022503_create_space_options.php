@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('total_available')->nullable();
             $table->string('total_leased')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         // Schema::create('mall_facility', function (Blueprint $table) {
@@ -39,6 +40,8 @@ return new class extends Migration
             $table->string('bldgnum');
             $table->string('bldgimage')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
         });
 
         Schema::create('level_numbers', function (Blueprint $table) {
@@ -48,6 +51,8 @@ return new class extends Migration
             $table->string('lvlnum');
             $table->string('lvlimage')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

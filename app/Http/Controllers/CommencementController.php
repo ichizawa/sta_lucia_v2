@@ -13,10 +13,11 @@ class CommencementController extends Controller
 {
     public function index()
     {
-        $proposal = LeaseProposal::join('company', 'proposal.tenant_id', '=', 'company.owner_id')
-            ->join('commencement_proposals', 'proposal.id', '=', 'commencement_proposals.proposal_id')
-            ->select('proposal.id', 'proposal.created_at', 'proposal.proposal_uid', 'company.store_name', 'commencement_proposals.commencement_date')
-            ->get();
+        // $proposal = LeaseProposal::join('company', 'proposal.tenant_id', '=', 'company.owner_id')
+        //     ->join('commencement_proposals', 'proposal.id', '=', 'commencement_proposals.proposal_id')
+        //     ->select('proposal.id', 'proposal.created_at', 'proposal.proposal_uid', 'company.store_name', 'commencement_proposals.commencement_date')
+        //     ->get();
+        $proposal = LeaseProposal::with(['company', 'commencement_proposal'])->get();
         return view('admin.commencement.commencement-table', compact('proposal'));
     }
 
@@ -24,7 +25,7 @@ class CommencementController extends Controller
     {
         $propid = $request->input('prop_num', []);
         $data = [];
-        $status = true;
+        $status = true;;
 
         foreach ($propid as $prop) {
             $billingExists = Billing::where('proposal_id', $prop)->exists();

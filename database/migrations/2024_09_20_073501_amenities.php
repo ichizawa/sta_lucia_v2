@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('amenity_name')->nullable();
             $table->boolean('amenity_status')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

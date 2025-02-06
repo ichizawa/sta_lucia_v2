@@ -17,6 +17,7 @@ return new class extends Migration
             $table->float("charge_fee");
             $table->string("frequency");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

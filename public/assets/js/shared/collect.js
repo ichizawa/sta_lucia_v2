@@ -99,11 +99,10 @@ $(document).ready(function () {
                 util_rows += `
                     <tr>
                         <td colspan="2">${value.util_desc.utility_name}</td>
-                        <td>${
-                            value.reading
-                                ? parseFloat(value.reading.utility_price).toFixed(2)
-                                : 'No Reading Yet'
-                        }</td>
+                        <td>${value.reading
+                        ? parseFloat(value.reading.utility_price).toFixed(2)
+                        : 'No Reading Yet'
+                    }</td>
                     </tr>
                 `;
             });
@@ -187,7 +186,7 @@ $(document).ready(function () {
             `);
 
             $('#totalamount').val(parseFloat(data?.optional.billing.debit).toFixed(2));
-            $('#total_amount_payable').val($('#totalamount').val());
+            $('#total_amount_payable').val(parseFloat(data?.optional.billing.debit).toFixed(2));
 
             $('#bill_num').val(rand(10000, 99999) + '-' + data?.billing_id);
             // $('#bill_num').val(data?.billing_id);
@@ -256,13 +255,13 @@ $(document).ready(function () {
         if (amount != '') {
             if (change >= 0) {
                 $('#change').val(parseFloat(change).toFixed(2));
-            }else{
+            } else {
                 $('#change').val(0);
             }
 
             if (new_bal >= 0) {
                 $('#new_bal').val(parseFloat(new_bal).toFixed(2));
-            }else{
+            } else {
                 $('#new_bal').val(0);
             }
         }
@@ -280,11 +279,12 @@ $(document).ready(function () {
             processData: false,
             dataType: 'json',
             success: function (response) {
-                console.log(response);
+                $('#collectOptionModal').modal('hide');
                 if (response.status == 'success') {
                     swal('Success', 'Bill paid successfuly, you can now proceed', 'success').then(
                         () => {
-                            $('#collectOptionModal').modal('hide');
+                            $('#finalOptionForm').trigger('reset');
+                            $('#total_amount_payable').val(parseFloat(response.amount ?? 0).toFixed(2));
                             $('#totalamount').val(parseFloat(response.amount ?? 0).toFixed(2));
                             $('#recentPaymentsTable tbody').prepend(`
                                 <tr>

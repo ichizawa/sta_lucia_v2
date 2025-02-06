@@ -29,6 +29,7 @@ return new class extends Migration {
             $table->string("space_img")->nullable();
             $table->integer("space_tag");
             $table->timestamps();
+            $table->softDeletes();
         });
 
     }

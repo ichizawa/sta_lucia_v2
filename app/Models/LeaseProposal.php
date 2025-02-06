@@ -62,4 +62,8 @@ class LeaseProposal extends Model
     {
         return $this->hasMany(LeasableInfoModel:: class, 'proposal_id', 'id');
     }
+
+    public function commencement_proposal(){
+        return $this->hasOne(CommencementProposal::class, 'proposal_id');
+    }
 }

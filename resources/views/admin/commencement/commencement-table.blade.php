@@ -36,9 +36,9 @@
                                 @foreach ($proposal as $commence)
                                     <tr>
                                         <td>{{ $commence->proposal_uid }}</td>
-                                        <td>{{ $commence->store_name }}</td>
+                                        <td>{{ $commence->company->store_name }}</td>
                                         <td>{{ date('F d, Y', strtotime($commence->created_at)) }}</td>
-                                        <td>{{ $commence->commencement_date ? date('F Y', strtotime($commence->commencement_date)) : 'N/A' }}</td>
+                                        <td>{{ $commence->commencement_proposal->commencement_date ? date('F Y', strtotime($commence->commencement_proposal->commencement_date)) : 'N/A' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

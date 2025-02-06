@@ -64,8 +64,8 @@ class BillController extends Controller
                 $proposal = LeaseProposal::with(['selected_space.space'])->find($billing->proposal_id);
                 $billing->date_end = new \DateTime($billing->date_end);
                 $amount = 0;
-
-                if ($billing->is_prepared == Billing::PENDING && $datenow > $billing->date_end->format('Y-m-d')) {
+                //  || $datenow > $billing->date_end->format('Y-m-d')
+                if ($billing->is_prepared == Billing::PENDING) {
                     if ($proposal->min_mgr == 0) {
                         $amount = $proposal->total_mgr;
                     } else {
@@ -122,6 +122,7 @@ class BillController extends Controller
                 'message' => 'No bills to prepare'
             ];
         }
+
         return back()->with($response);
         // return response()->json($response);
     }
