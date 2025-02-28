@@ -152,12 +152,12 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item {{ request()->routeIs('commencement.lists') ? 'active' : '' }}">
+                <!-- <li class="nav-item {{ request()->routeIs('commencement.lists') ? 'active' : '' }}">
                     <a href="{{ route('commencement.lists') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
                         <p>Commencement</p>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item  {{ request()->routeIs('admin.utility')
     || request()->routeIs('admin.category')
     || request()->routeIs('admin.charges')

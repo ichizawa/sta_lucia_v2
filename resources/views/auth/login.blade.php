@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <title>Tenant Management System</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/stlm-logo.jpeg') }}">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -132,10 +132,10 @@
         </div>
         <script>
             $(window).on("load", function () {
-                $('.overlay').fadeOut();
+                $('.overlay').fadeOut('slow');
             });
             $(window).on("beforeunload", function () {
-                $('.overlay').attr('hidden', false);
+                $('.overlay').fadeOut('slow');
             });
         </script>
         <script>
@@ -175,9 +175,11 @@
                         url: "{{ route('authenticate') }}",
                         type: "POST",
                         data: form,
-                        // dataType: 'json',
                         beforeSend: function () {
-                            // $('.overlay').attr('hidden', false);
+                            $('.overlay').fadeIn('slow');
+                        },
+                        complete: function () {
+                            $('.overlay').fadeOut('slow');
                         },
                         success: function (response) {
                             if (response.status == "error") {
@@ -207,21 +209,24 @@
                                     let redirectUrl;
                                     if (response.status == "admin") {
                                         redirectUrl = "{{ route('admin.dashboard') }}";
-                                    } else if (response.status == "bill") {
+                                    } 
+                                    if (response.status == "bill") {
                                         redirectUrl = "{{ route('bill.dashboard') }}";
-                                    } else {
+                                    } 
+                                    if (response.status == "collect") {
+                                        redirectUrl = "{{ route('collect.dashboard') }}";
+                                    }
+                                    if (response.status == "operation") {
+                                        redirectUrl = "{{ route('operation.dashboard') }}";
+                                    }
+                                    if (response.status == "lease") {
+                                        redirectUrl = "{{ route('lease.admin.dashboard') }}";
+                                    }
+                                    if (response.status == "client") {
                                         redirectUrl = "{{ route('client.dashboard') }}";
                                     }
                                     window.location = redirectUrl;
-                                    // setTimeout(function () {
-                                    //     $('.overlay').removeClass('show');
-                                    //     $('.overlay').addClass('hide');
-
-                                    //     window.location = redirectUrl;
-                                    // }, 2000);
                                 } else {
-                                    // $('.overlay').removeClass('show');
-                                    // $('.overlay').addClass('hide');
                                     var content = {
                                         message: 'Your account is still pending, please wait for admin to approve!',
                                         title: "Account Error!",
@@ -241,14 +246,12 @@
                             }
                         },
                         error: function (xhr, status, error) {
-                            // console.log(status);
+                            console.log(error);
                         },
-                        complete: function () {
-                            // $('.overlay').attr('hidden', true);
-                        }
                     })
                 });
             })
+        
         </script>
     </div>
 

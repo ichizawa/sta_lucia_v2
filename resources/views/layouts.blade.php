@@ -90,10 +90,11 @@
 </head>
 <script>
     $(window).on("load", function () {
-        $('.overlay').fadeOut();
+        $('.overlay').fadeOut('slow');
     });
     $(window).on("beforeunload", function () {
-        $('.overlay').attr('hidden', false);
+        // $('.overlay').attr('hidden', false);
+        $('.overlay').fadeIn('slow');
     });
 </script>
 @include('loader')
@@ -133,6 +134,28 @@
 
                 @include('collect.components.footer')
             </div>
+        @elseif (Auth::user()->type === 'operation')
+            @include('operations.components.sidebar')
+            <div class="main-panel">
+                @include('operations.components.navbar')
+
+                <div class="container">
+                    @yield('content')
+                </div>
+
+                @include('operations.components.footer')
+            </div>
+        @elseif (Auth::user()->type === 'lease')
+            @include('lease-admin.components.sidebar')
+            <div class="main-panel">
+                @include('lease-admin.components.navbar')
+
+                <div class="container">
+                    @yield('content')
+                </div>
+
+                @include('lease-admin.components.footer')
+            </div>
         @else
             @include('client.components.sidebar')
             <div class="main-panel">
@@ -148,7 +171,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2-checkbox/1.1.0/js/select2-checkbox.min.js"></script>
-
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-notify/1.0.0/jquery.notify.min.js"></script>
 
@@ -179,4 +202,5 @@
     <script src="{{ asset('assets/js/shared/ledger.js') }}"></script>
 
 </body>
+
 </html>

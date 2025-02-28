@@ -46,6 +46,20 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('123456789'),
             ],
             [
+                'name' => 'Operation',
+                'email' => 'operation@gmail.com',
+                'type' => 'operation',
+                'status' => '1',
+                'password' => Hash::make('123456789'),
+            ],
+            [
+                'name' => 'Lease Admin',
+                'email' => 'leaseadmin@gmail.com',
+                'type' => 'lease',
+                'status' => '1',
+                'password' => Hash::make('123456789'),
+            ],
+            [
                 'name' => 'Jon Doe',
                 'email' => 'marcialvalerogeptejr@gmail.com',
                 'type' => 'tenant',

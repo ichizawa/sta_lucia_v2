@@ -238,10 +238,35 @@ $(document).ready(function () {
 
     $('#payment_method').change(function () {
         var val = $(this).val();
-        $('#ref_num_div').attr('hidden', true);
+        // $('#ref_num_div').attr('hidden', true);
 
-        if (val !== 'Cash') {
-            $('#ref_num_div').attr('hidden', false);
+        // if (val !== 'Cash') {
+        //     $('#ref_num_div').attr('hidden', false);
+        // }
+        switch (val) {
+            case "Cash":
+                $('#ref_num_div').addClass('d-none');
+                $('#encode_bank_div').addClass('d-none');
+                $('#date_check_div').addClass('d-none');
+                $('#check_num_div').addClass('d-none');
+                $('#dep_slip_div').addClass('d-none');
+                break;
+            case "Check":
+                $('#ref_num_div').removeClass('d-none');
+                $('#encode_bank_div').removeClass('d-none');
+                $('#date_check_div').removeClass('d-none');
+                $('#check_num_div').removeClass('d-none');
+                $('#dep_slip_div').addClass('d-none');
+                break;
+            case "Online Banking":
+                $('#ref_num_div').removeClass('d-none');
+                $('#encode_bank_div').removeClass('d-none');
+                $('#date_check_div').removeClass('d-none');
+                $('#check_num_div').addClass('d-none');
+                $('#dep_slip_div').removeClass('d-none');
+                break;
+            default:
+                break;
         }
     });
 

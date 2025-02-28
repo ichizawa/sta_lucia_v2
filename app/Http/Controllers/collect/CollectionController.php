@@ -65,7 +65,7 @@ class CollectionController extends Controller
     {
         $bill = Billing::find($request->billing_id);
         $response = [];
-
+        
         if ($bill) {
             // if ($bill->debit < $bill->total_amount) {
             //     $bill->is_prepared = Billing::PENDING;

@@ -52,8 +52,8 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
-                <li class="nav-item {{ request()->routeIs('bill.dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('bill.dashboard') }}" class="collapsed" aria-expanded="false">
+                <li class="nav-item {{ request()->routeIs('operation.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('operation.dashboard') }}" class="collapsed" aria-expanded="false">
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
                     </a>
@@ -64,36 +64,39 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
-                <li class="nav-item {{ request()->routeIs('bill.billing') ? 'active' : '' }}">
-                    <a href="{{ route('bill.billing') }}" aria-expanded="false">
+                <li class="nav-item {{ request()->routeIs('pre.construction.operation') || request()->routeIs('work.permit.operation') ? 'active' : '' }}">>
+                    <a data-bs-toggle="collapse" href="#charts">
+                        <i class="far fa-chart-bar"></i>
+                        <p>Permits</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="charts">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ request()->routeIs('pre.construction.operation') ? 'active' : '' }}">
+                                <a href="{{ route('pre.construction.operation') }}">
+                                    <span class="sub-item">Pre-Construction</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('work.permit.operation') ? 'active' : '' }}">
+                                <a href="{{ route('work.permit.operation') }}">
+                                    <span class="sub-item">Work Permits</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item {{ request()->routeIs('space.construction.construction') ? 'active' : '' }}">
+                    <a href="{{ route('space.construction.construction') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
-                        <p>Billing</p>
+                        <p>Space Construction</p>
                     </a>
                 </li>
-                {{-- <li class="nav-item {{ request()->routeIs('utility.reading') || request()->routeIs('utility.reading.lists') ? 'active' : '' }}">
-                    <a href="{{ route('utility.reading') }}" aria-expanded="false">
+                <li class="nav-item {{ request()->routeIs('reading.reading.operation') ? 'active' : '' }}">
+                    <a href="{{ route('reading.reading.operation') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
                         <p>Utility Reading</p>
                     </a>
-                </li> --}}
-                <li class="nav-item {{ request()->routeIs('bill.period') ? 'active' : '' }}">
-                    <a href="{{ route('bill.period') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Billing Period</p>
-                    </a>
                 </li>
-                <!-- <li class="nav-item {{ request()->routeIs('bill.cashier') ? 'active' : '' }}">
-                    <a href="{{ route('bill.cashier') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Biller</p>
-                    </a>
-                </li> -->
-                <!-- <li class="nav-item {{ request()->routeIs('bill.cashier') ? 'active' : '' }}">
-                    <a href="{{ route('bill.cashier') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Billing</p>
-                    </a>
-                </li> -->
             </ul>
         </div>
     </div>

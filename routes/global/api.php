@@ -19,6 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => ['cors', 'json.response']], function () {
-    Route::get('/test-api', [ApiController::class, 'index'])->name('test.api');
-});
+// Route::group(['middleware' => ['cors', 'json.response']], function () {
+//     Route::get('/test-api', [ApiController::class, 'index'])->name('test.api');
+// });

@@ -18,7 +18,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
-            $validate = $request->validate([
+            $request->validate([
                 'email' => 'required|email',
                 'password' => 'required',
             ]);
@@ -28,21 +28,16 @@ class AuthController extends Controller
                 $user = Auth::user();
                 $status = $user->type;
                 $role = $user->status;
-                // if ($user->type == \App\Models\User::ROLE_ADMIN) {
-                //     // return redirect()->route('admin.dashboard');
-                // } else {
-                //     // return redirect()->route('client.dashboard');
-                // }
             } else {
                 $status = 'error';
                 $role = "0";
             }
-        }catch (ValidationException $e) {
+        } catch (ValidationException $e) {
             $error = $e->validator->errors()->first('email');
             $status = "email-error";
             $role = "0";
         }
-        
+
         return response()->json(['status' => $status, 'role' => $role]);
     }
 

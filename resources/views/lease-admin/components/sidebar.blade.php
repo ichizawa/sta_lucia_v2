@@ -52,8 +52,8 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
-                <li class="nav-item {{ request()->routeIs('bill.dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('bill.dashboard') }}" class="collapsed" aria-expanded="false">
+                <li class="nav-item {{ request()->routeIs('lease.admin.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('lease.admin.dashboard') }}" class="collapsed" aria-expanded="false">
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
                     </a>
@@ -64,36 +64,18 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
-                <li class="nav-item {{ request()->routeIs('bill.billing') ? 'active' : '' }}">
-                    <a href="{{ route('bill.billing') }}" aria-expanded="false">
+                <li class="nav-item {{ request()->routeIs('lease.admin.permits.lists') ? 'active' : '' }}">
+                    <a href="{{ route('lease.admin.permits.lists') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
-                        <p>Billing</p>
+                        <p>Issue Permits</p>
                     </a>
                 </li>
-                {{-- <li class="nav-item {{ request()->routeIs('utility.reading') || request()->routeIs('utility.reading.lists') ? 'active' : '' }}">
-                    <a href="{{ route('utility.reading') }}" aria-expanded="false">
+                <li class="nav-item {{ request()->routeIs('lease.admin.commencement.lists') ? 'active' : '' }}">
+                    <a href="{{ route('lease.admin.commencement.lists') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
-                        <p>Utility Reading</p>
-                    </a>
-                </li> --}}
-                <li class="nav-item {{ request()->routeIs('bill.period') ? 'active' : '' }}">
-                    <a href="{{ route('bill.period') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Billing Period</p>
+                        <p>Tenant Commencement</p>
                     </a>
                 </li>
-                <!-- <li class="nav-item {{ request()->routeIs('bill.cashier') ? 'active' : '' }}">
-                    <a href="{{ route('bill.cashier') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Biller</p>
-                    </a>
-                </li> -->
-                <!-- <li class="nav-item {{ request()->routeIs('bill.cashier') ? 'active' : '' }}">
-                    <a href="{{ route('bill.cashier') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Billing</p>
-                    </a>
-                </li> -->
             </ul>
         </div>
     </div>

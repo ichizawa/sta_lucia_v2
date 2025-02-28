@@ -23,9 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'signed' => \App\Http\Middleware\ValidateSignature::class,
             'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-            'authCheck' => \App\Http\Middleware\authCheck::class,
+            'authCheck' => \App\Http\Middleware\AuthCheck::class,
             'cors' => \App\Http\Middleware\Cors::class,
-            'json.response' => \App\Http\Middleware\ForceJsonResponse::class
+            'json.response' => \App\Http\Middleware\ForceJsonResponse::class,
+            'role.check' => \App\Http\Middleware\RoleCheck::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

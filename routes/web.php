@@ -15,8 +15,16 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\collect\CollectionController;
 use App\Http\Controllers\collect\CollectionLedgerController;
 use App\Http\Controllers\CommencementController;
+use App\Http\Controllers\lease_admin\IssuePermitscontroller;
+use App\Http\Controllers\lease_admin\LeaseAdminController;
 use App\Http\Controllers\LeasesController;
+use App\Http\Controllers\operation\ConstructionController;
+use App\Http\Controllers\operation\OperationController;
+use App\Http\Controllers\operation\PreConstructionController;
+use App\Http\Controllers\operation\UtilityReadingController;
+use App\Http\Controllers\operation\WorkPermitController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\reading\ReadingController;
 use App\Http\Controllers\SpaceController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
@@ -39,8 +47,7 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'authCheck']], function () {
-
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware('role.check:admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'adminIndex'])->name('admin.dashboard');
 
         Route::get('/space', [SpaceController::class, 'adminSpace'])->name('admin.space');
@@ -139,10 +146,11 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/specific-amenities-delete', [AdminController::class, 'deleteAmenities'])->name('amenities.delete');
         });
 
-        Route::prefix('commencement')->group(function () {
-            Route::get('/lists', [CommencementController::class, 'index'])->name('commencement.lists');
-            Route::post('/commencement-update', [CommencementController::class, 'commencementUpdate'])->name('commencement.update');
-        });
+        // Route::prefix('commencement')->group(function () {
+        //     Route::get('/lists', [CommencementController::class, 'index'])->name('commencement.lists');
+        //     Route::post('/commencement-update', [CommencementController::class, 'commencementUpdate'])->name('commencement.update');
+        // });
+
         Route::get('/billing-periods', [AdminController::class, 'adminBillingPeriods'])->name('admin.bill.period');
 
         Route::get('/settings', [AdminController::class, 'adminSettings'])->name('admin.settings');
@@ -150,7 +158,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/payments', [AdminController::class, 'adminPayments'])->name('admin.payments');
     });
 
-    Route::prefix('client')->group(function () {
+    Route::prefix('client')->middleware('role.check:tenant')->group(function () {
         Route::get('/dashboard', [ClientController::class, 'clientIndex'])->name('client.dashboard');
         Route::get('/lease-proposals', [ClientProposalController::class, 'index'])->name('client.proposal');
         Route::get('/award-notice', [ClientAwardNoticeController::class, 'index'])->name('client.award.notice');
@@ -162,7 +170,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         });
     });
 
-    Route::prefix('biller')->group(function () {
+    Route::prefix('biller')->middleware('role.check:bill')->group(function () {
         Route::get('/dashboard', [BillController::class, 'index'])->name('bill.dashboard');
 
         Route::prefix('collection')->group(function () {
@@ -190,9 +198,9 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         });
     });
 
-    Route::prefix('collector')->group(function () {
+    Route::prefix('collector')->middleware('role.check:collect')->group(function () {
         Route::get('/dashboard', [CollectionController::class, 'index'])->name('collect.dashboard');
-        
+
         Route::get('/collect', [CollectionController::class, 'collect'])->name('collect.invoices');
 
         Route::prefix('collection')->group(function () {
@@ -204,7 +212,46 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::prefix('ledger')->group(function () {
             Route::get('/ledger-table', [CollectionLedgerController::class, 'collect_index'])->name('collect.ledger.table');
         });
-        
+
     });
 
+    Route::prefix('operation')->middleware('role.check:operation')->group(function () {
+        Route::get('/dashboard', [OperationController::class, 'index'])->name('operation.dashboard');
+
+        Route::prefix('permits')->group(function () {
+            Route::get('/pre-construction', [PreConstructionController::class, 'index'])->name('pre.construction.operation');
+            Route::get('/get-lists', [PreConstructionController::class, 'tenantLists'])->name('pre.construction.get.tenant.lists');
+            Route::get('/contract-lists', [PreConstructionController::class, 'contractLists'])->name('pre.construction.get.contract.lists');
+
+            Route::get('/work-permits', [WorkPermitController::class, 'index'])->name('work.permit.operation');
+        });
+
+        Route::prefix('construction')->group(function () {
+            Route::get('/construction-release', [ConstructionController::class, 'index'])->name('space.construction.construction');
+        });
+
+        Route::prefix('utility-reading')->group(function () {
+            Route::get('/reading', [UtilityReadingController::class, 'index'])->name('reading.reading.operation');
+            Route::get('/lists', [UtilityReadingController::class, 'lists'])->name('reading.get.list');
+            Route::get('/utility-lists', [UtilityReadingController::class, 'utilityLists'])->name('reading.lists.utility');
+            Route::get('/utility-reading', [UtilityReadingController::class, 'reading'])->name('reading.bills.utility');
+            Route::post('/prepare-reading', [UtilityReadingController::class, 'prepare'])->name('reading.store');
+            Route::post('/save-reading', [UtilityReadingController::class, 'save'])->name('reading.save');
+        });
+    });
+
+    Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
+        Route::get('/dashboard', [LeaseAdminController::class, 'index'])->name('lease.admin.dashboard');
+
+        Route::prefix('commencement')->group(function () {
+            Route::get('/lists', [LeaseAdminController::class, 'commcenemnt_index'])->name('lease.admin.commencement.lists');
+            Route::post('/commencement-update', [LeaseAdminController::class, 'commencementUpdate'])->name('lease.admin.commencement.update');
+        });
+
+        Route::prefix('permits')->group(function () {
+            Route::get('/list', [IssuePermitscontroller::class, 'permits_index'])->name('lease.admin.permits.lists');
+            Route::get('/contract-lists', [IssuePermitscontroller::class, 'get_contracts'])->name('lease.admin.contract.lists');
+        });
+        
+    });
 });

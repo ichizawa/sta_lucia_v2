@@ -22,10 +22,38 @@
                                 </div>
                             </div>
                             <div class="col-sm-8">
-                                <div class="form-group" id="ref_num_div" hidden>
+                                <div class="form-group d-none" id="ref_num_div">
                                     <label class="form-label">Reference Number</label>
                                     <input type="text" class="form-control" name="ref_num" id="ref_num"
                                         placeholder="Enter Reference Number" required />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group d-none" id="encode_bank_div">
+                                    <label class="form-label">Encode Bank</label>
+                                    <input type="text" class="form-control" name="enc_bank" id="enc_bank" placeholder="Enter Encode Bank"
+                                        required />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group d-none" id="date_check_div">
+                                    <label class="form-label">Date Check</label>
+                                    <input type="text" class="form-control" name="date_check" id="date_check" placeholder="Enter Date Check"
+                                        required />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group d-none" id="check_num_div">
+                                    <label class="form-label">Check Number</label>
+                                    <input type="text" class="form-control" name="check_num" id="check_num"
+                                        placeholder="Enter Check Number" required />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group d-none" id="dep_slip_div">
+                                    <label class="form-label">Deposit Slip Number</label>
+                                    <input type="text" class="form-control" name="dep_slip_num" id="dep_slip_num"
+                                        placeholder="Enter Deposit Slip Number" required />
                                 </div>
                             </div>
                             <div class="col-sm-6">

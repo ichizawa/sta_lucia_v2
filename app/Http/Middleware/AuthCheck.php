@@ -5,8 +5,10 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
-class authCheck
+
+class AuthCheck
 {
     /**
      * Handle an incoming request.
@@ -17,12 +19,12 @@ class authCheck
      * @param  string  $role
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        // return $next($request);
         if (Auth::check()) {
             return $next($request);
         }
-        return redirect("login")->withSuccess('You are not allowed to access');
+        return response()->view('404', ['error' => 'You are not allowed to access'], 404);
+        // return redirect("login")->withSuccess('You are not allowed to access');
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\lease_admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\bill\Billing;
 use App\Models\CommencementProposal;
 use App\Models\LeaseProposal;
@@ -9,19 +10,24 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use File;
 use Illuminate\Http\Request;
 
-class CommencementController extends Controller
+class LeaseAdminController extends Controller
 {
     public function index()
     {
+        return view('lease-admin.dashboard');
+    }
+
+    public function commcenemnt_index()
+    {
         $proposal = LeaseProposal::with(['company', 'commencement_proposal'])->get();
-        return view('admin.commencement.commencement-table', compact('proposal'));
+        return view('lease-admin.commencement.commencement-table', compact('proposal'));
     }
 
     public function commencementUpdate(Request $request)
     {
         $propid = $request->input('prop_num', []);
         $data = [];
-        $status = true;;
+        $status = true;
 
         foreach ($propid as $prop) {
             $billingExists = Billing::where('proposal_id', $prop)->exists();
@@ -45,7 +51,7 @@ class CommencementController extends Controller
                     'is_reading' => 0,
                     'status' => 0
                 ]);
-                
+
                 $pdf = PDF::loadview('admin.components.commencement-letter')->setPaper('legal', 'portrait');
 
                 $dompdf = $pdf->getDomPDF();
@@ -65,12 +71,12 @@ class CommencementController extends Controller
             }
         }
 
-        if($status){
+        if ($status) {
             $data = [
                 'status' => 'success',
                 'message' => "Commencement date and billing created successfully."
             ];
-        }else{
+        } else {
             $data = [
                 'status' => 'error',
                 'message' => "Billing already exists."
