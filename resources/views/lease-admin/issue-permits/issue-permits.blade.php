@@ -60,7 +60,7 @@
         </div>
     </div>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#permit_tenant_table').DataTable({
                 pageLength: 10,
                 responsive: true,
@@ -75,13 +75,30 @@
                     $(row).attr('data-id', data.id);
                 }
             });
-            $('#permit_contract_table').DataTable({
+            const permit_contract_table = $('#permit_contract_table').DataTable({
                 pageLength: 10,
                 responsive: true,
+                processing: true,
+                columns: [
+                    { data: "proposal_uid" },
+                    {
+                        data: "end_contract",
+                        render: function (data) {
+                            return format_date(data);
+                        }
+                    },
+                    {
+                        data: "created_at",
+                        render: function (data) {
+                            return format_date(data);
+                        }
+                    }
+                ]
             });
 
-            $(document).on('click', '.check_contract', function() {
+            $(document).on('click', '.check_contract', function () {
                 var id = $(this).data('id');
+
                 $.ajax({
                     url: "{{ route('lease.admin.contract.lists') }}",
                     type: "GET",
@@ -89,14 +106,21 @@
                         id: id
                     },
                     dataType: "JSON",
-                    success: function(data){
-                        console.log(data);
+                    success: function (data) {
+                        permit_contract_table.clear();
+                        permit_contract_table.rows.add(data).draw();
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.log(error);
                     }
                 });
-            })
+            });
+
+            function format_date(date) {
+                let parsedDate = new Date(date);
+                let options = { month: 'short', day: '2-digit', year: 'numeric' };
+                return parsedDate.toLocaleDateString('en-US', options);
+            }
         });
     </script>
 @endsection

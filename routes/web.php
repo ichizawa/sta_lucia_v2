@@ -43,7 +43,7 @@ Route::redirect('/', '/login');
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth', [AuthController::class, 'login'])->name('authenticate');
-Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/register', [AuthController::class, 'r  egister'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'authCheck']], function () {
