@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign("category_id")->references("id")->on("categories")->cascadeOnDelete();
             $table->string("name");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

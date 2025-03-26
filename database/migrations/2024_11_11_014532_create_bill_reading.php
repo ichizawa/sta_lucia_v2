@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('date_reading')->nullable();
             $table->smallInteger('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

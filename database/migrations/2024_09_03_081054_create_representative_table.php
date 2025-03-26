@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer("status");
             $table->string("password");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

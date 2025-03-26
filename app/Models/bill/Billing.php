@@ -5,14 +5,16 @@ namespace App\Models\bill;
 use App\Models\LeaseProposal;
 use App\Models\UtilitiesReading;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Billing extends Model
 {
+    use SoftDeletes;
     protected $table = 'billing';
 
     public const PREPARED = 2;
     public const PAID = 1;
-    public const FULLY_PAID = 3; 
+    public const FULLY_PAID = 3;
     public const PENDING = 0;
 
     protected $fillable = [

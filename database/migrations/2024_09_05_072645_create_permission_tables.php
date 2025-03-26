@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('name');       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
             $table->string('guard_name'); // For MyISAM use string('guard_name', 25);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unique(['name', 'guard_name']);
         });
@@ -44,6 +45,7 @@ return new class extends Migration
             $table->string('name');       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
             $table->string('guard_name'); // For MyISAM use string('guard_name', 25);
             $table->timestamps();
+            $table->softDeletes();
             if ($teams || config('permission.testing')) {
                 $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);
             } else {
@@ -72,6 +74,7 @@ return new class extends Migration
                 $table->primary([$pivotPermission, $columnNames['model_morph_key'], 'model_type'],
                     'model_has_permissions_permission_model_type_primary');
             }
+            $table->softDeletes();
 
         });
 
@@ -96,11 +99,13 @@ return new class extends Migration
                 $table->primary([$pivotRole, $columnNames['model_morph_key'], 'model_type'],
                     'model_has_roles_role_model_type_primary');
             }
+            $table->softDeletes();
         });
 
         Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames, $pivotRole, $pivotPermission) {
             $table->unsignedBigInteger($pivotPermission);
             $table->unsignedBigInteger($pivotRole);
+            $table->softDeletes();
 
             $table->foreign($pivotPermission)
                 ->references('id') // permission id

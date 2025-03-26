@@ -209,10 +209,10 @@
                                     let redirectUrl;
                                     if (response.status == "admin") {
                                         redirectUrl = "{{ route('admin.dashboard') }}";
-                                    } 
+                                    }
                                     if (response.status == "bill") {
                                         redirectUrl = "{{ route('bill.dashboard') }}";
-                                    } 
+                                    }
                                     if (response.status == "collect") {
                                         redirectUrl = "{{ route('collect.dashboard') }}";
                                     }
@@ -222,7 +222,7 @@
                                     if (response.status == "lease") {
                                         redirectUrl = "{{ route('lease.admin.dashboard') }}";
                                     }
-                                    if (response.status == "client") {
+                                    if (response.status == "tenant") {
                                         redirectUrl = "{{ route('client.dashboard') }}";
                                     }
                                     window.location = redirectUrl;
@@ -251,7 +251,7 @@
                     })
                 });
             })
-        
+
         </script>
     </div>
 

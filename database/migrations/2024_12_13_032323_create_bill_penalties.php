@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('status')->nullable()->default(0);
             $table->dateTime('date_created')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

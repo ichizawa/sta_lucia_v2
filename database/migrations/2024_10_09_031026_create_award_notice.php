@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('proposal_id')->references('id')->on('proposal')->cascadeOnDelete();
             $table->boolean('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

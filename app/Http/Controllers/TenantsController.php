@@ -19,14 +19,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Categories;
 use App\Models\BusinessType;
-
+use App\Models\LeasableInfoModel;
+use App\Models\UtilitiesSelected;
+use App\Models\ChargesSelected;
 class TenantsController extends Controller
 {
 
     public function adminTenants()
     {
         $owners = Owner::with(['companies', 'representatives'])->get();
-        
+
         return view('admin.tenants.tenants', [
             'owners' => $owners,
         ]);
@@ -81,7 +83,7 @@ class TenantsController extends Controller
 
         $category = $request->input('category', []);
         $sub_category = $request->input('sub_category', []);
-        
+
         $data = [];
         foreach ($category as $catID) {
             foreach ($sub_category as $subID) {
@@ -94,7 +96,7 @@ class TenantsController extends Controller
             ];
             }
         }
-        
+
         if (!empty($data)) {
             BusinessType::insert($data);
         } else {
@@ -231,7 +233,7 @@ class TenantsController extends Controller
                 'hlurb' => $hlurb,
             ];
         }
-        
+
         $document_id = 0;
         foreach ($files as $file) {
             $document_id++;
@@ -257,21 +259,21 @@ class TenantsController extends Controller
 
     public function deleteTenants(Request $request){
             $rep_email = Representative::where('id', $request->id)->value('rep_email');
-     
+
             $tenant = Owner::find($request->id);
-        
+
             if ($tenant) {
                 if ($rep_email) {
                     $user = User::where('email', $rep_email)->first();
-                    
+
                     if ($user) {
                         $user->delete();
                     }
                 }
-        
+
                 // Delete the tenant
                 $tenant->delete();
-        
+
                 return response()->json(['message' => 'Tenant and associated user successfully deleted']);
             } else {
                 return response()->json(['message' => 'Tenant not found'], 404);
@@ -288,11 +290,11 @@ class TenantsController extends Controller
         if ($request->hasFile('tenant_doc_file')) {
             $fileName = $request->file('tenant_doc_file')->getClientOriginalName();
             $file = $request->file('tenant_doc_file')->storeAs('public/tenant_documents/' . $ownerName, $fileName);
-            
+
             $uploadDoc = DocumentsTable::where('id', $tenant_doc_id)->update([
                 $tenant_doc_id2 => $fileName,
             ]);
-            
+
 
             return response()->json(['status' => 'Document added successfully', 'filename' => $fileName, 'ownerName' => $ownerName]);
         } else {
@@ -318,20 +320,168 @@ class TenantsController extends Controller
         }else{
             return response()->json(['status' => 'No proposal found']);
         }
-        
+
     }
 
-    public function adminDeleteTenants(Request $request){
-        $docid = TenantDocuments::where('owner_id', $request->id)->pluck('document_id')->first();
-        DocumentsTable::where('id', $docid)->delete();
-        $rep_email = Representative::where('owner_id', $request->id)->pluck('email')->first();
-        Owner::where('id', $request->id)->delete();
-        User::where('email', $rep_email)->delete();
-        if($docid){
-            return response()->json(['status' => 'Tenant deleted successfully']);
-        }else{
-            return response()->json(['status' => 'No tenant found']);
+    // public function adminDeleteTenants(Request $request){
+    //     $docid = TenantDocuments::where('owner_id', $request->id)->pluck('document_id')->first();
+    //     DocumentsTable::where('id', $docid)->delete();
+    //     $rep_email = Representative::where('owner_id', $request->id)->pluck('email')->first();
+    //     Owner::where('id', $request->id)->delete();
+    //     User::where('email', $rep_email)->delete();
+    //     if($docid){
+    //         return response()->json(['status' => 'Tenant deleted successfully']);
+    //     }else{
+    //         return response()->json(['status' => 'No tenant found']);
+    //     }
+    // }
+
+
+
+
+    //CCJEDITED
+    public function adminDeleteTenants(Request $request)
+    {
+        try {
+            // Retrieve the document ID related to the owner
+            $docid = TenantDocuments::where('owner_id', $request->id)->pluck('document_id')->first();
+
+            // Soft delete the document if it exists
+            if ($docid) {
+                DocumentsTable::where('id', $docid)->delete();
+            }
+
+            // Retrieve the representative's email related to the owner (Use 'rep_email' NOT 'owner_email')
+            $rep_email = Representative::where('owner_id', $request->id)->pluck('rep_email')->first();
+
+            // Soft delete the owner record
+            Owner::where('id', $request->id)->delete();
+
+            // Soft delete the user record based on the representative's email
+            if ($rep_email) {
+                User::where('email', $rep_email)->delete();  // Make sure User has 'SoftDeletes' enabled
+            }
+
+            // Return success response
+            return response()->json(['status' => 'Tenant soft deleted successfully.']);
+
+        } catch (\Exception $e) {
+            // Return error response
+            return response()->json(['status' => 'Error occurred during deletion.', 'error' => $e->getMessage()], 500);
         }
     }
+
+    public function showclientProposal($proposal_id)
+    {
+        $proposals = LeaseProposal::join('company', 'proposal.tenant_id', '=', 'company.owner_id')
+            ->join('representative', 'proposal.tenant_id', '=', 'representative.owner_id')
+            ->join('owner', 'proposal.tenant_id', '=', 'owner.id')
+            ->select(
+                'proposal.*',
+                'company.company_name',
+                'company.company_address',
+                'representative.rep_fname',
+                'representative.rep_lname',
+                'representative.rep_position',
+                'owner.owner_mobile',
+                'owner.id as owner_id',
+                'owner.owner_email'
+            )
+            ->where('proposal.id', $proposal_id)
+            ->first(); // Changed this to use $proposal_id
+
+        if (!$proposals) {
+            return response()->json(['error' => 'Proposal not found.'], 404);
+        }
+        $space_proposals = LeasableInfoModel::join('space', 'leasable_space.space_id', '=', 'space.id')
+            ->where('leasable_space.proposal_id', $proposal_id)
+            ->get();
+
+        $getUtilities = UtilitiesSelected::join('utilities', 'utilities_selected.utility_id', '=', 'utilities.id')
+            ->where('utilities_selected.lease_id', $proposal_id)
+            ->get();
+
+        $getCharges = ChargesSelected::join('charges', 'extra_charges_selected.charge_id', '=', 'charges.id')
+            ->where('extra_charges_selected.lease_id', $proposal_id)
+            ->get();
+
+        $pdfFileName = 'proposal_' . $proposal_id . '.pdf';
+        $pdfPath = 'proposals/' . $pdfFileName;
+        $documentStatus = TenantDocuments::where('owner_id', $proposals->owner_id)->first();
+        $proposals->space_selected = $space_proposals;
+
+        // Return Data as JSON Response
+        return response()->json([
+            'proposal' => $proposals,
+            'space_proposals' => $space_proposals,
+            'utilities' => $getUtilities,
+            'charges' => $getCharges,
+            'document_status' => $documentStatus,
+            'pdf_url' => asset('storage/lease-proposals/' . $pdfFileName),
+        ]);
+    }
+
+
+    // public function showclientProposal($proposal_id) // Accepting parameter here
+    // {
+    //     // Fetch Proposal Details with related company, representative, and owner
+    //     $proposals = LeaseProposal::join('company', 'proposal.tenant_id', '=', 'company.owner_id')
+    //         ->join('representative', 'proposal.tenant_id', '=', 'representative.owner_id')
+    //         ->join('owner', 'proposal.tenant_id', '=', 'owner.id')
+    //         ->select(
+    //             'proposal.*',
+    //             'company.company_name',
+    //             'company.company_address',
+    //             'proposal.bussiness_nature',
+    //             'representative.rep_fname',
+    //             'representative.rep_lname',
+    //             'representative.rep_position',
+    //             'owner.owner_mobile',
+    //             'owner.id as owner_id',
+    //             'owner.owner_email'
+    //         )
+    //         ->where('proposal.id', $proposal_id)
+    //         ->first(); // Changed this to use $proposal_id
+
+    //     if (!$proposals) {
+    //         return response()->json(['error' => 'Proposal not found.'], 404);
+    //     }
+
+    //     // Fetch Related Spaces
+    //     $space_proposals = LeasableInfoModel::join('space', 'leasable_space.space_id', '=', 'space.id')
+    //         ->where('leasable_space.proposal_id', $proposal_id)
+    //         ->get();
+
+    //     // Fetch Related Utilities
+    //     $getUtilities = UtilitiesSelected::join('utilities', 'utilities_selected.utility_id', '=', 'utilities.id')
+    //         ->where('utilities_selected.lease_id', $proposal_id)
+    //         ->get();
+
+    //     // Fetch Related Charges
+    //     $getCharges = ChargesSelected::join('charges', 'extra_charges_selected.charge_id', '=', 'charges.id')
+    //         ->where('extra_charges_selected.lease_id', $proposal_id)
+    //         ->get();
+
+    //     // Generate the proposal PDF URL
+    //     $pdfFileName = 'proposal_' . $proposal_id . '.pdf';
+    //     $pdf_url = url("storage/proposals/" . $pdfFileName);
+
+
+    //     // Fetch Document Status
+    //     $documentStatus = TenantDocuments::where('owner_id', $proposals->owner_id)->first();
+
+    //     // Attach Related Spaces to Proposals
+    //     $proposals->space_selected = $space_proposals;
+
+    //     // Return Data as JSON Response
+    //     return response()->json([
+    //         'proposal' => $proposals,
+    //         'space_proposals' => $space_proposals,
+    //         'utilities' => $getUtilities,
+    //         'charges' => $getCharges,
+    //         'document_status' => $documentStatus,
+    //         'pdf_url' => $pdf_url
+    //     ]);
+    // }
 
 }

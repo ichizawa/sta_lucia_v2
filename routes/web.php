@@ -45,6 +45,9 @@ Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth', [AuthController::class, 'login'])->name('authenticate');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+// CCJEDITED
+Route::get('/tenant/show-proposal/{proposal_id}', [TenantsController::class, 'showclientProposal'])->name('tenant.show.proposal');
+
 
 Route::group(['middleware' => ['auth', 'authCheck']], function () {
     Route::prefix('admin')->middleware('role.check:admin')->group(function () {
@@ -70,6 +73,8 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
         Route::get('/tenants', [TenantsController::class, 'adminTenants'])->name('admin.tenants');
         Route::prefix('tenants')->group(function () {
+
+        Route::get('/show-proposal', [TenantsController::class, 'showclientProposal'])->name('client.show.proposal');
             Route::get('/', [TenantsController::class, 'retrieveTenants'])->name('admin.tenants');
             Route::get('/add-tenants', [TenantsController::class, 'adminAddTenants'])->name('admin.add.tenants');
             Route::post('/submit-tenants', [TenantsController::class, 'adminSubmitTenants'])->name('admin.submit.tenants');
@@ -80,6 +85,9 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/approve-tenant-documents', [TenantsController::class, 'adminApproveDocuments'])->name('admin.tenant.documents.approve');
 
             Route::post('/delete-tenant', [TenantsController::class, 'adminDeleteTenants'])->name('admin.delete.tenants');
+            //CCJEDITED
+            Route::get('/show-proposal/{proposal_id}', [TenantsController::class, 'showclientProposal'])->name('tenant.show.proposal');
+            // Route::get('/show-proposal', [TenantsController::class, 'showclientProposal'])->name('admin.show.proposal');
         });
 
         Route::prefix('leases')->group(function () {
@@ -146,10 +154,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/specific-amenities-delete', [AdminController::class, 'deleteAmenities'])->name('amenities.delete');
         });
 
-        // Route::prefix('commencement')->group(function () {
-        //     Route::get('/lists', [CommencementController::class, 'index'])->name('commencement.lists');
-        //     Route::post('/commencement-update', [CommencementController::class, 'commencementUpdate'])->name('commencement.update');
-        // });
 
         Route::get('/billing-periods', [AdminController::class, 'adminBillingPeriods'])->name('admin.bill.period');
 
@@ -252,6 +256,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/list', [IssuePermitscontroller::class, 'permits_index'])->name('lease.admin.permits.lists');
             Route::get('/contract-lists', [IssuePermitscontroller::class, 'get_contracts'])->name('lease.admin.contract.lists');
         });
-        
+
     });
 });

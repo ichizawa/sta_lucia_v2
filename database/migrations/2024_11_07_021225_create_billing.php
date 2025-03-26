@@ -29,6 +29,7 @@ return new class extends Migration
             $table->smallInteger('is_reading')->nullable()->default(0);
             $table->smallInteger('status')->nullable()->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

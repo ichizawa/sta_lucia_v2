@@ -2,6 +2,9 @@
 
 @section('content')
 
+
+@include('client.components.modals.proposal-modal')
+
 <div class="page-inner">
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>
@@ -22,24 +25,40 @@
                                 <tr>
                                     <th>Proposal ID</th>
                                     <th>Space/s</th>
+                                    <th>Total Floor Area/s</th>
                                     <th>Business</th>
                                     <th>Status</th>
                                     <th>View Proposal</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($proposals as $proposal)
-                                    <tr>
-                                        <td>{{ $proposal->id }}</td>
-                                        <td>{{ $proposal->space_name }}</td>
-                                        <td>{{ $proposal->bussiness_nature }}</td>
-                                        <td>{!! $proposal->status ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-warning">Pending</span>' !!}</td>
-                                        <td>
-                                            <a class="btn btn-sm btn-warning">
-                                                <i class="fa fa-pen"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                            {{-- CCJEDITED --}}
+                            <tbody id="proposals_table">
+                                <script>
+                                    console.log(@json($proposal));
+                                </script>
+
+                                @foreach ($proposal as $proposals)
+                                        <tr>
+                                            <td>{{ ucfirst($proposals->company_name) }}</td>
+                                            <td>
+                                                @php
+                                                    echo $propertyCodes = collect($proposals->space_selected)->pluck('property_code')->implode(', ');
+                                                @endphp
+                                                {{-- {{ $proposals->space_selected->space_name }} --}}
+                                                {{-- @foreach ($proposals->space_selected as $space)
+                                                {{ $space['space_name'] }} <br> <!-- Displaying the space name -->
+                                             @endforeach --}}
+
+                                            </td>
+                                            <td>
+                                                {{  $totalSpaceArea = collect($proposals->space_selected)->sum('space_area') . ' sqm' }}
+                                            </td>
+                                            <td>{{ $proposals->bussiness_nature }}</td>
+                                            <td>{!! $proposals->status ? '<span class="badge bg-success">Approved</span>' : '<span class="badge bg-warning">Pending</span>' !!}</td>
+                                            <td>
+                                                <a class="btn btn-sm btn-success showclientProposalContents" id="showclientProposalContents" data-show-proposal-id="{{ $proposals->id }}" data-bs-toggle="modal" data-bs-target="#clientleaseProposal"><i class="fa fa-eye"></i></a>
+                                              </td>
+                                        </tr>
                                 @endforeach
                             </tbody>
                         </table>

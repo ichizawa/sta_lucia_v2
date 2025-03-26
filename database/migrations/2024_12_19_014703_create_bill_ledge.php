@@ -40,6 +40,8 @@ return new class extends Migration {
             $table->smallInteger('status')->nullable()->default(0);
             $table->smallInteger('is_paid')->nullable()->default(0);
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

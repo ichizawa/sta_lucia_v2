@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('proposal_id')->references('id')->on('proposal')->cascadeOnDelete();
             $table->string('commencement_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

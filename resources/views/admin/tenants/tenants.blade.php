@@ -314,39 +314,81 @@
 
         });
 
+        // $('.deleteTenant').click(function () {
+        //     swal({
+        //         title: "Are you sure?",
+        //         text: "Once deleted, you will not be able to recover this!",
+        //         icon: "warning",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) {
+        //             $.ajax({
+        //                 url: "{{ route('admin.delete.tenants') }}",
+        //                 type: 'POST',
+        //                 data: {
+        //                     id: $(this).data('id')
+        //                 },
+        //                 success: function (response) {
+        //                     console.log(response);
+        //                     // swal("Poof! Your tenant has been deleted!", {
+        //                     //     icon: "success",
+        //                     // }).then(() => {
+        //                     //     location.reload();
+        //                     // });
+
+        //                 },
+        //                 error: function (xhr, status, error) {
+        //                     swal("Error deleting tenant", {
+        //                         icon: "error",
+        //                     });
+        //                 }
+        //             });
+        //         }
+        //     });
+        // });
+
+
+        //CCJEDITED
         $('.deleteTenant').click(function () {
             swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: "{{ route('admin.delete.tenants') }}",
-                        type: 'POST',
-                        data: {
-                            id: $(this).data('id')
-                        },
-                        success: function (response) {
-                            console.log(response);
-                            // swal("Poof! Your tenant has been deleted!", {
-                            //     icon: "success",
-                            // }).then(() => {
-                            //     location.reload(); 
-                            // });
-
-                        },
-                        error: function (xhr, status, error) {
-                            swal("Error deleting tenant", {
-                                icon: "error",
-                            });
-                        }
+             title: "Are you sure?",
+             text: "Once deleted, you will not be able to recover this!",
+             icon: "warning",
+             buttons: true,
+            dangerMode: true,
+         }).then((willDelete) => {
+       if (willDelete) {
+            $.ajax({
+                url: "{{ route('admin.delete.tenants') }}",
+                type: 'POST',
+                data: {
+                    id: $(this).data('id'),
+                    _token: '{{ csrf_token() }}' // Make sure CSRF token is included
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response.status === 'Tenant soft deleted successfully.') {
+                        swal("Poof! Your tenant has been deleted!", {
+                            icon: "success",
+                        }).then(() => {
+                            location.reload(); // Reloads the page to reflect changes
+                        });
+                    } else {
+                        swal(response.status, {
+                            icon: "error",
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    swal("Error deleting tenant", {
+                        icon: "error",
                     });
                 }
             });
-        });
+        }
     });
+});
+});
 </script>
 @endsection

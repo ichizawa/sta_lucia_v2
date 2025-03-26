@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign("owner_id")->references("id")->on("owner");
             $table->integer("proposal_id")->nullable();
             $table->smallInteger("status");
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('leasable_space');
-        
+
     }
 };

@@ -3,9 +3,12 @@
 namespace App\Models\bill;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BillingDetails extends Model
 {
+
+    use SoftDeletes;
     protected $table = 'bill_details';
 
     protected $fillable = [

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('residential_address', 80);
             // $table->string('password', 30);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

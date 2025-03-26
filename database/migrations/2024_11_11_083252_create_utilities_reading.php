@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('date_reading')->nullable();
             $table->smallInteger('prepare');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

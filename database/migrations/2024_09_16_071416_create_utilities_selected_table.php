@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("utility_id");
             $table->foreign("utility_id")->references("id")->on("utilities");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

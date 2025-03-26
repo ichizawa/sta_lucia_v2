@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AmenitySelected extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'amenity_selected';
     protected $fillable = [

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string("owner_mobile", 11)->nullable();
             // $table->tinyInteger("status");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

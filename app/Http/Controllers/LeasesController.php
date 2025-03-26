@@ -54,16 +54,13 @@ class LeasesController extends Controller
         $spaces_proposal = LeasableInfoModel::join('space', 'leasable_space.space_id', '=', 'space.id')
             ->select('leasable_space.owner_id', 'leasable_space.proposal_id', 'space.*')
             ->get();
-
         $proposal->map(function ($proposals) use ($spaces_proposal) {
             $matching_space_proposals = $spaces_proposal->filter(function ($space) use ($proposals) {
                 return $space->proposal_id == $proposals->id;
             });
             $proposals->space_selected = $matching_space_proposals;
-
             return $proposals;
         });
-
         return view('admin.leases.leases-proposal', compact('proposal'));
     }
     public function addLease()
@@ -428,7 +425,7 @@ class LeasesController extends Controller
             }
 
             ProposalStatus::dispatch($proposal);
-            
+
         } else {
             $counter_proposal = CounterProposal::find($request->proposal_id);
             $counter_proposal->status = $request->option;
