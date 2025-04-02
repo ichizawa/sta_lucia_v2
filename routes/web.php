@@ -8,6 +8,7 @@ use App\Http\Controllers\client\ClientAuthorizedPersonelController;
 use App\Http\Controllers\client\ClientAwardNoticeController;
 use App\Http\Controllers\client\ClientContractController;
 use App\Http\Controllers\client\ClientDocumentsController;
+use App\Http\Controllers\client\ClientLedgerController;
 use App\Http\Controllers\client\ClientProposal;
 use App\Http\Controllers\client\ClientProposalController;
 use App\Http\Controllers\client\ClientSpaceController;
@@ -164,6 +165,9 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/award-notice', [ClientAwardNoticeController::class, 'index'])->name('client.award.notice');
         Route::get('/contracts', [ClientContractController::class, 'index'])->name('client.contracts');
         Route::get('/space', [ClientSpaceController::class, 'index'])->name('client.space');
+
+        Route::get('/ledger', [ClientLedgerController::class, 'index'])->name('client.ledger');
+
         Route::prefix('setup')->group(function () {
             Route::get('/authorized-personnel', [ClientAuthorizedPersonelController::class, 'index'])->name('client.auth.person');
             Route::get('/documents', [ClientDocumentsController::class, 'index'])->name('client.documents');
@@ -252,6 +256,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/list', [IssuePermitscontroller::class, 'permits_index'])->name('lease.admin.permits.lists');
             Route::get('/contract-lists', [IssuePermitscontroller::class, 'get_contracts'])->name('lease.admin.contract.lists');
         });
-        
+
     });
 });

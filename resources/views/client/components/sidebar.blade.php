@@ -89,6 +89,12 @@
                             <p>Spaces</p>
                         </a>
                     </li>
+                    <li class="nav-item {{ request()->routeIs('client.ledger') ? 'active' : '' }}">
+                        <a href="{{ route('client.ledger') }}" aria-expanded="false">
+                            <i class="fas fa-layer-group"></i>
+                            <p>Ledger</p>
+                        </a>
+                    </li>
                     <li
                         class="nav-item {{ request()->routeIs('client.auth.person') || request()->routeIs('client.documents') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#leases" aria-expanded="false">

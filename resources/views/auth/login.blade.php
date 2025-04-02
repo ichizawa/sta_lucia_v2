@@ -131,15 +131,15 @@
             </div>
         </div>
         <script>
-            $(window).on("load", function () {
+            $(window).on("load", function() {
                 $('.overlay').fadeOut('slow');
             });
-            $(window).on("beforeunload", function () {
+            $(window).on("beforeunload", function() {
                 $('.overlay').fadeOut('slow');
             });
         </script>
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
                 toggleButton();
 
                 function toggleButton() {
@@ -164,24 +164,24 @@
                     }
                 }
 
-                $('#floatingInput').on('input', function () {
+                $('#floatingInput').on('input', function() {
                     validateEmailInput();
                 });
 
-                $("#loginBTN").click(function (e) {
+                $("#loginBTN").click(function(e) {
                     e.preventDefault();
                     var form = $('#loginForm').serialize();
                     $.ajax({
                         url: "{{ route('authenticate') }}",
                         type: "POST",
                         data: form,
-                        beforeSend: function () {
+                        beforeSend: function() {
                             $('.overlay').fadeIn('slow');
                         },
-                        complete: function () {
+                        complete: function() {
                             $('.overlay').fadeOut('slow');
                         },
-                        success: function (response) {
+                        success: function(response) {
                             if (response.status == "error") {
                                 var content = {
                                     message: 'Invalid Email or Password',
@@ -209,10 +209,10 @@
                                     let redirectUrl;
                                     if (response.status == "admin") {
                                         redirectUrl = "{{ route('admin.dashboard') }}";
-                                    } 
+                                    }
                                     if (response.status == "bill") {
                                         redirectUrl = "{{ route('bill.dashboard') }}";
-                                    } 
+                                    }
                                     if (response.status == "collect") {
                                         redirectUrl = "{{ route('collect.dashboard') }}";
                                     }
@@ -222,7 +222,7 @@
                                     if (response.status == "lease") {
                                         redirectUrl = "{{ route('lease.admin.dashboard') }}";
                                     }
-                                    if (response.status == "client") {
+                                    if (response.status == "tenant") {
                                         redirectUrl = "{{ route('client.dashboard') }}";
                                     }
                                     window.location = redirectUrl;
@@ -245,13 +245,12 @@
                                 }
                             }
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             console.log(error);
                         },
                     })
                 });
             })
-        
         </script>
     </div>
 
