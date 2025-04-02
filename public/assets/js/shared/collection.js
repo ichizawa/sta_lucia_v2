@@ -134,7 +134,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status, error) {
-                console.log(xhr.responseText);
+                console.log(status);
             },
         });
     }

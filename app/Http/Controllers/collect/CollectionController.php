@@ -60,7 +60,21 @@ class CollectionController extends Controller
         return response()->json($proposals);
 
     }
+    public function checkBills(Request $request)
+    {
+        $company = Company::with(['proposals.billing'])
+            ->whereHas('proposals.billing', function ($query) use ($request) {
+                $query->where('date_end', 'like', "{$request->date}%")
+                    ->orWhere(function ($q) use ($request) {
+                        $q->whereNull('date_end')
+                            ->where('date_start', 'like', "{$request->date}%");
+                    })
+                    ->where('is_prepared', Billing::PREPARED);
+            })
+            ->get();
 
+        return response()->json($company);
+    }
     public function store(Request $request)
     {
         $bill = Billing::find($request->billing_id);
