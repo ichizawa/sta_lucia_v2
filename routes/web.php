@@ -202,11 +202,11 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/dashboard', [CollectionController::class, 'index'])->name('collect.dashboard');
 
         Route::get('/collect', [CollectionController::class, 'collect'])->name('collect.invoices');
-
         Route::prefix('collection')->group(function () {
             Route::get('/ledger', [CollectionController::class, 'get'])->name('collect.ledger.index');
             Route::get('/contract-info', [CollectionController::class, 'view'])->name('collect.get.bills');
             Route::post('/collect-bill', [CollectionController::class, 'store'])->name('collect.store.bills');
+            Route::get('/check-periods', [CollectionController::class, 'checkBills'])->name('collect.check.bills');
         });
 
         Route::prefix('ledger')->group(function () {

@@ -72,10 +72,6 @@
     </div>
 </div>
 <script>
-    const BILL_CHECK = "{{ route('biller.check.bills') }}";
-
-    // $(document).ready(function() {
-    //    $('#collectOptionModal').modal('show'); 
-    // });
+    const BILL_CHECK = "{{ route('collect.check.bills') }}";
 </script>
 @endsection
