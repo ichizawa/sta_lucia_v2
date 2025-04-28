@@ -25,6 +25,16 @@ class SpaceController extends Controller
         return view('admin.space.space', compact('all'));
     }
 
+    public function adminDelete(Request $request)
+    {
+        $space = Space::find($request->id);
+        $space->delete();
+
+        return response()->json([
+            'message'=> 'Space deleted successfully',
+        ]);
+    }
+
     public function adminAddSpace()
     {
         $utilities = UtilitiesModel::all();
@@ -173,14 +183,14 @@ class SpaceController extends Controller
 
     public function adminEditMall(Request $request)
     {
-        $mallCode = SpaceMallCode::get();
+        $mallCode = SpaceMallCode::orderBy('id', 'asc')->get();
         return view('admin.space.mall', compact('mallCode'));
     }
 
     public function adminEditBuilding(Request $request)
     {
         $mallCodes = SpaceMallCode::get();
-        $buildingCode = SpaceBuilding::with(['mallcodes'])->get();
+        $buildingCode = SpaceBuilding::with(['mallcodes'])->orderBy('building_numbers.id', 'asc')->get();
         // dd($buildingCode); die();
         return view('admin.space.building', compact('buildingCode', 'mallCodes'));
     }
@@ -218,7 +228,7 @@ class SpaceController extends Controller
     }
 
     public function adminSubmitBuilding(Request $request)
-    {   
+    {
         $data = [
             'mallid' => $request->mallCode,
             'bldgnum' => $request->bldg_number,
@@ -290,15 +300,33 @@ class SpaceController extends Controller
     {
         switch ($option) {
             case 'mall':
-                SpaceMallCode::where('id', $request->id)->delete();
-                return back()->with('success', 'Mall Code Deleted Successfully');
+                $mall = SpaceMallCode::find($request->id);
+                if ($mall) {
+                    $mall->delete();
+
+                    $buildings = SpaceBuilding::where('mallid', $request->id)->get();
+                    foreach ($buildings as $building) {
+                        $building->delete();
+                        SpaceLevel::where('bldgnumid', $building->id)->delete();
+                    }
+                }
+                return response()->json(['success' => 'Mall and Related Buildings and Levels Deleted Successfully']);
+
             case 'building':
-                SpaceBuilding::where('id', $request->id)->delete();
-                return back()->with('success', 'Building Code Deleted Successfully');
+                $building = SpaceBuilding::find($request->id);
+                if ($building) {
+                    $building->delete();
+                    SpaceLevel::where('bldgnumid', $building->id)->delete();
+                }
+                return response()->json(['success' => 'Building and Related Levels Deleted Successfully']);
+
             case 'level':
                 SpaceLevel::where('id', $request->id)->delete();
-                return back()->with('success', 'Level Code Deleted Successfully');
+                return response()->json(['success' => 'Level Deleted Successfully']);
+
             default:
+                return response()->json(['error' => 'Invalid Option'], 400);
         }
+
     }
 }

@@ -10,7 +10,7 @@ class UtilityController extends Controller
 
     public function adminUtility()
     {
-        $all = UtilitiesModel::all();
+        $all = UtilitiesModel::orderBy('id', 'desc')->get();
         return view('admin.utility', compact('all'));
     }
 

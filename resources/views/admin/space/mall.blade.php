@@ -86,9 +86,8 @@
                                 id: $(this).data('mall-id'),
                             },
                             success: function(response) {
-                                toastr.success('Mall code deleted successfully.');
+                                // toastr.success('Mall code deleted successfully.');
                                 location.reload();
-
                             },
                             error: function() {
                                 toastr.error(

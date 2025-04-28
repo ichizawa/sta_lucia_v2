@@ -23,7 +23,7 @@ class AdminController extends Controller
         if (Auth::check()) {
             return view('admin.dashboard');
         }
-        return redirect()->route('auth.login');
+        return redirect()->route('login');
     }
 
     public function adminSettings()
@@ -38,7 +38,7 @@ class AdminController extends Controller
 
     public function adminAmenities()
     {
-        $all = Amenities::all();
+        $all = Amenities::orderBy('id', 'desc')->get();
         return view('admin.amenities', compact('all'));
     }
 

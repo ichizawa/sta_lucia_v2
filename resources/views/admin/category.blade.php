@@ -35,6 +35,7 @@
                                     <tr>
                                         <th>Category Name</th>
                                         <th>Sub Category Name</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -46,21 +47,9 @@
     </div>
     @include('admin.components.modals.categories')
     @include('admin.components.modals.add-subcategories-modal')
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
     <script>
-        // Pusher.logToConsole = true;
-        var pusher = new Pusher('0e1b160ee99a4bd8a3b0', {
-            cluster: 'ap1'
-        });
-        var channel = pusher.subscribe('category-channel');
-        channel.bind('CategoryUpdated', function(data) {
-            if ($.fn.DataTable.isDataTable('.category-item')) {
-                $('.category-item').DataTable().ajax.reload();
-            }
-        });
-
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Destroy existing DataTable if it exists
             if ($.fn.DataTable.isDataTable('.category-item')) {
                 $('.category-item').DataTable().destroy();
@@ -71,17 +60,19 @@
                 processing: true,
                 serverSide: true,
                 retrieve: true,
+                order: [[0, 'asc']],
                 ajax: {
                     url: "{{ route('get.category') }}",
                     type: 'GET',
                     dataSrc: 'data',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('DataTables AJAX Error:', xhr.responseText);
                         console.error('Status:', status);
                         console.error('Error:', error);
                     }
                 },
-                columns: [{
+                columns: [
+                    {
                         data: 'category_name',
                         name: 'category_name',
                         title: 'Category',
@@ -92,11 +83,66 @@
                         name: 'subcategory_names',
                         title: 'Subcategories',
                         className: 'text-center'
-
+                    },
+                    {
+                        data: null,
+                        title: 'Action',
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            // console.log(row);
+                            return `
+                                        <div>
+                                            <button class="btn btn-sta btn-sm ms-auto"><i class="fa fa-edit"></i></button>
+                                            <button class="btn btn-danger btn-sm ms-auto" onClick="deleteCategory(${row.id})"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                    `;
+                        }
                     }
                 ]
             });
         });
+
+        function deleteCategory(id) {
+            // console.log(id);
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((result) => {
+                if (result) {
+                    $.ajax({
+                        url: '{{ route('admin.delete.category') }}',
+                        method: 'POST',
+                        data: {
+                            id: id
+                        },
+                        success: function (response) {
+                            reloadDataTable();
+                            var content = {
+                                message: "Category deleted successfully",
+                                title: "Success",
+                                icon: "fa fa-bell"
+                            };
+
+                            $.notify(content, {
+                                type: 'success',
+                                placement: {
+                                    from: 'top',
+                                    align: 'right',
+                                },
+                                time: 1000,
+                                delay: 1500,
+                            });
+                        },
+                        error: function () {
+                            toastr.error('An error occurred while deleting the category.');
+                        }
+                    });
+                }
+            });
+        }
 
         function reloadDataTable() {
             if ($.fn.DataTable.isDataTable('.category-item')) {

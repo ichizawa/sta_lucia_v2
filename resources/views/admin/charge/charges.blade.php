@@ -42,8 +42,7 @@
                                             <td>
                                                 <div class="d-flex  gap-3 justify-content-center">
                                                     <a class="btn btn-sm btn-warning editCharge" data-bs-toggle="modal"
-                                                        data-bs-target="#editChargeModal"
-                                                        data-charges="{{ $charges }}">
+                                                        data-bs-target="#editChargeModal" data-charges="{{ $charges }}">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                     <a class="btn btn-sm btn-danger deleteCharge"
@@ -64,10 +63,9 @@
     </div>
     @if (session('success'))
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var content = {
-                    message: '{{ session('
-                                                                                                                                                                                                success ') }}',
+                    message: @json(session('success')),
                     title: "Success",
                     icon: "fa fa-bell"
                 };
@@ -86,8 +84,8 @@
     @endif
 
     <script>
-        $(document).ready(function() {
-            $('.deleteCharge').click(function() {
+        $(document).ready(function () {
+            $('.deleteCharge').click(function () {
                 swal({
                     title: "Are you sure?",
                     text: "Once deleted, you will not be able to recover this charge!",
@@ -102,13 +100,28 @@
                             data: {
                                 id: $(this).data('charge-id')
                             },
-                            success: function(response) {
-                                toastr.success('Charge deleted successfully.');
+                            success: function (response) {
+                                // toastr.success('Charge deleted successfully.');
                                 location.reload();
+                                var content = {
+                                    message: response.success,
+                                    title: "Success",
+                                    icon: "fa fa-bell"
+                                };
+
+                                $.notify(content, {
+                                    type: 'success',
+                                    placement: {
+                                        from: 'top',
+                                        align: 'right',
+                                    },
+                                    time: 1000,
+                                    delay: 1500,
+                                });
                             },
-                            error: function() {
-                                toastr.error(
-                                    'An error occurred while deleting the charge.');
+                            error: function () {
+                                // toastr.error(
+                                //     'An error occurred while deleting the charge.');
                             }
                         });
                     }

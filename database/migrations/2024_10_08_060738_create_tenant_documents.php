@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('view');
             $table->boolean('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

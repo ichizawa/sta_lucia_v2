@@ -77,7 +77,7 @@
 </div>
 
 <script>
-    $('#submit-new-category').click(function(e) {
+    $('#submit-new-category').click(function (e) {
         e.preventDefault();
         var formData = new FormData($('#add-category')[0]);
         $('#addCategoriesModal').empty();
@@ -88,16 +88,46 @@
             dataType: 'JSON',
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.success) {
                     reloadDataTable();
                     $('#addCategoriesModal').modal('hide');
-                    toastr.success(response.message, 'Success');
+                    var content = {
+                        message: response.message,
+                        title: "Success",
+                        icon: "fa fa-bell"
+                    };
+
+                    $.notify(content, {
+                        type: 'success',
+                        placement: {
+                            from: 'top',
+                            align: 'right',
+                        },
+                        time: 1000,
+                        delay: 1500,
+                    });
+                    // toastr.success(response.message, 'Success');
                 } else {
-                    toastr.warning(response.message, 'Warning');
+                    // toastr.warning(response.message, 'Warning');
+                    var content = {
+                        message: response.message,
+                        title: "Failed",
+                        icon: "fa fa-bell"
+                    };
+
+                    $.notify(content, {
+                        type: 'error',
+                        placement: {
+                            from: 'top',
+                            align: 'right',
+                        },
+                        time: 1000,
+                        delay: 1500,
+                    });
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 toastr.error(response.message, 'Error');
             }
 
