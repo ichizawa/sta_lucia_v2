@@ -33,7 +33,7 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         // let data = '';
         // $('#utilityListModal').on('show.bs.modal', function (event) {
         //     data = $(event.relatedTarget).data('date');
@@ -92,7 +92,7 @@
             pageLength: 10,
         });
 
-        $('#utilityListModal').on('show.bs.modal', function (event) {
+        $('#utilityListModal').on('show.bs.modal', function(event) {
             var date = $(event.relatedTarget).data('date');
 
             $.ajax({
@@ -102,17 +102,17 @@
                 data: {
                     date: date
                 },
-                success: function (data) {
+                success: function(data) {
                     $('#appendInputHere').empty();
                     table.clear();
-                    $.each(data, function (key, value) {
+                    $.each(data, function(key, value) {
                         let nestedRows = '';
 
-                        $.each(value.proposals, function (ke, val) {
+                        $.each(value.proposals, function(ke, val) {
                             let hasReading = false;
                             let noReading = true;
 
-                            $.each(val.utilities, function (idx, utility) {
+                            $.each(val.utilities, function(idx, utility) {
                                 if (utility.readings !== null) {
                                     hasReading = true;
                                     noReading = false;
@@ -122,7 +122,8 @@
                             let readingStatus = '';
                             if (noReading) {
                                 readingStatus = 'No reading yet';
-                            } else if (hasReading && val.utilities.length === 1) {
+                            } else if (hasReading && val.utilities
+                                .length === 1) {
                                 readingStatus = 'All have readings';
                             } else {
                                 readingStatus = 'Some have readings';
@@ -134,10 +135,10 @@
 
                             nestedRows += `
                                 <tr>
-                                    <td>${val.proposal_uid}</td>
-                                    <td>${val.billing.is_reading == 0 ? 'Not Prepared' : val.billing.is_reading == 1 ? 'Processed' : 'Prepared'}</td>
-                                    <td>${readingStatus}</td>
-                                    <td>
+                                    <td class="text-center">${val.proposal_uid}</td>
+                                    <td class="text-center">${val.billing.is_reading == 0 ? 'Not Prepared' : val.billing.is_reading == 1 ? 'Processed' : 'Prepared'}</td>
+                                    <td class="text-center">${readingStatus}</td>
+                                    <td class="text-center">
                                         <a class="btn btn-sm btn-warning"
                                             data-bs-toggle="modal"
                                             data-bs-target="#contractUtilityLists"
@@ -159,10 +160,10 @@
                                 <table class="table table-bordered">
                                     <thead class="thead-light">
                                         <tr>   
-                                            <th>Contract #</th>
-                                            <th>Status</th>
-                                            <th>Reading Status</th>
-                                            <th>Action</th>
+                                            <th class="text-center">Contract #</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Reading Status</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -175,13 +176,13 @@
 
                     table.draw();
                 },
-                error: function (status, xhr, error) {
+                error: function(status, xhr, error) {
                     console.log(xhr.responseText);
                 }
             });
         });
 
-        $('.prepareBilling').click(function () {
+        $('.prepareBilling').click(function() {
             var form = $('#billReadingForm')[0];
             var formdata = new FormData(form);
 
@@ -193,7 +194,7 @@
                 cache: false,
                 processData: false,
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     $('#utilityListModal').modal('hide');
                     var content;
 
@@ -220,7 +221,7 @@
                         delay: 2500,
                     })
                 },
-                error: function (status, xhr, error) {
+                error: function(status, xhr, error) {
                     console.log(xhr.responseText);
                 }
             });

@@ -2,19 +2,20 @@
     .logo-header img {
         height: 10vh;
         width: 100%;
-
     }
 
     .logo-header {
+        /* margin-top: 10px; */
         display: flex;
         justify-content: center;
         text-align: center;
         align-items: center;
-        background-color: aliceblue;
+        /* background-color: aliceblue; */
     }
 
     .sidebar {
-        background-color: aliceblue;
+        background-color: #ded8c1;
+        /* background-color: #e1e0da; */
     }
 
     body {
@@ -25,6 +26,19 @@
         background-color: #8B7231 !important;
         border-color: #8B7231 !important;
         color: white !important;
+    }
+
+    @media (min-width: 1024px) and (max-width: 1366px) {
+        .logo-header {
+            margin-top: 30px
+        }
+
+        .logo-header .btn-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin: 0 !important;
+        }
     }
 </style>
 
@@ -158,14 +172,16 @@
                         <p>Commencement</p>
                     </a>
                 </li> --}}
-                <li class="nav-item  {{ request()->routeIs('admin.utility')
-    || request()->routeIs('admin.category')
-    || request()->routeIs('admin.charges')
-    || request()->routeIs('admin.amenities')
-    || request()->routeIs('space.edit.mall')
-    || request()->routeIs('space.edit.building')
-    || request()->routeIs('space.edit.level')
-    ? 'active' : '' }}">
+                <li
+                    class="nav-item  {{ request()->routeIs('admin.utility') ||
+                    request()->routeIs('admin.category') ||
+                    request()->routeIs('admin.charges') ||
+                    request()->routeIs('admin.amenities') ||
+                    request()->routeIs('space.edit.mall') ||
+                    request()->routeIs('space.edit.building') ||
+                    request()->routeIs('space.edit.level')
+                        ? 'active'
+                        : '' }}">
                     <a data-bs-toggle="collapse" href="#setup" aria-expanded="false">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                         <p>Setup</p>
@@ -201,7 +217,8 @@
                                 </a>
                                 <div class="collapse" id="subnav1">
                                     <ul class="nav nav-collapse subnav">
-                                        <li class="{{ request()->routeIs('space.edit.mall', 'mall') ? 'active' : '' }}">
+                                        <li
+                                            class="{{ request()->routeIs('space.edit.mall', 'mall') ? 'active' : '' }}">
                                             <a href="{{ route('space.edit.mall', 'mall') }}">
                                                 <span class="sub-item">Mall Codes</span>
                                             </a>
@@ -238,8 +255,14 @@
                 </li>
                 <li class="nav-item {{ request()->routeIs('admin.reports') ? 'active' : '' }}">
                     <a href="{{ route('admin.reports') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fa-solid fa-file-lines"></i>
                         <p>Reports</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('admin.activity-log') ? 'active' : '' }}">
+                    <a href="{{ route('admin.activity-log') }}" aria-expanded="false">
+                        <i class="fa-solid fa-clock"></i>
+                        <p>Activity Log <i class="bi bi-clock-history"></i></p>
                     </a>
                 </li>
             </ul>

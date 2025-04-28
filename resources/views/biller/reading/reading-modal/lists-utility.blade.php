@@ -30,13 +30,13 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        $('#contractUtilityLists').on('show.bs.modal', function (event) {
+    $(document).ready(function() {
+        $('#contractUtilityLists').on('show.bs.modal', function(event) {
             var id = $(event.relatedTarget).data('proposal-id');
             var date = $(event.relatedTarget).data('date');
 
             // console.log('id from list utility:' + id);
-            
+
             $('#backbtn').attr('data-date', date);
 
             $.ajax({
@@ -46,9 +46,9 @@
                 data: {
                     proposal_id: id
                 },
-                success: function (data) {
+                success: function(data) {
                     $('#contractTableUtility').empty();
-                    $.each(data.utilities, function (key, value) {
+                    $.each(data.utilities, function(key, value) {
                         $('#contractTableUtility').append(`
                             <tr>
                                 <td>${value.util_desc.utility_name}</td>
@@ -68,7 +68,7 @@
                         `);
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.log(xhr.responseText);
                 }
             });

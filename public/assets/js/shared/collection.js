@@ -29,18 +29,20 @@ $(document).ready(function () {
     const tenant_table = $('#tenant-datatables').DataTable({
         pageLength: 10,
         columns: [
-            { data: 'acc_id' },
-            { data: 'store_name' },
+            { data: 'acc_id', className: 'text-center' },
+            { data: 'store_name', className: 'text-center' },
             {
                 data: null,
                 render: function (data, type, row) {
                     return `
+                    <div class="d-flex gap-2 justify-content-center">
                         <button class="btn btn-sta btn-sm action-view" data-bs-toggle="modal" data-bs-target="#collectionLedgerModal" data-id="${row.owner_id}">
-                            <i class="fa fa-eye"></i>
+                        <i class="fa fa-eye"></i>
                         </button>
                         <button class="btn btn-warning btn-sm action-pay" data-bs-toggle="offcanvas" data-bs-target="#paymentCanvas" data-id="${row.owner_id}">
                             <i class="fa fa-pencil"></i>
-                        </button>
+                        </button>                
+                    </div>
                     `;
                 },
             },

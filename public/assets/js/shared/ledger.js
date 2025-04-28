@@ -2,24 +2,25 @@ $(document).ready(function () {
     const ledger = $('#ledgerTable').DataTable({
         pageLength: 10,
         columns: [
-            { data: 'bill_no' },
-            { data: 'transaction_id' },
+            { data: 'bill_no', className: 'text-center' },
+            { data: 'transaction_id', className: 'text-center' },
             {
                 data: 'debit',
+                className: 'text-center',
                 render: function (data) {
                     return parseFloat(data).toFixed(2);
                 },
             },
             {
-                data: 'credit',
+                data: 'credit', className: 'text-center',
                 render: function (data) {
                     return parseFloat(data).toFixed(2);
                 },
             },
-            { data: 'remarks' },
+            { data: 'remarks', className: 'text-center' }, 
             // { data: 'status' },
             {
-                data: 'created_at',
+                data: 'created_at', className: 'text-center',
                 render: function (data) {
                     return formatDate(data);
                 },

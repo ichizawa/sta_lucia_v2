@@ -28,33 +28,33 @@
                             <table id="multi-filter-select" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Proposed To</th>
-                                        <th>Space/s</th>
-                                        <th>Total Floor Area/s</th>
-                                        <th>Tenant Type</th>
-                                        <th>Status</th>
-                                        <th>View Proposal</th>
+                                        <th class="text-center">Proposed To</th>
+                                        <th class="text-center">Space/s</th>
+                                        <th class="text-center">Total Floor Area/s</th>
+                                        <th class="text-center">Tenant Type</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">View Proposal</th>
                                     </tr>
                                 </thead>
                                 <tbody id="proposals_table">
                                     @foreach ($proposal as $proposals)
                                         <tr>
-                                            <td>{{ ucfirst($proposals->company_name) }}</td>
-                                            <td>
+                                            <td class="text-center">{{ ucfirst($proposals->company_name) }}</td>
+                                            <td class="text-center">
                                                 @php
                                                     echo $propertyCodes = collect($proposals->space_selected)
                                                         ->pluck('property_code')
                                                         ->implode(', ');
                                                 @endphp
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 {{ $totalSpaceArea = collect($proposals->space_selected)->sum('space_area') . ' sqm' }}
                                             </td>
-                                            <td>{{ $proposals->tenant_type }}</td>
-                                            <td>{!! $proposals->status
+                                            <td class="text-center">{{ $proposals->tenant_type }}</td>
+                                            <td class="text-center">{!! $proposals->status
                                                 ? '<span class="badge bg-success">Approved</span>'
                                                 : '<span class="badge bg-warning">Pending</span>' !!}</td>
-                                            <td>
+                                            <td class="text-center">
                                                 <a class="btn btn-sm btn-success showProposalContents"
                                                     id="showProposalContents" data-show-proposal-id="{{ $proposals->id }}"
                                                     data-bs-toggle="modal" data-bs-target="#leaseProposal"><i

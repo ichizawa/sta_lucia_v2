@@ -2,19 +2,20 @@
     .logo-header img {
         height: 10vh;
         width: 100%;
-
     }
 
     .logo-header {
+        /* margin-top: 10px; */
         display: flex;
         justify-content: center;
         text-align: center;
         align-items: center;
-        background-color: aliceblue;
+        /* background-color: aliceblue; */
     }
 
     .sidebar {
-        background-color: aliceblue;
+        background-color: #e1e0da;
+        /* background-color: aliceblue; */
     }
 
     body {
@@ -25,6 +26,19 @@
         background-color: #8B7231 !important;
         border-color: #8B7231 !important;
         color: white !important;
+    }
+
+    @media (min-width: 1024px) and (max-width: 1366px) {
+        .logo-header {
+            margin-top: 30px
+        }
+
+        .logo-header .btn-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin: 0 !important;
+        }
     }
 </style>
 
@@ -66,7 +80,7 @@
                 </li>
                 <li class="nav-item {{ request()->routeIs('bill.billing') ? 'active' : '' }}">
                     <a href="{{ route('bill.billing') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fa-solid fa-receipt"></i>
                         <p>Billing</p>
                     </a>
                 </li>
@@ -78,7 +92,7 @@
                 </li> --}}
                 <li class="nav-item {{ request()->routeIs('bill.period') ? 'active' : '' }}">
                     <a href="{{ route('bill.period') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fa-solid fa-calendar-day"></i>
                         <p>Billing Period</p>
                     </a>
                 </li>

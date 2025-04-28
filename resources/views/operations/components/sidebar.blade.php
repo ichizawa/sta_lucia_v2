@@ -2,19 +2,20 @@
     .logo-header img {
         height: 10vh;
         width: 100%;
-
     }
 
     .logo-header {
+        /* margin-top: 10px; */
         display: flex;
         justify-content: center;
         text-align: center;
         align-items: center;
-        background-color: aliceblue;
+        /* background-color: aliceblue; */
     }
 
     .sidebar {
-        background-color: aliceblue;
+        background-color: #e1e0da;
+        /* background-color: aliceblue; */
     }
 
     body {
@@ -25,6 +26,19 @@
         background-color: #8B7231 !important;
         border-color: #8B7231 !important;
         color: white !important;
+    }
+
+    @media (min-width: 1024px) and (max-width: 1366px) {
+        .logo-header {
+            margin-top: 30px
+        }
+
+        .logo-header .btn-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin: 0 !important;
+        }
     }
 </style>
 
@@ -64,7 +78,8 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
-                <li class="nav-item {{ request()->routeIs('pre.construction.operation') || request()->routeIs('work.permit.operation') ? 'active' : '' }}">>
+                <li
+                    class="nav-item {{ request()->routeIs('pre.construction.operation') || request()->routeIs('work.permit.operation') ? 'active' : '' }}">
                     <a data-bs-toggle="collapse" href="#charts">
                         <i class="far fa-chart-bar"></i>
                         <p>Permits</p>
@@ -85,6 +100,50 @@
                         </ul>
                     </div>
                 </li>
+                <li
+                    class="nav-item {{ request()->routeIs('operation.award.notices') || request()->routeIs('operation.award.notices') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#notices" aria-expanded="false">
+                        <i class="fa-solid fa-award"></i>
+                        <p>Notices</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="notices">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ request()->routeIs('operation.award.notices') ? 'active' : '' }}">
+                                <a href="{{ route('operation.award.notices', 'view') }}">
+                                    <span class="sub-item">Award Notice</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('operation.vacate.notices') ? 'active' : '' }}">
+                                <a href="{{ route('operation.vacate.notices') }}">
+                                    <span class="sub-item">Vacate Notice</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li
+                    class="nav-item {{ request()->routeIs('operation.renewal.contract') || request()->routeIs('operation.termination.contract') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#contracts" aria-expanded="false">
+                        <i class="fa-solid fa-file-signature"></i>
+                        <p>Contract</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="contracts">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ request()->routeIs('operation.renewal.contract') ? 'active' : '' }}">
+                                <a href="{{ route('operation.renewal.contract') }}">
+                                    <span class="sub-item">Renewal of Contract</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('operation.termination.contract') ? 'active' : '' }}">
+                                <a href="{{ route('operation.termination.contract') }}">
+                                    <span class="sub-item">Termination of Contract</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item {{ request()->routeIs('space.construction.construction') ? 'active' : '' }}">
                     <a href="{{ route('space.construction.construction') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
@@ -93,7 +152,7 @@
                 </li>
                 <li class="nav-item {{ request()->routeIs('reading.reading.operation') ? 'active' : '' }}">
                     <a href="{{ route('reading.reading.operation') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fa-solid fa-gears"></i>
                         <p>Utility Reading</p>
                     </a>
                 </li>

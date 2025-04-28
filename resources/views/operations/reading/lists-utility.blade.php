@@ -10,9 +10,10 @@
                     <table id="utilityreading-datatable" class="table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Utility Name</th>
-                                <th>Utility Reading</th>
-                                <th>Action</th>
+                                <th class="text-center">Utility Name</th>
+                                <th class="text-center">Utility Reading</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody id="contractTableUtility">
@@ -30,13 +31,13 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        $('#contractUtilityLists').on('show.bs.modal', function (event) {
+    $(document).ready(function() {
+        $('#contractUtilityLists').on('show.bs.modal', function(event) {
             var id = $(event.relatedTarget).data('proposal-id');
             var date = $(event.relatedTarget).data('date');
 
             // console.log('id from list utility:' + id);
-            
+
             $('#backbtn').attr('data-date', date);
 
             $.ajax({
@@ -46,15 +47,15 @@
                 data: {
                     proposal_id: id
                 },
-                success: function (data) {
+                success: function(data) {
                     $('#contractTableUtility').empty();
-                    $.each(data.utilities, function (key, value) {
+                    $.each(data.utilities, function(key, value) {
                         $('#contractTableUtility').append(`
                             <tr>
-                                <td>${value.util_desc.utility_name}</td>
-                                <td>${value.util_read ? parseFloat(value.util_read.total_reading).toFixed(2) : 'No Reading Yet'}</td>
-                                <td>${value.util_read ? value.util_read.prepare ? 'Prepared' : 'Not Prepared' : 'No Reading Yet'}</td>
-                                <td>
+                                <td class="text-center">${value.util_desc.utility_name}</td>
+                                <td class="text-center">${value.util_read ? parseFloat(value.util_read.total_reading).toFixed(2) : 'No Reading Yet'}</td>
+                                <td class="text-center">${value.util_read ? value.util_read.prepare ? 'Prepared' : 'Not Prepared' : 'No Reading Yet'}</td>
+                                <td class="text-center">
                                 <button class="btn btn-sm btn-warning"
                                     data-date="${date}"
                                     data-proposal-id="${id}"
@@ -68,7 +69,7 @@
                         `);
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.log(xhr.responseText);
                 }
             });

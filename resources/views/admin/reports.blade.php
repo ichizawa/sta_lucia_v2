@@ -13,10 +13,10 @@
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">List of Reports</h4>
                             <!-- <button class="btn btn-outline-info btn-round ms-auto" data-bs-toggle="modal"
-                                data-bs-target="#addRowModal">
-                                <i class="fa fa-plus"></i>
-                                Add Utitlity
-                            </button> -->
+                                                    data-bs-target="#addRowModal">
+                                                    <i class="fa fa-plus"></i>
+                                                    Add Utitlity
+                                                </button> -->
                         </div>
                     </div>
                     <div class="card-body">
@@ -24,18 +24,18 @@
                             <table id="basic-datatables" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Store Name</th>
-                                        <th>Store Representative</th>
-                                        <th>Report</th>
-                                        <th>Actions</th>
+                                        <th class="text-center">Store Name</th>
+                                        <th class="text-center">Store Representative</th>
+                                        <th class="text-center">Report</th>
+                                        <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Vape Mart</td>
-                                        <td>Ace Batingal</td>
-                                        <td>Sales</td>
-                                        <td>View Report</td>
+                                        <td class="text-center">Vape Mart</td>
+                                        <td class="text-center">Ace Batingal</td>
+                                        <td class="text-center">Sales</td>
+                                        <td class="text-center">View Report</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -45,5 +45,4 @@
             </div>
         </div>
     </div>
-   
 @endsection

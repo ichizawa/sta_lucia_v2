@@ -2,19 +2,20 @@
     .logo-header img {
         height: 10vh;
         width: 100%;
-
     }
 
     .logo-header {
+        /* margin-top: 10px; */
         display: flex;
         justify-content: center;
         text-align: center;
         align-items: center;
-        background-color: aliceblue;
+        /* background-color: aliceblue; */
     }
 
     .sidebar {
-        background-color: aliceblue;
+        background-color: #e1e0da;
+        /* background-color: aliceblue; */
     }
 
     body {
@@ -25,6 +26,19 @@
         background-color: #8B7231 !important;
         border-color: #8B7231 !important;
         color: white !important;
+    }
+
+    @media (min-width: 1024px) and (max-width: 1366px) {
+        .logo-header {
+            margin-top: 30px
+        }
+
+        .logo-header .btn-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin: 0 !important;
+        }
     }
 </style>
 
@@ -54,7 +68,7 @@
             <ul class="nav nav-secondary">
                 <li class="nav-item {{ request()->routeIs('collect.dashboard') ? 'active' : '' }}">
                     <a href="{{ route('collect.dashboard') }}" class="collapsed" aria-expanded="false">
-                        <i class="fas fa-home"></i>
+                        <i class="fa-solid fa-house"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
@@ -66,7 +80,7 @@
                 </li>
                 <li class="nav-item {{ request()->routeIs('collect.invoices') ? 'active' : '' }}">
                     <a href="{{ route('collect.invoices') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
                         <p>Collection</p>
                     </a>
                 </li>
@@ -88,7 +102,7 @@
                         <p>Reports</p>
                     </a>
                 </li> -->
-                
+
                 <!-- <li class="nav-item {{ request()->routeIs('client.proposal') ? 'active' : '' }}">
                     <a href="{{ route('client.proposal') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>

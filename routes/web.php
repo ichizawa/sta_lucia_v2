@@ -6,6 +6,7 @@ use \App\Http\Controllers\biller\InvoicesController;
 use App\Http\Controllers\biller\CashierController;
 use App\Http\Controllers\client\ClientAuthorizedPersonelController;
 use App\Http\Controllers\client\ClientAwardNoticeController;
+use App\Http\Controllers\client\ClientBillingController;
 use App\Http\Controllers\client\ClientContractController;
 use App\Http\Controllers\client\ClientDocumentsController;
 use App\Http\Controllers\client\ClientLedgerController;
@@ -20,7 +21,9 @@ use App\Http\Controllers\lease_admin\IssuePermitscontroller;
 use App\Http\Controllers\lease_admin\LeaseAdminController;
 use App\Http\Controllers\LeasesController;
 use App\Http\Controllers\operation\ConstructionController;
+use App\Http\Controllers\operation\OperationContractController;
 use App\Http\Controllers\operation\OperationController;
+use App\Http\Controllers\operation\OperationNoticesController;
 use App\Http\Controllers\operation\PreConstructionController;
 use App\Http\Controllers\operation\UtilityReadingController;
 use App\Http\Controllers\operation\WorkPermitController;
@@ -44,7 +47,7 @@ Route::redirect('/', '/login');
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth', [AuthController::class, 'login'])->name('authenticate');
-Route::get('/register', [AuthController::class, 'r  egister'])->name('register');
+Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'authCheck']], function () {
@@ -135,10 +138,13 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/vacate-notices', [VacateNoticesController::class, 'adminVacateNotices'])->name('admin.vacate.notices');
         });
 
+
         Route::prefix('contract')->group(function () {
             Route::get('/renewal-contract', [ContractController::class, 'adminRenewalContract'])->name('admin.renewal.contract');
             Route::get('/view-contract', [ContractController::class, 'adminViewContract'])->name('admin.view.contract');
             Route::get('/termination-contract', [ContractController::class, 'adminTerminationContract'])->name('admin.termination.contract');
+
+            // Route::get('/download-vacate-notice', [ContractController::class, 'downloadVacateNoticePDF'])->name('download.vacate.notice');
         });
 
         Route::get('/amenities', [AdminController::class, 'adminAmenities'])->name('admin.amenities');
@@ -157,6 +163,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/settings', [AdminController::class, 'adminSettings'])->name('admin.settings');
         Route::get('/reports', [AdminController::class, 'adminReports'])->name('admin.reports');
         Route::get('/payments', [AdminController::class, 'adminPayments'])->name('admin.payments');
+        Route::get('/activity-log', [AdminController::class, 'adminActivityLog'])->name('admin.activity-log');
     });
 
     Route::prefix('client')->middleware('role.check:tenant')->group(function () {
@@ -165,6 +172,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/award-notice', [ClientAwardNoticeController::class, 'index'])->name('client.award.notice');
         Route::get('/contracts', [ClientContractController::class, 'index'])->name('client.contracts');
         Route::get('/space', [ClientSpaceController::class, 'index'])->name('client.space');
+        Route::get('/billing', [ClientBillingController::class, 'index'])->name('client.billing');
 
         Route::get('/ledger', [ClientLedgerController::class, 'index'])->name('client.ledger');
 
@@ -229,6 +237,30 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
             Route::get('/work-permits', [WorkPermitController::class, 'index'])->name('work.permit.operation');
         });
+
+
+
+        //changes
+        Route::prefix('notices')->group(function () {
+            Route::get('/award-notices/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.notices');
+            Route::get('operation/notices/get-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.get');
+
+            // Route::get('/get-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.get');
+            Route::get('/view-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.view');
+            Route::post('/submit-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.submit');
+
+            Route::post('notice-option/{validation}', [OperationNoticesController::class, 'operationNoticeOptions'])->name('operation.notice.options');
+
+            Route::get('/vacate-notices', [OperationNoticesController::class, 'operationVacateNotices'])->name('operation.vacate.notices');
+
+        });
+
+        Route::prefix('contract')->group(function () {
+            Route::get('/renewal-contract', [OperationContractController::class, 'operationRenewalContract'])->name('operation.renewal.contract');
+            Route::get('/view-contract', [ContractController::class, 'adminViewContract'])->name('operation.view.contract');
+            Route::get('/termination-contract', [OperationContractController::class, 'operationTerminationContract'])->name('operation.termination.contract');
+        });
+        //changes
 
         Route::prefix('construction')->group(function () {
             Route::get('/construction-release', [ConstructionController::class, 'index'])->name('space.construction.construction');

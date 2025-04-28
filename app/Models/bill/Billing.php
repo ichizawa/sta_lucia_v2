@@ -12,7 +12,7 @@ class Billing extends Model
 
     public const PREPARED = 2;
     public const PAID = 1;
-    public const FULLY_PAID = 3; 
+    public const FULLY_PAID = 3;
     public const PENDING = 0;
 
     protected $fillable = [
@@ -42,7 +42,8 @@ class Billing extends Model
         return $this->hasMany(UtilitiesReading::class, 'proposal_id', 'proposal_id');
     }
 
-    public function bill_details(){
+    public function bill_details()
+    {
         return $this->hasMany(BillingDetails::class, 'billing_id');
     }
 }

@@ -32,12 +32,12 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         const table = $("#utilityreading-datatable").DataTable({
             pageLength: 10,
         });
 
-        $('#utilityListModal').on('show.bs.modal', function (event) {
+        $('#utilityListModal').on('show.bs.modal', function(event) {
             var date = $(event.relatedTarget).data('date');
 
             $.ajax({
@@ -47,17 +47,17 @@
                 data: {
                     date: date
                 },
-                success: function (data) {
+                success: function(data) {
                     $('#appendInputHere').empty();
                     table.clear();
-                    $.each(data, function (key, value) {
+                    $.each(data, function(key, value) {
                         let nestedRows = '';
 
-                        $.each(value.proposals, function (ke, val) {
+                        $.each(value.proposals, function(ke, val) {
                             let hasReading = false;
                             let noReading = true;
 
-                            $.each(val.utilities, function (idx, utility) {
+                            $.each(val.utilities, function(idx, utility) {
                                 if (utility.readings !== null) {
                                     hasReading = true;
                                     noReading = false;
@@ -67,7 +67,8 @@
                             let readingStatus = '';
                             if (noReading) {
                                 readingStatus = 'No reading yet';
-                            } else if (hasReading && val.utilities.length === 1) {
+                            } else if (hasReading && val.utilities
+                                .length === 1) {
                                 readingStatus = 'All have readings';
                             } else {
                                 readingStatus = 'Some have readings';
@@ -120,13 +121,13 @@
 
                     table.draw();
                 },
-                error: function (status, xhr, error) {
+                error: function(status, xhr, error) {
                     console.log(xhr.responseText);
                 }
             });
         });
 
-        $('.prepareBilling').click(function () {
+        $('.prepareBilling').click(function() {
             var form = $('#billReadingForm')[0];
             var formdata = new FormData(form);
 
@@ -138,7 +139,7 @@
                 cache: false,
                 processData: false,
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     $('#utilityListModal').modal('hide');
                     var content;
 
@@ -165,7 +166,7 @@
                         delay: 2500,
                     })
                 },
-                error: function (status, xhr, error) {
+                error: function(status, xhr, error) {
                     console.log(xhr.responseText);
                 }
             });

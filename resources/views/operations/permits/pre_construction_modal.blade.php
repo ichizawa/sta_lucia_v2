@@ -1,5 +1,4 @@
-<div class="modal fade" id="showLisstPermit" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="showLisstPermit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,10 +16,10 @@
                     <table id="showPermitsTable" class="display table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Permit #</th>
-                                <th>Permit Name</th>
-                                <th>Permit Status</th>
-                                <th>Actions</th>
+                                <th class="text-center">Permit #</th>
+                                <th class="text-center">Permit Name</th>
+                                <th class="text-center">Permit Status</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                     </table>
@@ -34,10 +33,9 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         const tablecontractlists = $('#showPermitsTable').DataTable({
             pageLength: 10,
         });
     });
-
 </script>

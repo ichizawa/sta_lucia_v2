@@ -1,7 +1,37 @@
+<style>
+    @media (min-width: 600px) and (max-width: 991.98px) {
+        .navbar-brand {
+            /* margin-top: -10px; */
+            height: 90px !important;
+            width: 90px !important;
+        }
+
+        .nav-bg {
+            background-color: #ded8c1 !important;
+        }
+    }
+
+    .dropdown-menu::after {
+        border-bottom-color: #8B7231 !important;
+    }
+
+    .text-brown {
+        color: #8B7231 !important;
+    }
+
+    .main-header {
+        background-color: #ded8c1 !important;
+    }
+
+    .quick-actions-header {
+        background-color: #8B7231 !important;
+    }
+</style>
+
 <div class="main-header">
     <div class="main-header-logo">
         <!-- Logo Header -->
-        <div class="logo-header" >
+        <div class="logo-header">
             <a href="index.html" class="logo">
                 <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
@@ -246,7 +276,8 @@
                 </li>
 
                 <li class="dropdown nav-item topbar-user hidden-caret">
-                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" type="button" aria-expanded="false">
+                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" type="button"
+                        aria-expanded="false">
                         <div class="avatar-sm">
                             <img src="" alt="..." class="avatar-img rounded-circle" />
                         </div>
@@ -260,8 +291,7 @@
                             <li>
                                 <div class="user-box">
                                     <div class="avatar-lg">
-                                        <img src="" alt="image profile"
-                                            class="avatar-img rounded" />
+                                        <img src="" alt="image profile" class="avatar-img rounded" />
                                     </div>
                                     <div class="u-text">
                                         <h4>{{ Auth::user()->name }}</h4>
@@ -279,7 +309,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Account Setting</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{route('logout')}}">Logout</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                             </li>
                         </div>
                     </ul>

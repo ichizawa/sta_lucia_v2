@@ -10,9 +10,9 @@
                     <table class="table table-fluid table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Document Name</th>
-                                <th>Document Status</th>
-                                <th>Actions</th>
+                                <th class="text-center">Document Name</th>
+                                <th class="text-center">Document Status</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="tenant-documents">
@@ -37,7 +37,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="container-fluid d-flex justify-content-center align-items-center text-center" id="tenant-documents-pdf" style="height: 84vh;">
+                <div class="container-fluid d-flex justify-content-center align-items-center text-center"
+                    id="tenant-documents-pdf" style="height: 84vh;">
                     <!-- <iframe id="tenant-documents-pdf" src="" width="100%" height="100%" style="border: none;"></iframe> -->
                 </div>
             </div>

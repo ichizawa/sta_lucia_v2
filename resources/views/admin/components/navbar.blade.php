@@ -1,9 +1,33 @@
-<div class="main-header">
+<style>
+    @media (min-width: 600px) and (max-width: 991.98px) {
+        .navbar-brand {
+            /* margin-top: -10px; */
+            height: 90px !important;
+            width: 90px !important;
+        }
+
+        .nav-bg {
+            background-color: #ded8c1 !important;
+        }
+    }
+
+    .dropdown-menu::after {
+        border-bottom-color: #8B7231 !important;
+    }
+
+    .text-brown {
+        color: #8B7231 !important;
+    }
+</style>
+
+
+
+<div class="main-header" style="background-color: #d2caab;">
 
     <div class="main-header-logo">
-        <div class="logo-header" data-background-color="dark">
+        <div class="logo-header nav-bg">
             <a href="index.html" class="logo">
-                <img src="{{ asset('assets/img/chadengle.jpg')}}" class="navbar-brand" height="20" />
+                <img src="{{ asset('assets/img/chadengle.jpg') }}" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
@@ -19,7 +43,7 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg shadow-sm">
         <div class="container-fluid">
             <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
                 <!-- <div class="input-group">
@@ -184,59 +208,53 @@
                         <i class="fas fa-layer-group"></i>
                     </a>
                     <div class="dropdown-menu quick-actions animated fadeIn">
-                        <div class="quick-actions-header">
+                        <div class="quick-actions-header" style="background-color: #8B7231">
                             <span class="title mb-1">Quick Actions</span>
                             <span class="subtitle op-7">Shortcuts</span>
                         </div>
                         <div class="quick-actions-scroll scrollbar-outer">
                             <div class="quick-actions-items">
                                 <div class="row m-0">
-                                    <a class="col-6 col-md-4 p-0" href="#">
+                                    <a class="col-6 col-md-4 p-0" href="{{ route('leases.leases.proposal') }}">
                                         <div class="quick-actions-item">
                                             <div class="avatar-item bg-danger rounded-circle">
-                                                <i class="far fa-calendar-alt"></i>
+                                                <i class="fa-solid fa-file-invoice"></i>
                                             </div>
-                                            <span class="text">Calendar</span>
+                                            <span class="text text-brown">Lease Proposal</span>
                                         </div>
                                     </a>
-                                    <a class="col-6 col-md-4 p-0" href="#">
+                                    <a class="col-6 col-md-4 p-0" href="{{ route('admin.award.notices', 'view') }}"">
                                         <div class="quick-actions-item">
                                             <div class="avatar-item bg-warning rounded-circle">
-                                                <i class="fas fa-map"></i>
+                                                <i class="fa-solid fa-award"></i>
                                             </div>
-                                            <span class="text">Maps</span>
+                                            <span class="text text-brown">Award Notice</span>
                                         </div>
                                     </a>
-                                    <a class="col-6 col-md-4 p-0" href="#">
+                                    <a class="col-6 col-md-4 p-0" href="{{ route('admin.renewal.contract') }}">
+                                        <div class="quick-actions-item">
+                                            <div class="avatar-item bg-primary rounded-circle">
+                                                <i class="fa-solid fa-file-signature"></i>
+                                            </div>
+                                            <span class="text text-brown">Renewal of Contract</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="row m-0 justify-content-center"><a class="col-6 col-md-4 p-0"
+                                        href="{{ route('admin.tenants') }}">
+                                        <div class="quick-actions-item">
+                                            <div class="avatar-item bg-success rounded-circle">
+                                                <i class="fa-solid fa-people-carry-box"></i>
+                                            </div>
+                                            <span class="text text-brown">Tenants</span>
+                                        </div>
+                                    </a>
+                                    <a class="col-6 col-md-4 p-0" href="{{ route('admin.reports') }}">
                                         <div class="quick-actions-item">
                                             <div class="avatar-item bg-info rounded-circle">
                                                 <i class="fas fa-file-excel"></i>
                                             </div>
-                                            <span class="text">Reports</span>
-                                        </div>
-                                    </a>
-                                    <a class="col-6 col-md-4 p-0" href="#">
-                                        <div class="quick-actions-item">
-                                            <div class="avatar-item bg-success rounded-circle">
-                                                <i class="fas fa-envelope"></i>
-                                            </div>
-                                            <span class="text">Emails</span>
-                                        </div>
-                                    </a>
-                                    <a class="col-6 col-md-4 p-0" href="#">
-                                        <div class="quick-actions-item">
-                                            <div class="avatar-item bg-primary rounded-circle">
-                                                <i class="fas fa-file-invoice-dollar"></i>
-                                            </div>
-                                            <span class="text">Invoice</span>
-                                        </div>
-                                    </a>
-                                    <a class="col-6 col-md-4 p-0" href="#">
-                                        <div class="quick-actions-item">
-                                            <div class="avatar-item bg-secondary rounded-circle">
-                                                <i class="fas fa-credit-card"></i>
-                                            </div>
-                                            <span class="text">Payments</span>
+                                            <span class="text text-brown">Reports</span>
                                         </div>
                                     </a>
                                 </div>
@@ -246,7 +264,8 @@
                 </li>
 
                 <li class="nav-item topbar-user dropdown hidden-caret">
-                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                        aria-expanded="false">
                         <div class="avatar-sm">
                             <img src="assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
                         </div>
@@ -279,7 +298,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Account Setting</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{route('logout')}}">Logout</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                             </li>
                         </div>
                     </ul>

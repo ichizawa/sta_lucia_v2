@@ -82,17 +82,17 @@
                 ],
                 urls: ["assets/css/fonts.min.css"],
             },
-            active: function () {
+            active: function() {
                 sessionStorage.fonts = true;
             },
         });
     </script>
 </head>
 <script>
-    $(window).on("load", function () {
+    $(window).on("load", function() {
         $('.overlay').fadeOut('slow');
     });
-    $(window).on("beforeunload", function () {
+    $(window).on("beforeunload", function() {
         // $('.overlay').attr('hidden', false);
         $('.overlay').fadeIn('slow');
     });

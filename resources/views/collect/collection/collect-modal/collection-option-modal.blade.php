@@ -31,15 +31,15 @@
                             <div class="col-sm-6">
                                 <div class="form-group d-none" id="encode_bank_div">
                                     <label class="form-label">Encode Bank</label>
-                                    <input type="text" class="form-control" name="enc_bank" id="enc_bank" placeholder="Enter Encode Bank"
-                                        required />
+                                    <input type="text" class="form-control" name="enc_bank" id="enc_bank"
+                                        placeholder="Enter Encode Bank" required />
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group d-none" id="date_check_div">
                                     <label class="form-label">Date Check</label>
-                                    <input type="text" class="form-control" name="date_check" id="date_check" placeholder="Enter Date Check"
-                                        required />
+                                    <input type="text" class="form-control" name="date_check" id="date_check"
+                                        placeholder="Enter Date Check" required />
                                 </div>
                             </div>
                             <div class="col-sm-12">
@@ -73,8 +73,8 @@
                             <div class="col-sm-9">
                                 <div class="form-group">
                                     <label class="form-label">Change</label>
-                                    <input type="text" class="form-control" name="change" id="change" placeholder="0.00"
-                                        readonly />
+                                    <input type="text" class="form-control" name="change" id="change"
+                                        placeholder="0.00" readonly />
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -82,8 +82,8 @@
                                     <label class="form-label">Deposit Credit</label>
                                     <div class="selectgroup selectgroup-pills">
                                         <label class="selectgroup-item">
-                                            <input type="checkbox" id="deposit_credit" name="deposit_credit" value="true"
-                                                class="selectgroup-input" />
+                                            <input type="checkbox" id="deposit_credit" name="deposit_credit"
+                                                value="true" class="selectgroup-input" />
                                             <span class="selectgroup-button">Deposit</span>
                                         </label>
                                     </div>
@@ -108,14 +108,14 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label class="form-label">Remarks</label>
-                                    <textarea class="form-control" name="remarks" id="remarks" rows="3"
-                                        placeholder="Remarks" required></textarea>
+                                    <textarea class="form-control" name="remarks" id="remarks" rows="3" placeholder="Remarks" required></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <input type="text" class="form-control" name="billing_id" id="billing_id" placeholder="#" hidden />
+                <input type="text" class="form-control" name="billing_id" id="billing_id" placeholder="#"
+                    hidden />
                 <input type="text" class="form-control" name="biller_num" id="biller_num" hidden />
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -58,8 +58,8 @@
                                 <div class="form-group">
                                     <label for="select_category">Select Category</label>
                                     <select class="form-select form-control" name="category" id="select_category">
-                                        @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{ $category->name }}</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -87,10 +87,10 @@
 </div>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         let subCategoryCounter = 1;
 
-        $('#add-subcategory').click(function () {
+        $('#add-subcategory').click(function() {
             subCategoryCounter++;
             const newSubCategoryField = `
             <div class="form-group">
@@ -101,26 +101,24 @@
             $('#subcategory-container').append(newSubCategoryField);
         });
 
-        $("#submit-new-sub-category").click(function () {
-           
+        $("#submit-new-sub-category").click(function() {
+
             var formData = new FormData($("#form-sub-category")[0])
             $.ajax({
-                url: "{{ route('submit.sub.category')}}",
+                url: "{{ route('submit.sub.category') }}",
                 type: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (data) {
+                success: function(data) {
                     toastr.success(data.message, 'Success');
                     reloadDataTable();
                     $('#addSubCategoriesModal').modal('hide');
                 },
-                error: function (data) {
+                error: function(data) {
                     console.log(data);
                 }
             })
         });
     });
-
-
 </script>

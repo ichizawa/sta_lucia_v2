@@ -19,12 +19,12 @@
                             <table id="client" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Proposal ID</th>
-                                        <th>Space/s</th>
-                                        <th>Total Floor Area/s</th>
-                                        <th>Tenant Type</th>
-                                        <th>Status</th>
-                                        <th>View Proposal</th>
+                                        <th class="text-center">Proposal ID</th>
+                                        <th class="text-center">Space/s</th>
+                                        <th class="text-center">Total Floor Area/s</th>
+                                        <th class="text-center">Tenant Type</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">View Proposal</th>
                                     </tr>
                                 </thead>
                                 <tbody>

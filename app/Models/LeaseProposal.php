@@ -36,11 +36,13 @@ class LeaseProposal extends Model
         return $this->hasOne(Billing::class, 'proposal_id');
     }
 
-    public function owner(){
+    public function owner()
+    {
         return $this->belongsTo(Owner::class, 'tenant_id', 'id');
     }
-    
-    public function representative(){
+
+    public function representative()
+    {
         return $this->belongsTo(Representative::class, 'tenant_id', 'owner_id');
     }
 
@@ -54,16 +56,18 @@ class LeaseProposal extends Model
         return $this->hasMany(UtilitiesSelected::class, 'lease_id');
     }
 
-    public function charges(){
+    public function charges()
+    {
         return $this->hasMany(ChargesSelected::class, 'lease_id');
     }
 
     public function selected_space()
     {
-        return $this->hasMany(LeasableInfoModel:: class, 'proposal_id', 'id');
+        return $this->hasMany(LeasableInfoModel::class, 'proposal_id', 'id');
     }
 
-    public function commencement_proposal(){
+    public function commencement_proposal()
+    {
         return $this->hasOne(CommencementProposal::class, 'proposal_id');
     }
 }

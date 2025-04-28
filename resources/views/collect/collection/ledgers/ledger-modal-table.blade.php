@@ -11,14 +11,14 @@
                     <table id="ledgerTable" class="table table-striped table-striped table-hover mt-3">
                         <thead>
                             <tr>
-                                <th>Billing #</th>
-                                <th>Transaction Number</th>
-                                <th>Debit</th>
-                                <th>Credit</th>
+                                <th class="text-center">Billing #</th>
+                                <th class="text-center">Transaction Number</th>
+                                <th class="text-center">Debit</th>
+                                <th class="text-center">Credit</th>
                                 <!-- <th>Beginning Balance</th> -->
-                                <th>Remarks</th>
+                                <th class="text-center">Remarks</th>
                                 <!-- <th>Status</th> -->
-                                <th>Transaction Date</th>
+                                <th class="text-center">Transaction Date</th>
                                 <!-- <th>Due Date</th> -->
                             </tr>
                         </thead>
@@ -29,7 +29,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sta" id="backtocontractlist" data-bs-toggle="modal" data-bs-target="#collectionLedgerModal">Back</button>
+                <button type="button" class="btn btn-sta" id="backtocontractlist" data-bs-toggle="modal"
+                    data-bs-target="#collectionLedgerModal">Back</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

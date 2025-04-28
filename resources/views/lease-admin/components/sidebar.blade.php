@@ -10,11 +10,10 @@
         justify-content: center;
         text-align: center;
         align-items: center;
-        background-color: aliceblue;
     }
 
     .sidebar {
-        background-color: aliceblue;
+        background-color: #e1e0da;
     }
 
     body {
@@ -54,7 +53,7 @@
             <ul class="nav nav-secondary">
                 <li class="nav-item {{ request()->routeIs('lease.admin.dashboard') ? 'active' : '' }}">
                     <a href="{{ route('lease.admin.dashboard') }}" class="collapsed" aria-expanded="false">
-                        <i class="fas fa-home"></i>
+                        <i class="fa-solid fa-square-poll-vertical"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
@@ -66,13 +65,13 @@
                 </li>
                 <li class="nav-item {{ request()->routeIs('lease.admin.permits.lists') ? 'active' : '' }}">
                     <a href="{{ route('lease.admin.permits.lists') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="far fa-chart-bar"></i>
                         <p>Issue Permits</p>
                     </a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('lease.admin.commencement.lists') ? 'active' : '' }}">
                     <a href="{{ route('lease.admin.commencement.lists') }}" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fa-solid fa-calendar-check"></i>
                         <p>Tenant Commencement</p>
                     </a>
                 </li>

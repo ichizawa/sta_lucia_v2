@@ -62,4 +62,9 @@ class AdminController extends Controller
             return response()->json(['message' => 'Utility not Found'], 404);
         }
     }
+
+    public function adminActivityLog()
+    {
+        return view('admin.activity-log');
+    }
 }

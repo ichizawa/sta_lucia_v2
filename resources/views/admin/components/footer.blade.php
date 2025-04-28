@@ -1,27 +1,33 @@
+<style>
+    .footer-txt-size {
+        font-size: 11px;
+    }
+</style>
+
 <footer class="footer">
     <div class="container-fluid d-flex justify-content-between">
         <nav class="pull-left">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link footer-txt-size" href="#">
                         MediaonePH
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"> Help </a>
+                    <a class="nav-link footer-txt-size" href="#"> Help </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"> Licenses </a>
+                    <a class="nav-link footer-txt-size" href="#"> Licenses </a>
                 </li>
             </ul>
         </nav>
-        <div class="copyright">
+        <div class="copyright footer-txt-size">
             2024, made with <i class="fa fa-heart heart text-danger"></i> by
-            <a href="#">MediaonePH</a>
+            <a href="#" class="footer-txt-size">MediaonePH</a>
         </div>
-        <div>
+        <div class="footer-txt-size">
             Distributed by
-            <a href="#">MediaonePH</a>.
+            <a href="#" class="footer-txt-size">MediaonePH</a>.
         </div>
     </div>
 </footer>

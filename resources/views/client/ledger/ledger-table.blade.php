@@ -19,19 +19,25 @@
                             <table id="client" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Billing #</th>
-                                        <th>Transaction Number</th>
-                                        <th>Debit</th>
-                                        <th>Credit</th>
-                                        <!-- <th>Beginning Balance</th> -->
-                                        <th>Remarks</th>
-                                        <!-- <th>Status</th> -->
-                                        <th>Transaction Date</th>
-                                        <!-- <th>Due Date</th> -->
+                                        <th class="text-center">Billing #</th>
+                                        <th class="text-center">Transaction Number</th>
+                                        <th class="text-center">Debit</th>
+                                        <th class="text-center">Credit</th>
+                                        <th class="text-center">Remarks</th>
+                                        <th class="text-center">Transaction Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    {{-- @foreach ($ledgerData as $ledger)
+                                        <tr>
+                                            <td class="text-center">{{ $ledger->bill_no }}</td>
+                                            <td class="text-center">{{ $ledger->transaction_id }}</td>
+                                            <td class="text-center">{{ $ledger->debit }}</td>
+                                            <td class="text-center">{{ $ledger->credit }}</td>
+                                            <td class="text-center">{{ $ledger->remarks }}</td>
+                                            <td class="text-center date-to">{{ $ledger->created_at }}</td>
+                                        </tr>
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -40,48 +46,24 @@
             </div>
         </div>
     </div>
-
-
-
-    {{-- <div class="modal fade" id="ledgerTableModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Ledger Table</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table id="ledgerTable" class="table table-striped table-striped table-hover mt-3">
-                            <thead>
-                                <tr>
-                                    <th>Billing #</th>
-                                    <th>Transaction Number</th>
-                                    <th>Debit</th>
-                                    <th>Credit</th>
-                                    <!-- <th>Beginning Balance</th> -->
-                                    <th>Remarks</th>
-                                    <!-- <th>Status</th> -->
-                                    <th>Transaction Date</th>
-                                    <!-- <th>Due Date</th> -->
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sta" id="backtocontractlist" data-bs-toggle="modal"
-                        data-bs-target="#collectionLedgerModal">Back</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <script>
-        const LEDGER_TABLE = "{{ route('client.ledger') }}";
-    </script>
 @endsection
+
+<script>
+    function formatDate(date) {
+        const options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        };
+        return new Date(date).toLocaleDateString('en-US', options);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const dateCells = document.querySelectorAll(".date-to");
+        dateCells.forEach(cell => {
+            const originalDate = cell.textContent.trim();
+            const formatted = formatDate(originalDate);
+            cell.textContent = formatted;
+        });
+    });
+</script>

@@ -21,8 +21,8 @@
                             <table id="permit_tenant_table" class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Tenant #</th>
-                                        <th>Tenant Name</th>
+                                        <th class="text-center">Tenant #</th>
+                                        <th class="text-center">Tenant Name</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,9 +44,9 @@
                             <table id="permit_contract_table" class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Contract #</th>
-                                        <th>End of Contract</th>
-                                        <th>Contract Created</th>
+                                        <th class="text-center">Contract #</th>
+                                        <th class="text-center">End of Contract</th>
+                                        <th class="text-center">Contract Created</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,16 +60,22 @@
         </div>
     </div>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#permit_tenant_table').DataTable({
                 pageLength: 10,
                 responsive: true,
                 data: @json($tenants),
-                columns: [
-                    { data: "acc_id" },
-                    { data: "store_name" },
+                columns: [{
+                        data: "acc_id",
+                        className: "text-center",
+                    },
+                    {
+                        data: "store_name",
+                        className: "text-center",
+
+                    },
                 ],
-                createdRow: function (row, data, index) {
+                createdRow: function(row, data, index) {
                     $(row).addClass('cursor-pointer');
                     $(row).addClass('check_contract');
                     $(row).attr('data-id', data.id);
@@ -79,24 +85,29 @@
                 pageLength: 10,
                 responsive: true,
                 processing: true,
-                columns: [
-                    { data: "proposal_uid" },
+                columns: [{
+                        data: "proposal_uid",
+                        className: "text-center",
+
+                    },
                     {
                         data: "end_contract",
-                        render: function (data) {
+                        className: "text-center",
+                        render: function(data) {
                             return format_date(data);
                         }
                     },
                     {
                         data: "created_at",
-                        render: function (data) {
+                        className: "text-center",
+                        render: function(data) {
                             return format_date(data);
                         }
                     }
                 ]
             });
 
-            $(document).on('click', '.check_contract', function () {
+            $(document).on('click', '.check_contract', function() {
                 var id = $(this).data('id');
 
                 $.ajax({
@@ -106,11 +117,11 @@
                         id: id
                     },
                     dataType: "JSON",
-                    success: function (data) {
+                    success: function(data) {
                         permit_contract_table.clear();
                         permit_contract_table.rows.add(data).draw();
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.log(error);
                     }
                 });
@@ -118,7 +129,11 @@
 
             function format_date(date) {
                 let parsedDate = new Date(date);
-                let options = { month: 'short', day: '2-digit', year: 'numeric' };
+                let options = {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric'
+                };
                 return parsedDate.toLocaleDateString('en-US', options);
             }
         });

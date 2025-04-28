@@ -77,18 +77,18 @@
 </div>
 
 <script>
-    $('#submit-new-category').click(function (e) {
+    $('#submit-new-category').click(function(e) {
         e.preventDefault();
         var formData = new FormData($('#add-category')[0]);
         $('#addCategoriesModal').empty();
         $.ajax({
-            url: "{{ route('submit.category')}}",
+            url: "{{ route('submit.category') }}",
             type: 'POST',
             data: formData,
             dataType: 'JSON',
             contentType: false,
             processData: false,
-            success: function (response) {
+            success: function(response) {
                 if (response.success) {
                     reloadDataTable();
                     $('#addCategoriesModal').modal('hide');
@@ -97,7 +97,7 @@
                     toastr.warning(response.message, 'Warning');
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 toastr.error(response.message, 'Error');
             }
 
