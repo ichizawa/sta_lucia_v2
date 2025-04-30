@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LeaseProposalEvent;
 use App\Jobs\admin\ProposalStatus;
 use App\Models\ArchivedProposal;
 use App\Models\AwardNotice;
@@ -100,7 +101,6 @@ class LeasesController extends Controller
             //     'message' => 'Lease proposal added successfully'
             // ];
             // $notify_proposal->notify($this->newProposal($request));
-
             ProposalStatus::dispatch($this->newProposal($request));
 
             return redirect()->route('leases.leases.proposal')->with('success', 'Lease proposal added successfully');
@@ -186,6 +186,8 @@ class LeasesController extends Controller
         }
 
         $this->newProposalPDF($lease_prop);
+
+        event(new LeaseProposalEvent($lease_prop));
 
         return $lease_prop;
     }
