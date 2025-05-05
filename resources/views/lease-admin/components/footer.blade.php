@@ -1,8 +1,3 @@
-<style>
-    .footer-txt-size {
-        font-size: 11px;
-    }
-</style>
 <footer class="footer">
     <div class="container-fluid d-flex justify-content-between">
         <nav class="pull-left footer-txt-size">

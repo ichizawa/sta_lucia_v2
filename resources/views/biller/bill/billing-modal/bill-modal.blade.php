@@ -3,7 +3,7 @@
         <form action="{{ route('biller.prepare.process') }}" method="POST">
             @csrf
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header brown-border-top">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Billing</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>

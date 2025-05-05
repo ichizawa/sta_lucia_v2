@@ -1,0 +1,150 @@
+/* sidebar */
+
+.logo-header img {
+    height: 10vh;
+    width: 100%;
+}
+
+.logo-header {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.sidebar {
+    background-color: #ded8c1;
+}
+
+body {
+    background-color: aliceblue;
+}
+
+a.page-link {
+    background-color: #8b7231 !important;
+    border-color: #8b7231 !important;
+    color: white !important;
+}
+
+@media (min-width: 1024px) and (max-width: 1366px) {
+    .logo-header {
+        margin-top: 30px;
+    }
+
+    .logo-header .btn-toggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        margin: 0 !important;
+    }
+}
+
+/* navbar */
+.dropdown-menu::after {
+    border-bottom-color: #8b7231 !important;
+}
+
+.text-brown {
+    color: #8b7231 !important;
+}
+
+.main-header {
+    background-color: #d2caab !important;
+}
+
+.quick-actions-header {
+    background-color: #8b7231 !important;
+}
+
+@media (min-width: 600px) and (max-width: 991.98px) {
+    .navbar-brand {
+        height: 90px !important;
+        width: 90px !important;
+    }
+}
+
+/* others */
+
+.title {
+    color: #8b7231 !important;
+}
+
+.lease-admin-thead {
+    background-color: #d3eec9 !important;
+    color: green !important;
+}
+
+.center-table th,
+.center-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.biller-thead {
+    background-color: rgb(253, 225, 175) !important;
+    color: rgb(210, 137, 0) !important;
+}
+
+@media (min-width: 600px) and (max-width: 991.98px) {
+    .collect-collect-doughnut-chart {
+        height: 220px !important;
+    }
+}
+
+circle {
+    color: #8b7231 !important;
+}
+
+.setting-nav-link-color {
+    color: #8b7231 !important;
+}
+
+#pre_construction_table tbody td,
+#contract_construction_table tbody td {
+    text-align: center;
+}
+
+#tenant_work_table tbody td,
+#contract_work_table tbody td {
+    text-align: center;
+}
+
+.footer-txt-size {
+    font-size: 11px;
+}
+
+#periodBillings tbody tr td {
+    text-align: center !important;
+}
+
+.custom-card-title {
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
+
+/* client */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .text-widget {
+        font-size: 15px !important;
+    }
+
+    .client-card-category,
+    .client-card-title {
+        font-size: 10px !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .text-widget {
+        font-size: 15px !important;
+    }
+
+    .client-card-category,
+    .client-card-title {
+        font-size: 10px !important;
+    }
+}
+
+.brown-border-top {
+    border-top: 5px solid rgb(184, 163, 111) !important;
+}
