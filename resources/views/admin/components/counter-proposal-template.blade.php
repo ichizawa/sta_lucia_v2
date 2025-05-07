@@ -126,11 +126,13 @@
         <table>
             <tr>
                 <th>Space Name</th>
-                <td>{{ collect($counter_proposal->proposal->selected_space)->pluck('space.space_name')->implode(', ') }}</td>
+                <td>{{ collect($counter_proposal->proposal->selected_space)->pluck('space.space_name')->implode(', ') }}
+                </td>
             </tr>
             <tr>
                 <th>Area Code</th>
-                <td>{{ collect($counter_proposal->proposal->selected_space)->pluck('space.property_code')->implode(', ') }}</td>
+                <td>{{ collect($counter_proposal->proposal->selected_space)->pluck('space.property_code')->implode(', ') }}
+                </td>
             </tr>
             <tr>
                 <th>Total Floor Area</th>
@@ -167,7 +169,7 @@
                 ->pluck('amenity')
                 ->unique('amenity_name');
         @endphp
-        
+
         <div class="section-title">Amenities</div>
         <table>
             @foreach ($uniqueAmenities as $amenity)
@@ -282,7 +284,9 @@
                 </div>
                 <div class="col">
                     <p>Conforme:</p>
-                    <div>{{ ucfirst($counter_proposal->proposal->representative->rep_fname) . ' ' . ucfirst($counter_proposal->proposal->representative->lname) }}</div>
+                    <div>
+                        {{ ucfirst($counter_proposal->proposal->representative->rep_fname) . ' ' . ucfirst($counter_proposal->proposal->representative->lname) }}
+                    </div>
                     <div>{{ ucfirst($counter_proposal->proposal->representative->rep_email) }}</div>
                     <div>{{ ucwords($counter_proposal->proposal->owner->owner_email) }}</div>
                     <div>Date: <u>{{ date('m/d/Y', strtotime($counter_proposal->created_at)) }}</u></div>

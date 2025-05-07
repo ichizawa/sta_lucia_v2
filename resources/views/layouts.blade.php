@@ -25,6 +25,8 @@
     <link href="{{ URL::asset('assets/css/plugins.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/kaiadmin.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('assets/shared/shared.css') }}" />
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/sidebar-and-nav.css') }}" />
+
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -44,6 +46,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.bootstrap5.min.css"
         integrity="sha512-Ars0BmSwpsUJnWMw+KoUKGKunT7+T8NGK0ORRKj+HT8naZzLSIQoOSIIM3oyaJljgLxFi0xImI5oZkAWEFARSA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <style>
         table {
@@ -200,7 +203,7 @@
     <script src="{{ asset('assets/js/shared/collection.js') }}"></script>
     <script src="{{ asset('assets/js/shared/collect.js') }}"></script>
     <script src="{{ asset('assets/js/shared/ledger.js') }}"></script>
-
+    <script src="{{ asset('assets/js/shared/sidebar-responsive.js') }}"></script>
 </body>
 
 </html>

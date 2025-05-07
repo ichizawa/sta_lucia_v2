@@ -45,7 +45,7 @@
 <div class="modal fade" id="addCategoriesModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header brown-border-top">
                 <h5 class="modal-title">Categories</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -65,10 +65,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="submit" id="submit-new-category" class="btn btn-primary">
+                <button type="submit" id="submit-new-category" class="btn btn-sta">
                     Add
                 </button>
             </div>

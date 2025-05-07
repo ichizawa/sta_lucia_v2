@@ -3,10 +3,9 @@
         <form id="newBranch" action="{{ route('admin.submit.amenities') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
-                <div class="modal-header border-0">
+                <div class="modal-header border-0 brown-border-top">
                     <h5 class="modal-title">
-                        <span class="fw-mediumbold"> New</span>
-                        <span class="fw-light"> Amenity </span>
+                        <span class="fw-mediumbold"> New Amenity</span>
                     </h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
