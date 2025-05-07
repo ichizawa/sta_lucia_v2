@@ -114,6 +114,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         // });
 
         Route::get('/category', [CategoryController::class, 'adminCategory'])->name('admin.category');
+
         Route::prefix('category')->group(function () {
             Route::post('/submit-category', [CategoryController::class, 'store'])->name('submit.category');
             Route::get('/categories', [CategoryController::class, 'getCategories'])->name('get.category');
