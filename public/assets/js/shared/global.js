@@ -23,7 +23,10 @@ $(document).ready(function () {
     $('#basic-datatables tbody td').css('min-width', fixedWidth);
 
     if (!$.fn.DataTable.isDataTable('#basic-datatables')) {
-        $('#basic-datatables').DataTable({});
+        $('#basic-datatables').DataTable({
+            pageLength: 10,
+            // order: [[0, 'asc']],
+        });
     }
 
     $('#client').DataTable({
@@ -33,6 +36,7 @@ $(document).ready(function () {
     if (!$.fn.DataTable.isDataTable('#multi-filter-select')) {
         $('#multi-filter-select').DataTable({
             pageLength: 10,
+            // order: [[0, 'asc']],
         });
     }
 });

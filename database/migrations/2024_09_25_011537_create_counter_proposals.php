@@ -31,6 +31,7 @@ return new class extends Migration
             $table->float("escalation_rate")->nullable();
             $table->string("status")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

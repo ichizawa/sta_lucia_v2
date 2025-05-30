@@ -96,11 +96,7 @@
                             id: id
                         },
                         success: function(response) {
-                            swal("Poof! Your amenities has been deleted!", {
-                                icon: "success",
-                            }).then(() => {
-                                location.reload();
-                            });
+                            location.reload();
                         },
                         error: function(xhr, status, error) {
                             swal("Error deleting ameninities", {
@@ -108,8 +104,6 @@
                             });
                         }
                     });
-                } else {
-                    swal("Your amenity is safe!");
                 }
             });
         });

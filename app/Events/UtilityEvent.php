@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\Space;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,31 +10,31 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class LeaseProposalEvent implements ShouldBroadcast
+class UtilityEvent implements ShouldBroadcast
 {
     use Dispatchable, SerializesModels;
 
-    public $space;
+    public $utility;
 
-    public function __construct($space)
+    public function __construct($utility)
     {
-        $this->space = $space;
+        $this->utility = $utility;
     }
 
     public function broadcastOn()
     {
-        return new Channel('space-channel');
+        return new Channel('utility-channel');
     }
 
     public function broadcastAs()
     {
-        return 'my-space';
+        return 'my-utility';
     }
 
     public function broadcasWith()
     {
         return [
-            'space' => $this->space
+            'utility' => $this->utility
         ];
     }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign("owner_id")->references("id")->on("owner");
             $table->integer("proposal_id")->nullable();
             $table->smallInteger("status");
+            $table->softDeletes();
         });
     }
 

@@ -52,7 +52,6 @@ return new class extends Migration
             $table->string('lvlimage')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
         });
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger("space_id")->nullable();
             $table->foreign("space_id")->references("id")->on("space")->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

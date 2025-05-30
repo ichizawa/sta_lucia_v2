@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string("store_name");
             $table->string("company_address");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

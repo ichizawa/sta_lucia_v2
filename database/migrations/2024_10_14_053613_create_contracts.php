@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('award_notice_id')->references('id')->on('award_notice');
             $table->boolean('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

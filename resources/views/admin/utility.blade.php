@@ -15,8 +15,7 @@
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Add Utility</h4>
 
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                class="btn btn-sta ms-auto">
+                            <a data-bs-toggle="modal" data-bs-target="#addUtilityModalAdmin" class="btn btn-sta ms-auto">
                                 <i class="fa fa-plus"></i>
                                 Add Utilities
                             </a>
@@ -65,7 +64,7 @@
     {{-- @include('admin.components.modals.utility-reading') --}}
     @if (session('success'))
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var content = {
                     'testing',
                     message: "{{ session('success ') }}",
@@ -90,56 +89,49 @@
             swal("Deleting Utility!", "Are you sure you want to delete this utility?", "danger");
         }
 
-        $(document).ready(function() {
-            $('#addBtn').on('click', function(e) {
-                e.preventDefault();
+        $(document).ready(function () {
+            // $('#addBtn').on('click', function (e) {
+            //     e.preventDefault();
+            //     let isValid = true;
+            //     $('.custom-datalist').removeClass('input-error');
+            //     toastr.clear();
+            //     $('#utilityReadingsForm .custom-datalist').each(function () {
+            //         if (!$(this).val().trim()) {
+            //             $(this).addClass('input-error');
+            //             isValid = false;
+            //         }
+            //     });
+            //     if (!isValid) {
+            //         toastr.error('Please fill out all required fields.');
+            //         return;
+            //     }
+            //     var formData = new FormData($('#utilityReadingsForm')[0]);
+            //     $.ajax({
+            //         url: '',
+            //         method: 'POST',
+            //         data: formData,
+            //         processData: false,
+            //         contentType: false,
+            //         success: function (response) {
+            //             toastr.success('Form submitted successfully.');
+            //             $('#addRowModal').modal('hide');
+            //             $('#utilityReadingsForm')[0].reset();
+            //         },
+            //         error: function () {
+            //             toastr.error('An error occurred while submitting the form.');
+            //         }
+            //     });
+            // });
 
-                let isValid = true;
-
-                $('.custom-datalist').removeClass('input-error');
-                toastr.clear();
-
-                $('#utilityReadingsForm .custom-datalist').each(function() {
-                    if (!$(this).val().trim()) {
-                        $(this).addClass('input-error');
-                        isValid = false;
-                    }
-                });
-
-                if (!isValid) {
-                    toastr.error('Please fill out all required fields.');
-                    return;
-                }
-
-                var formData = new FormData($('#utilityReadingsForm')[0]);
-
-                $.ajax({
-                    url: '',
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        toastr.success('Form submitted successfully.');
-
-                        $('#addRowModal').modal('hide');
-                        $('#utilityReadingsForm')[0].reset();
-                    },
-                    error: function() {
-                        toastr.error('An error occurred while submitting the form.');
-                    }
-                });
-            });
-
-            $('.deleteBTN').click(function() {
-                console.log($(this).data('id'));
+            $('.deleteBTN').click(function () {
+                // console.log($(this).data('id'));
                 swal({
-                        title: "Are you sure?",
-                        text: "Once deleted, you will not be able to recover this utility!",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this utility!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
@@ -148,11 +140,11 @@
                                 data: {
                                     id: $(this).data('id')
                                 },
-                                success: function(response) {
+                                success: function (response) {
                                     toastr.success('Utility deleted successfully.');
                                     location.reload();
                                 },
-                                error: function() {
+                                error: function () {
                                     toastr.error(
                                         'An error occurred while deleting the utility.');
                                 }

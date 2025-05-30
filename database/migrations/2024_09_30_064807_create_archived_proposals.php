@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string("status")->nullable();
             $table->smallInteger('is_counter')->nullable()->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

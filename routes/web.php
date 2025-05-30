@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/add-space', [SpaceController::class, 'adminAddSpace'])->name('space.add.space');
             Route::post('/submit-space', [SpaceController::class, 'sumbmitSpace'])->name('space.submit.space');
             Route::get('/view-space-modal', [SpaceController::class, 'adminViewSpace'])->name('space.view.space');
+            Route::post('/delete-space', [SpaceController::class,'adminDelete'])->name('space.delete.space');
 
             Route::get('/mall-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.mall');
             Route::get('/building-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.building');
@@ -119,7 +120,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/submit-category', [CategoryController::class, 'store'])->name('submit.category');
             Route::get('/categories', [CategoryController::class, 'getCategories'])->name('get.category');
             Route::post('/submit-sub-category', [CategoryController::class, 'storeSubCategory'])->name('submit.sub.category');
-
+            Route::post('/delete-category', [CategoryController::class, 'delete'])->name('admin.delete.category');
         });
 
         Route::get('/amenities', [AdminController::class, 'adminAmenities'])->name('admin.amenities');
