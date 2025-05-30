@@ -5,7 +5,8 @@
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Award Notices</h3>
+                <h3 class="fw-bold mb-3 title">Award Notices</h3>
+                <h6 class="op-7 mb-0 mb-3">Award Notice Summary List</h6>
             </div>
         </div>
         <div class="row">

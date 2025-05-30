@@ -12,6 +12,10 @@
     .modal-body {
         padding: 0px !important;
     }
+
+    .title {
+        color: #8B7231 !important;
+    }
 </style>
 
 @extends('layouts')
@@ -20,8 +24,8 @@
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Billing</h3>
-                <h6 class="op-7 mb-2">Tenant Billing</h6>
+                <h3 class="fw-bold mb-3 title">Billing</h3>
+                <h6 class="op-7 mb-2">Tenant Billing Overview</h6>
             </div>
         </div>
         <div class="row">

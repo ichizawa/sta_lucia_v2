@@ -52,7 +52,9 @@
 
         th {
             width: 296px;
-        },
+        }
+
+        ,
 
         td {
             text-align: right;
@@ -132,7 +134,7 @@
             <table>
                 <tr>
                     <th>Space Name</th>
-                    <td>{{  collect($space_proposals)->pluck('space_name')->implode(', ') }}</td>
+                    <td>{{ collect($space_proposals)->pluck('space_name')->implode(', ') }}</td>
                 </tr>
                 <tr>
                     <th>Area Code</th>
@@ -152,7 +154,8 @@
                 </tr>
                 <tr>
                     <th>Space Type</th>
-                    <td>{{  '(' . collect($space_proposals)->pluck('store_type')->implode(', ') . ') ' . collect($space_proposals)->pluck('space_type')->implode(', ') }}</td>
+                    <td>{{ '(' . collect($space_proposals)->pluck('store_type')->implode(', ') . ') ' . collect($space_proposals)->pluck('space_type')->implode(', ') }}
+                    </td>
                 </tr>
                 <tr>
                     <th>Minimum Guaranteed Rent per sqm</th>

@@ -13,4 +13,6 @@ class ApiController extends Controller
             'status' => 'Ticket scanned successfully'
         ], 200);
     }
+
+    
 }

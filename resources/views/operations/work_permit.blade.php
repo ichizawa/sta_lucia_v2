@@ -1,18 +1,11 @@
-<style>
-    #tenant_work_table tbody td,
-    #contract_work_table tbody td {
-        text-align: center;
-    }
-</style>
-
 @extends('layouts')
 
 @section('content')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Work Permit Dashboard</h3>
-                <h6 class="op-7 mb-2">Operations System</h6>
+                <h3 class="fw-bold mb-3 title">Work Permits</h3>
+                <h6 class="op-7 mb-2">Overview for Work Permits</h6>
             </div>
         </div>
         <div class="row">

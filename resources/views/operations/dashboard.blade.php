@@ -1,18 +1,10 @@
-<style>
-    .center-table th,
-    .center-table td {
-        text-align: center;
-        vertical-align: middle;
-    }
-</style>
-
 @extends('layouts')
 
 @section('content')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Dashboard</h3>
+                <h3 class="fw-bold mb-3 title">Dashboard</h3>
                 <h6 class="op-7 mb-2">Operations System</h6>
             </div>
         </div>
@@ -106,73 +98,74 @@
                                 <div class="card-title">Reading Statuses</div>
                             </div>
                             <div class="card-body">
-                                <table class="table center-table">
-                                    <thead class="">
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Contract #</th>
-                                            <th scope="col">Company</th>
-                                            <th scope="col">Reading Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>456258</td>
-                                            <td>Company A</td>
-                                            <td><span class="badge badge-success">Prepared</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>458620</td>
-                                            <td>Company B</td>
-                                            <td><span class="badge badge-danger">No reading yet</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>456258</td>
-                                            <td>Company C</td>
-                                            <td><span class="badge badge-warning">Some have reading</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>785123</td>
-                                            <td>Company D</td>
-                                            <td><span class="badge badge-danger">No reading yet</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>789520</td>
-                                            <td>Company E</td>
-                                            <td><span class="badge badge-danger">No reading yet</span></td>
+                                <div class="table-responsive">
+                                    <table class="table center-table">
+                                        <thead class="">
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Contract #</th>
+                                                <th scope="col">Company</th>
+                                                <th scope="col">Reading Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>456258</td>
+                                                <td>Company A</td>
+                                                <td><span class="badge badge-success">Prepared</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>458620</td>
+                                                <td>Company B</td>
+                                                <td><span class="badge badge-danger">No reading yet</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>456258</td>
+                                                <td>Company C</td>
+                                                <td><span class="badge badge-warning">Some have reading</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>785123</td>
+                                                <td>Company D</td>
+                                                <td><span class="badge badge-danger">No reading yet</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>5</td>
+                                                <td>789520</td>
+                                                <td>Company E</td>
+                                                <td><span class="badge badge-danger">No reading yet</span></td>
 
-                                        </tr>
-                                        <tr>
-                                            <td>6</td>
-                                            <td>126305</td>
-                                            <td>Company F</td>
-                                            <td><span class="badge badge-success">Prepared</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>7</td>
-                                            <td>120658</td>
-                                            <td>Company G</td>
-                                            <td><span class="badge badge-warning">Some have reading</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>126305</td>
+                                                <td>Company F</td>
+                                                <td><span class="badge badge-success">Prepared</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>7</td>
+                                                <td>120658</td>
+                                                <td>Company G</td>
+                                                <td><span class="badge badge-warning">Some have reading</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4 d-flex">
-                        <div class="card card-round h-80 w-100 p-1">
+                    <div class="col-md-4 d-flex flex-column">
+                        <div class="card card-round w-100 p-1">
                             <div class="card-header">
                                 <div class="card-title">Payment Method Breakdown</div>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex justify-content-center align-items-center doughnut-chart mt-5">
+                                <div class="d-flex justify-content-center align-items-center doughnut-chart mt-3">
                                     <canvas id="paymentMethodChart"></canvas>
                                 </div>
                             </div>

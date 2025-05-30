@@ -1,31 +1,7 @@
-<style>
-    @media (min-width: 600px) and (max-width: 991.98px) {
-        .navbar-brand {
-            /* margin-top: -10px; */
-            height: 90px !important;
-            width: 90px !important;
-        }
-
-        .nav-bg {
-            background-color: #ded8c1 !important;
-        }
-    }
-
-    .dropdown-menu::after {
-        border-bottom-color: #8B7231 !important;
-    }
-
-    .text-brown {
-        color: #8B7231 !important;
-    }
-</style>
-
-
-
-<div class="main-header" style="background-color: #d2caab;">
+<div class="main-header">
 
     <div class="main-header-logo">
-        <div class="logo-header nav-bg">
+        <div class="logo-header">
             <a href="index.html" class="logo">
                 <img src="{{ asset('assets/img/chadengle.jpg') }}" class="navbar-brand" height="20" />
             </a>
@@ -138,10 +114,9 @@
                     </ul>
                 </li> -->
                 <li class="nav-item topbar-icon dropdown hidden-caret">
-                    <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
+                    <a class="nav-link dropdown-toggle text-secondary" href="#" id="notifDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-bell"></i>
-                        <!-- <span class="notification">0</span> -->
                     </a>
                     <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                         <li>
@@ -204,12 +179,13 @@
                     </ul>
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret">
-                    <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <a class="nav-link text-secondary" data-bs-toggle="dropdown" href="#"
+                        aria-expanded="false">
                         <i class="fas fa-layer-group"></i>
                     </a>
                     <div class="dropdown-menu quick-actions animated fadeIn">
-                        <div class="quick-actions-header" style="background-color: #8B7231">
-                            <span class="title mb-1">Quick Actions</span>
+                        <div class="quick-actions-header">
+                            <span class="mb-1">Quick Actions</span>
                             <span class="subtitle op-7">Shortcuts</span>
                         </div>
                         <div class="quick-actions-scroll scrollbar-outer">

@@ -5,7 +5,8 @@
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Space</h3>
+                <h3 class="fw-bold mb-3 title">Mall Space</h3>
+                <h6 class="op-7 mb-0">Space Summary List</h6>
             </div>
         </div>
 
@@ -14,7 +15,7 @@
                 <div class="card card-round">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">Space</h4>
+                            <h4 class="card-title">Spaces</h4>
                             <a href="{{ route('space.add.space') }}" class="btn btn-sta ms-auto">
                                 <i class="fa fa-plus"></i>
                                 Add Spaces

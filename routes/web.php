@@ -115,6 +115,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         // });
 
         Route::get('/category', [CategoryController::class, 'adminCategory'])->name('admin.category');
+
         Route::prefix('category')->group(function () {
             Route::post('/submit-category', [CategoryController::class, 'store'])->name('submit.category');
             Route::get('/categories', [CategoryController::class, 'getCategories'])->name('get.category');
@@ -239,19 +240,13 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/work-permits', [WorkPermitController::class, 'index'])->name('work.permit.operation');
         });
 
-
-
-        //changes
         Route::prefix('notices')->group(function () {
             Route::get('/award-notices/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.notices');
             Route::get('operation/notices/get-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.get');
 
-            // Route::get('/get-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.get');
             Route::get('/view-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.view');
             Route::post('/submit-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.submit');
-
             Route::post('notice-option/{validation}', [OperationNoticesController::class, 'operationNoticeOptions'])->name('operation.notice.options');
-
             Route::get('/vacate-notices', [OperationNoticesController::class, 'operationVacateNotices'])->name('operation.vacate.notices');
 
         });
@@ -261,7 +256,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/view-contract', [ContractController::class, 'adminViewContract'])->name('operation.view.contract');
             Route::get('/termination-contract', [OperationContractController::class, 'operationTerminationContract'])->name('operation.termination.contract');
         });
-        //changes
 
         Route::prefix('construction')->group(function () {
             Route::get('/construction-release', [ConstructionController::class, 'index'])->name('space.construction.construction');

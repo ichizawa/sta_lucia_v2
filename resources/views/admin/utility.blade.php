@@ -5,7 +5,7 @@
 
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Utility</h3>
+                <h3 class="fw-bold mb-3 title">Utility</h3>
             </div>
         </div>
         <div class="row">
@@ -41,10 +41,11 @@
                                             <td class="text-center">{{ $utility->utility_description }}</td>
                                             <td class="text-center">{{ $utility->utility_price }}</td>
                                             <td class="text-center">
-                                                <a class="btn btn-sm btn-sta ms-auto">
-                                                    <i class="fa fa-pen"></i>
-                                                </a>
-                                                <a class="btn btn-sm btn-danger ms-auto deleteBTN" data-id="{{ $utility->id }}">
+                                                <!-- <a href="#" class="btn btn-sm btn-success ms-auto">
+                                                                        <i class="fa fa-pen"></i>
+                                                                    </a> -->
+                                                <a href="#" class="btn btn-sm btn-danger ms-auto deleteBTN"
+                                                    data-id="{{ $utility->id }}">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </td>

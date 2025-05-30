@@ -1,32 +1,3 @@
-<style>
-    .logo-header img {
-        height: 10vh;
-        width: 100%;
-
-    }
-
-    .logo-header {
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        align-items: center;
-    }
-
-    .sidebar {
-        background-color: #e1e0da;
-    }
-
-    body {
-        background-color: aliceblue;
-    }
-
-    a.page-link {
-        background-color: #8B7231 !important;
-        border-color: #8B7231 !important;
-        color: white !important;
-    }
-</style>
-
 <div class="sidebar sidebar-style-2">
     <div class="sidebar-logo">
 
