@@ -37,10 +37,10 @@
                         <h4 class="text-section">Components</h4>
                     </li>
                     {{-- <li class="nav-item {{ request()->routeIs('admin.branch') ? 'active' : '' }}">
-                        <a href="{{route('admin.branch')}}" aria-expanded="false">
-                            <i class="fas fa-layer-group"></i>
-                            <p>Branch</p>
-                        </a>
+                    <a href="{{route('admin.branch')}}" aria-expanded="false">
+                        <i class="fas fa-layer-group"></i>
+                        <p>Branch</p>
+                    </a>
                     </li> --}}
                     <li
                         class="nav-item {{ request()->routeIs('leases.mall.leases') || request()->routeIs('leases.leases.proposal') || request()->routeIs('leases.add.proposal') ? 'active' : '' }}">
@@ -95,7 +95,7 @@
                                 <li class="{{ request()->routeIs('admin.vacate.notices') ? 'active' : '' }}">
                                     <a href="{{ route('admin.vacate.notices') }}">
                                         <span class="sub-item">Vacate Notice</span>
-                                    </a>
+                                    </a>                                                        
                                 </li>
                             </ul>
                         </div>
@@ -123,10 +123,10 @@
                         </div>
                     </li>
                     {{-- <li class="nav-item {{ request()->routeIs('commencement.lists') ? 'active' : '' }}">
-                        <a href="{{ route('commencement.lists') }}" aria-expanded="false">
-                            <i class="fas fa-layer-group"></i>
-                            <p>Commencement</p>
-                        </a>
+                    <a href="{{ route('commencement.lists') }}" aria-expanded="false">
+                        <i class="fas fa-layer-group"></i>
+                        <p>Commencement</p>
+                    </a>
                     </li> --}}
                     <li
                         class="nav-item  {{ request()->routeIs('admin.utility') ||

@@ -63,7 +63,7 @@ class UserSeeder extends Seeder
                 'name' => 'Jon Doe',
                 'email' => 'marcialvalerogeptejr@gmail.com',
                 'type' => 'tenant',
-                'status' => 0,
+                'status' => 1,
                 'password' => Hash::make('123456789'),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

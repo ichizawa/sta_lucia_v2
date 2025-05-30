@@ -34,6 +34,45 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
+                <li
+                    class="nav-item {{ request()->routeIs('leases.mall.leases') || request()->routeIs('leases.leases.proposal') || request()->routeIs('leases.add.proposal') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#leases" aria-expanded="false">
+                        <i class="fa-solid fa-house"></i>
+                        <p>Leases</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="leases">
+                        <ul class="nav nav-collapse">
+                            <li class="nav-item {{ request()->routeIs('lease.admin.leases.proposals') ? 'active' : '' }}">
+                                <a href="{{ route('lease.admin.leases.proposals') }}" aria-expanded="false">
+                                    <span class="sub-item">Lease Proposal</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li
+                    class="nav-item {{ request()->routeIs('lease.admin.contracts.renewal') || request()->routeIs('lease.admin.contracts.termination') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#contracts" aria-expanded="false">
+                        <i class="fa-solid fa-file-signature"></i>
+                        <p>Contract</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="contracts">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ request()->routeIs('lease.admin.contracts.renewal') ? 'active' : '' }}">
+                                <a href="{{ route('lease.admin.contracts.renewal') }}">
+                                    <span class="sub-item">Renewal of Contract</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('lease.admin.contracts.termination') ? 'active' : '' }}">
+                                <a href="{{ route('lease.admin.contracts.termination') }}">
+                                    <span class="sub-item">Termination of Contract</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item {{ request()->routeIs('lease.admin.permits.lists') ? 'active' : '' }}">
                     <a href="{{ route('lease.admin.permits.lists') }}" aria-expanded="false">
                         <i class="far fa-chart-bar"></i>

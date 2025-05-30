@@ -2,7 +2,6 @@
 
 @section('content')
 @include('admin.components.modals.proposal-modal')
-<!-- @include('admin.components.modals.lease-documents-modal') -->
 @include('admin.components.modals.counter-proposals-modal')
 <div class="page-inner">
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
@@ -11,14 +10,13 @@
             <h6 class="op-7 mb-2">Lease Proposal Summary</h6>
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-12">
             <div class="card card-round">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Mall Lease Proposal</h4>
-                        <a href="{{ route('leases.add.proposal') }}" class="btn btn-sta ms-auto">
+                        <a href="{{ route('lease.admin.leases.add.proposal') }}" class="btn btn-sta ms-auto">
                             <i class="fa fa-plus"></i>
                             Create New Lease Proposal
                         </a>
