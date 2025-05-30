@@ -162,7 +162,16 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/billing-periods', [AdminController::class, 'adminBillingPeriods'])->name('admin.bill.period');
 
         Route::get('/settings', [AdminController::class, 'adminSettings'])->name('admin.settings');
-        Route::get('/reports', [AdminController::class, 'adminReports'])->name('admin.reports');
+
+        Route::prefix('reports')->group(function () {
+            Route::get('/notice-reports', [AdminController::class, 'adminNoticesReports'])->name('admin.notices.reports');
+            Route::get('/contract-reports', [AdminController::class, 'adminContractReports'])->name('admin.contract.reports');
+            Route::get('/permit-reports', [AdminController::class, 'adminPermitReports'])->name('admin.permit.reports');
+            Route::get('/space-leases-reports', [AdminController::class, 'adminSpaceLeasesReports'])->name('admin.space.leases.reports');
+            Route::get('/tenant-sales-reports', [AdminController::class, 'adminTenantSalesReports'])->name('admin.tenant.sales.reports');
+
+        });
+
         Route::get('/payments', [AdminController::class, 'adminPayments'])->name('admin.payments');
         Route::get('/activity-log', [AdminController::class, 'adminActivityLog'])->name('admin.activity-log');
     });

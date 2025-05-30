@@ -1,0 +1,91 @@
+//swal
+div.swal2-container button.swal2-confirm {
+    margin-bottom: 20px !important;
+}
+
+//privacy & safety
+.ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+    height: 300px;
+}
+
+.ck.ck-editor__editable_inline > :first-child {
+    height: 270px;
+}
+
+.main-panel .row {
+    --bs-gutter-x: 10px !important;
+}
+
+#privacy_safety .input {
+    border-radius: 0 !important;
+    border: 1px solid #ccced1 !important;
+}
+
+#email_notifications .form-control {
+    border-radius: 0 !important;
+    border: 1px solid #ccced1 !important;
+}
+
+#privacy_safety .form-control {
+    border-radius: 0 !important;
+    border: 1px solid #ccced1 !important;
+}
+
+#privacy_safety .form-control:focus {
+    border-color: #5580ff !important;
+}
+
+//web notifications
+#web_notifications .card-body {
+    max-height: 550px;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+}
+
+#web_notifications .card .card-footer,
+.card-light .card-footer {
+    background-color: transparent;
+    line-height: 30px;
+    border-top: 0px solid #ebecec !important;
+    font-size: 13px;
+    padding: 10px;
+}
+
+#web_notifications .scrollable-content {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+#web_notifications .card-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+#web_notifications .card-body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+#web_notifications .sticky-search {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#announcementSearch {
+    padding-left: 2.2rem;
+}
+
+#web_notifications .modal-header {
+    padding: 5px !important;
+}
+
+#web_notifications .form-control {
+    border-radius: 0px;
+    border: 1px solid #ccced1 !important;
+}
+
+@media (max-width: 768px) {
+    #web_notifications .justify-content-end {
+        justify-content: flex-start !important;
+    }
+}

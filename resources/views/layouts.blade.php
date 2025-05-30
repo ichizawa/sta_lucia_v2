@@ -26,6 +26,7 @@
     <link href="{{ URL::asset('assets/css/kaiadmin.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('assets/shared/shared.css') }}" />
     <link rel="stylesheet" href="{{ URL::asset('assets/css/sidebar-and-nav.css') }}" />
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/styles.css') }}" />
 
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -46,6 +47,11 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.bootstrap5.min.css"
         integrity="sha512-Ars0BmSwpsUJnWMw+KoUKGKunT7+T8NGK0ORRKj+HT8naZzLSIQoOSIIM3oyaJljgLxFi0xImI5oZkAWEFARSA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="{{ asset('assets/js/plugin/ckeditor/ckeditor.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
     <style>
@@ -204,6 +210,10 @@
     <script src="{{ asset('assets/js/shared/collect.js') }}"></script>
     <script src="{{ asset('assets/js/shared/ledger.js') }}"></script>
     <script src="{{ asset('assets/js/shared/sidebar-responsive.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/scripts.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/sweetalert/sweetalert2@11.js') }}"></script>
+
+
 </body>
 
 </html>

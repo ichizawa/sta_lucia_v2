@@ -62,6 +62,7 @@
                             role="tab">
                             Your data
                         </a>
+
                         <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#delete_accounts"
                             role="tab">
                             Delete accounts
@@ -829,7 +830,8 @@
                     </div>
 
                     <div class="tab-pane fade" id="your_data" role="tabpanel">
-                        <div class="card">
+                        @include('admin.settings.your_data')
+                        {{-- <div class="card">
                             <div id="contentListContainer">
                                 <div class="card-header brown-border-top">
                                     <div class="row d-flex justify-content-between align-items-center">
@@ -980,7 +982,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="tab-pane fade" id="delete_accounts" role="tabpanel">
@@ -1015,9 +1017,14 @@
                                                             class="badge badge-success">Active</span></td>
                                                     <td class="text-center">
                                                         <div class="d-flex justify-content-center gap-2">
+                                                            <a class="btn btn-sm btn-info" data-bs-toggle="tooltip"
+                                                                title="View">
+                                                                <i class="fa fa-eye text-white"></i>
+                                                            </a>
 
-                                                            <a class="btn btn-sm btn-warning" title="View"
-                                                                data-bs-toggle="modal" data-bs-target="#viewAccountModal">
+                                                            <a class="btn btn-sm btn-warning" title="Update"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#updateAccountModal">
                                                                 <i class="fa fa-pen text-white"></i>
                                                             </a>
                                                             <a class="btn btn-sm btn-secondary disable-btn"
@@ -1038,9 +1045,13 @@
                                                             class="badge badge-success">Active</span></td>
                                                     <td class="text-center">
                                                         <div class="d-flex justify-content-center gap-2">
-
+                                                            <a class="btn btn-sm btn-info" data-bs-toggle="tooltip"
+                                                                title="View">
+                                                                <i class="fa fa-eye text-white"></i>
+                                                            </a>
                                                             <a class="btn btn-sm btn-warning" title="View"
-                                                                data-bs-toggle="modal" data-bs-target="#viewAccountModal">
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#updateAccountModal">
                                                                 <i class="fa fa-pen text-white"></i>
                                                             </a>
                                                             <a class="btn btn-sm btn-secondary disable-btn"
@@ -1057,12 +1068,13 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <div class="modal fade" id="viewAccountModal" tabindex="-1"
-                                            aria-labelledby="viewAccountModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="updateAccountModal" tabindex="-1"
+                                            aria-labelledby="updateAccountModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header brown-border-top">
-                                                        <h5 class="modal-title" id="viewAccountModalLabel">Account Details
+                                                        <h5 class="modal-title" id="updateAccountModalLabel">Account
+                                                            Details
                                                         </h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close">
