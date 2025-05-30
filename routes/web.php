@@ -276,6 +276,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/save-reading', [UtilityReadingController::class, 'save'])->name('reading.save');
         });
     });
+    
 
     Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
         Route::get('/dashboard', [LeaseAdminController::class, 'index'])->name('lease.admin.dashboard');
@@ -290,5 +291,17 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/contract-lists', [IssuePermitscontroller::class, 'get_contracts'])->name('lease.admin.contract.lists');
         });
 
+    });
+    Route::prefix('reader')->middleware('role.check:reader')->group(function () {
+        Route::get('/dashboard', [ReadingController::class, 'index'])->name('reader.dashboard');
+
+        Route::prefix('utility')->group(function () {
+            Route::get('/reading', [ReadingController::class, 'reading'])->name('reader.reading');
+            Route::get('/lists', [ReadingController::class, 'lists'])->name('reader.reading.lists');
+            Route::get('/utility-lists', [ReadingController::class, 'utilityLists'])->name('reader.reading.utility.lists');
+            Route::get('/utility-reading', [ReadingController::class, 'utilityReading'])->name('reader.reading.bills');
+            Route::post('/prepare-reading', [ReadingController::class, 'prepare'])->name('reader.reading.store');
+            Route::post('/save-reading', [ReadingController::class, 'save'])->name('reader.reading.save');
+        });
     });
 });

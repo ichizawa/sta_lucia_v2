@@ -21,7 +21,23 @@ class AdminController extends Controller
     public function adminIndex()
     {
         if (Auth::check()) {
-            return view('admin.dashboard');
+            $totalTenants = \App\Models\Owner::count();
+            
+            // Get total available space (where status = 0 in leasable_space)
+            $totalAvailableSpace = \App\Models\LeasableInfoModel::where('status', 0)->count();
+            
+            // Get total occupied space (where status = 1 in leasable_space)
+            $totalOccupiedSpace = \App\Models\LeasableInfoModel::where('status', 1)->count();
+            
+            // Get total proposals
+            $totalProposals = \App\Models\LeaseProposal::count();
+            
+            return view('admin.dashboard', compact(
+                'totalTenants',
+                'totalAvailableSpace',
+                'totalOccupiedSpace',
+                'totalProposals'
+            ));
         }
         return redirect()->route('login');
     }
