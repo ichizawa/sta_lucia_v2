@@ -1,7 +1,7 @@
 <div class="modal fade" id="viewFilesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header brown-border-top">
                 <h5 class="modal-title">Check Award Notice</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -31,9 +31,9 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            {{-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
@@ -48,7 +48,8 @@
             </div>
             <div class="modal-body p-0">
                 <div class="container-fluid h-100 d-flex justify-content-center align-items-center text-center">
-                    <iframe src="" id="view-notice-pdf" width="100%" height="100%" style="border: none;"></iframe>
+                    <iframe src="" id="view-notice-pdf" width="100%" height="100%"
+                        style="border: none;"></iframe>
                 </div>
             </div>
             <div class="modal-footer">
@@ -75,9 +76,11 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="file_name">File Name</label>
-                                    <input type="text" name="file_name" id="file_name" class="form-control" placeholder="Enter File Name">
-                                    <input type="text" name="owner_id" id="owner_id" class="form-control" hidden/>
-                                    <input type="text" name="award_notice_id" id="aw_id" class="form-control" hidden/>
+                                    <input type="text" name="file_name" id="file_name" class="form-control"
+                                        placeholder="Enter File Name">
+                                    <input type="text" name="owner_id" id="owner_id" class="form-control" hidden />
+                                    <input type="text" name="award_notice_id" id="aw_id" class="form-control"
+                                        hidden />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -99,8 +102,8 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        $('.filesModalTable').click(function () {
+    $(document).ready(function() {
+        $('.filesModalTable').click(function() {
             var data = $(this).data('award-data');
             $('#viewFilesTable tbody').empty();
 
@@ -111,8 +114,8 @@
                     noticeid: data.award_notice_id,
                 },
                 dataType: "json",
-                success: function (data) {
-                    $.each(data.data, function (key, value) {
+                success: function(data) {
+                    $.each(data.data, function(key, value) {
                         $('#viewFilesTable tbody').append(`
                             <tr>
                                 <td>${value.file_name}</td>
@@ -130,21 +133,23 @@
                         `);
                     });
 
-                    $('.viewingFile').click(function () {
+                    $('.viewingFile').click(function() {
                         var file = $(this).data('file-path');
                         var comp = $(this).data('comp-name');
 
-                        $('#view-notice-pdf').attr('src', "{{ asset('storage/tenant_documents/') }}" + "/" + comp + "/" + file);
+                        $('#view-notice-pdf').attr('src',
+                            "{{ asset('storage/tenant_documents/') }}" + "/" +
+                            comp + "/" + file);
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.log(xhr.responseText);
                 }
             });
-        
+
         });
 
-        $('.uploadFile').click(function () {
+        $('.uploadFile').click(function() {
             var data = $('.filesModalTable').data('award-data');
 
             $('#owner_id').val(data.tenant_id);

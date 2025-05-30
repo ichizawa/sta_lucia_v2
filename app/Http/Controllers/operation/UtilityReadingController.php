@@ -37,6 +37,8 @@ class UtilityReadingController extends Controller
 
         foreach ($company as $companyItem) {
             foreach ($companyItem->proposals as $proposal) {
+
+
                 foreach ($proposal->utilities as $utility) {
                     $utility->readings = UtilitiesReading::where('utility_id', $utility->utility_id)
                         ->where('proposal_id', $proposal->id)

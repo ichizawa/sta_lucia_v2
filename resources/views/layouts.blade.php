@@ -25,25 +25,37 @@
     <link href="{{ URL::asset('assets/css/plugins.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/kaiadmin.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('assets/shared/shared.css') }}" />
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/sidebar-and-nav.css') }}" />
+
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+    <script src="{{ asset('assets/js/cdn/jquery/jquery-3.6.0.min.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('assets/js/cdn/toast.min/toastr.min.js') }}"></script>
+
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> --}}
+    <script src="{{ asset('assets/js/cdn/pusher/pusher.min.js') }}"></script>
+
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/1.5.2/select2-bootstrap.min.css"
         rel="stylesheet" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
-        integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+
+    <script src="{{ asset('assets/js/cdn/selectize/selectize.min.js') }}"   integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+        integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.bootstrap5.min.css"
         integrity="sha512-Ars0BmSwpsUJnWMw+KoUKGKunT7+T8NGK0ORRKj+HT8naZzLSIQoOSIIM3oyaJljgLxFi0xImI5oZkAWEFARSA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <style>
         table {
@@ -99,7 +111,7 @@
 </script>
 @include('loader')
 
-<body>
+<body >
     <div class="wrapper">
         @if (Auth::user()->type === 'admin')
             @include('admin.components.sidebar')
@@ -169,13 +181,28 @@
             </div>
         @endif
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2-checkbox/1.1.0/js/select2-checkbox.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-notify/1.0.0/jquery.notify.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
+
+    <script src="{{ asset('assets/js/cdn/datatables.net/dataTables.bootstrap5.min') }}"></script>
+    {{-- <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script> --}}
+
+
+    <script src="{{ asset('assets/js/cdn/toast.min/toastr.min.js') }}"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> --}}
+
+
+    {{-- <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-notify/1.0.0/jquery.notify.min.js"></script> --}}
+
+    {{--<script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2-checkbox/1.1.0/js/select2-checkbox.min.js"></script> --}}
+
+    <script src="{{ asset('assets/js/cdn/selec2/select2.min.js') }}"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
+
+
 
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <!-- <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script> -->
@@ -200,7 +227,17 @@
     <script src="{{ asset('assets/js/shared/collection.js') }}"></script>
     <script src="{{ asset('assets/js/shared/collect.js') }}"></script>
     <script src="{{ asset('assets/js/shared/ledger.js') }}"></script>
-
+    <script src="{{ asset('assets/js/shared/sidebar-responsive.js') }}"></script>
 </body>
 
+{{-- <script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js', { scope: '/' })
+      .then(reg => console.log('SW registered:', reg.scope))
+      .catch(err => console.error('SW failed:', err));
+  });
+}
+</script> --}}
 </html>

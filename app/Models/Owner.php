@@ -23,20 +23,21 @@ class Owner extends Model
         "owner_afterofficehrs",
         "owner_mobile"
     ];
-
-    public function companies()
+   public function companies()
     {
         return $this->hasMany(Company::class, 'owner_id');
     }
 
+    /** one-to-many representatives */
     public function representatives()
     {
         return $this->hasMany(Representative::class, 'owner_id');
     }
 
-    public function document()
+    /** one-to-one tenant document record */
+    public function tenantDocument()
     {
-        return $this->hasMany(TenantDocuments::class, 'owner_id');
+        return $this->hasOne(TenantDocuments::class, 'owner_id');
     }
 
 }

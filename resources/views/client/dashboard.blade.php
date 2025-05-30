@@ -1,16 +1,40 @@
+<style>
+    /* @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+        .text-widget {
+            font-size: 15px !important;
+        }
+
+        .client-card-category,
+        .client-card-title {
+            font-size: 10px !important;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+        .text-widget {
+            font-size: 15px !important;
+        }
+
+        .client-card-category,
+        .client-card-title {
+            font-size: 10px !important;
+        }
+    } */
+</style>
+
 @extends('layouts')
 
 @section('content')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Dashboard</h3>
-                <h6 class="op-7">Tenant Billing System</h6>
+                <h3 class="fw-bold mb-3 title">Dashboard</h3>
+                <h6 class="op-7">Overview</h6>
             </div>
         </div>
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-4" style="margin-top: -20px">
             <div>
-                <h3 class="fw-bold mt-3" style="color: #8B7231 !important">Welcome, {{ Auth::user()->name }}!</h3>
+                <h5 class="fw-bold mt-3">Welcome, {{ Auth::user()->name }}!</h5>
             </div>
             <div style="width: 265px">
                 <label for="exampleFormControlSelect1" class="mb-1">Select Contract</label>
@@ -32,8 +56,8 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category">Lease Proposals</p>
-                                    <h4 class="card-title">2</h4>
+                                    <p class="client-card-category">Lease Proposal</p>
+                                    <h4 class="card-title client-card-title">2</h4>
                                 </div>
                             </div>
                         </div>
@@ -51,8 +75,8 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category">Award Notices</p>
-                                    <h4 class="card-title">1</h4>
+                                    <p class="client-card-category">Award Notices</p>
+                                    <h4 class="card-title client-card-title">1</h4>
                                 </div>
                             </div>
                         </div>
@@ -70,8 +94,8 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category">Contracts</p>
-                                    <h4 class="card-title">1</h4>
+                                    <p class="client-card-category">Lease Contracts</p>
+                                    <h4 class="card-title client-card-title">1</h4>
                                 </div>
                             </div>
                         </div>
@@ -89,8 +113,8 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category">Billing Period</p>
-                                    <h4 class="card-title">April 2025</h4>
+                                    <p class="client-card-category">Billing Period</p>
+                                    <h4 class="card-title client-card-title">April 2025</h4>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +127,8 @@
                 <div class="card" style="background-color: #FFF7F3">
                     <div class="card-header">
                         <div class="card-head-row card-tools-still-right">
-                            <div class="card-title" style="color: #8B7231">Recent Activity <i class="fas fa-history"></i>
+                            <div style="color: #8B7231; font-size: 15px !important;" class="custom-card-title">Recent
+                                Activity <i class="fas fa-history"></i>
                             </div>
                             <div class="card-tools">
                                 <div class="dropdown">
@@ -170,7 +195,7 @@
                                         </span>
                                         <div>
                                             <h5>
-                                                <b><a>₱10,000.00</a></b>
+                                                <b><a class="text-widget">₱10,000.00</a></b>
                                             </h5>
                                             <small>Amount due - 4/30/2025</small>
                                         </div>
@@ -189,7 +214,7 @@
                                         </span>
                                         <div>
                                             <h5>
-                                                <b><a>May 30, 2025</a></b>
+                                                <b><a class="text-widget">May 30, 2025</a></b>
                                             </h5>
                                             <small>Next Due Date</small>
                                         </div>
@@ -201,7 +226,7 @@
                     <div class="col-sm-12 mx-auto">
                         <div class="card card-round h-100" style="background-color: #FFE3E3; ">
                             <div class="card-header">
-                                <div class="card-title text-danger">Billing Trend <i
+                                <div class="text-danger custom-card-title">Billing Trend <i
                                         class="fa-solid fa-arrow-trend-up"></i></div>
                             </div>
                             <div class="card-body">

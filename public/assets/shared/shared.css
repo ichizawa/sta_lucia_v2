@@ -10,3 +10,6 @@
     font-weight: bold;
     color: #fff;
 }
+.overlay.hidden {
+  display: none !important;
+}

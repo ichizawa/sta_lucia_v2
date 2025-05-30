@@ -5,7 +5,8 @@
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Commencement Lists</h3>
+                <h3 class="fw-bold mb-3 title">Commencement</h3>
+                <h6 class="op-7 mb-2">Lease Start Overview</h6>
             </div>
         </div>
         <div class="row">
@@ -41,8 +42,16 @@
                                             <td class="text-center">{{ date('F d, Y', strtotime($commence->created_at)) }}
                                             </td>
                                             <td class="text-center">
-                                                {{ $commence->commencement_proposal->commencement_date ? date('F Y', strtotime($commence->commencement_proposal->commencement_date)) : 'N/A' }}
+                                            @if($commence->commencement_proposal && $commence->commencement_proposal->commencement_date)
+                                                {{ date('F Y', strtotime($commence->commencement_proposal->commencement_date)) }}
+                                            @else
+                                                Not Approved yet
+                                            @endif
                                             </td>
+
+                                            {{-- <td class="text-center">
+                                                {{ $commence->commencement_proposal->commencement_date ? date('F Y', strtotime($commence->commencement_proposal->commencement_date)) : 'N/A' }}
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

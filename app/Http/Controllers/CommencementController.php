@@ -21,16 +21,21 @@ class CommencementController extends Controller
     {
         $propid = $request->input('prop_num', []);
         $data = [];
-        $status = true;;
+        $status = true;
+        $skipped = [];
+
 
         foreach ($propid as $prop) {
             $billingExists = Billing::where('proposal_id', $prop)->exists();
-
+            $skipped[] = $prop;
             if (!$billingExists) {
-                CommencementProposal::where('proposal_id', $prop)->update([
-                    'commencement_date' => $request->comm_date
-                ]);
-
+                // CommencementProposal::where('proposal_id', $prop)->update([
+                //     'commencement_date' => $request->comm_date
+                // ]);
+                CommencementProposal::updateOrCreate(
+    ['proposal_id'       => $prop],
+        ['commencement_date' => $request->comm_date]
+);
                 Billing::create([
                     'proposal_id' => $prop,
                     'total_amount' => null,
@@ -45,7 +50,7 @@ class CommencementController extends Controller
                     'is_reading' => 0,
                     'status' => 0
                 ]);
-                
+
                 $pdf = PDF::loadview('admin.components.commencement-letter')->setPaper('legal', 'portrait');
 
                 $dompdf = $pdf->getDomPDF();

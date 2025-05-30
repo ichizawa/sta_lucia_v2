@@ -1,9 +1,9 @@
 <div class="modal fade" id="editChargeModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="editChargeForm" action="{{route('submit.charges')}}" method="POST" enctype="multipart/form-data">
+            <form id="editChargeForm" action="{{ route('submit.charges') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="modal-header">
+                <div class="modal-header brown-border-top">
                     <h5 class="modal-title">Edit Charge</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -50,7 +50,7 @@
 <script>
     $(document).ready(function() {
         $('#editChargeForm')[0].reset();
-        $('.editCharge').click(function(){
+        $('.editCharge').click(function() {
             var charges = $(this).data('charges');
             $('#charge_name').val(charges.charge_name);
             $('#charge_fee').val(charges.charge_fee);

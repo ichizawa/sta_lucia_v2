@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # # If service-worker.js exists, serve it directly
+    # RewriteCond %{REQUEST_URI} ^/service-worker\.js$
+    # RewriteRule ^service-worker\.js$ service-worker.js [L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

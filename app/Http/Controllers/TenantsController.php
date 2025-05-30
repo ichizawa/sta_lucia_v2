@@ -14,6 +14,7 @@ use App\Models\Company;
 use App\Models\Owner;
 use App\Models\Representative;
 use App\Events\TenantUpdated;
+use App\Events\TenantEvent;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +27,7 @@ class TenantsController extends Controller
     public function adminTenants()
     {
         $owners = Owner::with(['companies', 'representatives'])->get();
-        
+
         return view('admin.tenants.tenants', [
             'owners' => $owners,
         ]);
@@ -47,14 +48,62 @@ class TenantsController extends Controller
         return response()->json($subCategory);
 
     }
+// Orig
+    // public function retrieveTenants()
+    // {
+    //     $checkDocs = true;
+    //     $owners = Owner::with(['companies', 'representatives'])->join('tenant_documents', 'tenant_documents.owner_id', '=', 'owner.id')
+    //     ->select('owner.*', 'tenant_documents.status as doc_status')->get();
+    //     return view('admin.tenants.tenants', ['owners' => $owners]);
+    // }
 
-    public function retrieveTenants()
-    {
-        $checkDocs = true;
-        $owners = Owner::with(['companies', 'representatives'])->join('tenant_documents', 'tenant_documents.owner_id', '=', 'owner.id')
-        ->select('owner.*', 'tenant_documents.status as doc_status')->get();
-        return view('admin.tenants.tenants', ['owners' => $owners]);
+
+   public function retrieveTenants(Request $request)
+{
+    $owners = Owner::with([
+        'companies',
+        'representatives',
+        'tenantDocument.documents'
+    ])->get();
+
+    // JSON endpoint
+    if ($request->expectsJson()) {
+        $rows = $owners
+            // optional: drop any owners that lack company OR rep OR tenantDocument
+            ->filter(function($o){
+                return $o->companies->isNotEmpty()
+                    && $o->representatives->isNotEmpty()
+                    && $o->tenantDocument !== null;
+            })
+            ->map(function($o){
+                $c = $o->companies->first();       // now guaranteed non-null
+                $r = $o->representatives->first();
+                $d = $o->tenantDocument;           // hasOne
+
+                return [
+                    'owner_id'        => $o->id,
+                    'company_name'    => $c->company_name,
+                    'store_name'      => $c->store_name,
+                    'company_address' => $c->company_address,
+                    'tenant_type'     => $c->tenant_type,
+
+                    'rep_fname'       => $r->rep_fname,
+                    'rep_lname'       => $r->rep_lname,
+                    'rep_address'     => $r->rep_address,
+                    'rep_email'       => $r->rep_email,
+                    'rep_status'      => (int)$r->status,
+
+                    'doc_status'      => (int)$d->status,
+                ];
+            })
+            ->values(); // re-index
+
+        return response()->json($rows);
     }
+
+    // non-ajax fallback
+    return view('admin.tenants.tenants', ['owners' => $owners]);
+}
 
     public function adminSubmitTenants(Request $request)
     {
@@ -81,7 +130,7 @@ class TenantsController extends Controller
 
         $category = $request->input('category', []);
         $sub_category = $request->input('sub_category', []);
-        
+
         $data = [];
         foreach ($category as $catID) {
             foreach ($sub_category as $subID) {
@@ -94,7 +143,7 @@ class TenantsController extends Controller
             ];
             }
         }
-        
+
         if (!empty($data)) {
             BusinessType::insert($data);
         } else {
@@ -231,7 +280,7 @@ class TenantsController extends Controller
                 'hlurb' => $hlurb,
             ];
         }
-        
+
         $document_id = 0;
         foreach ($files as $file) {
             $document_id++;
@@ -245,7 +294,7 @@ class TenantsController extends Controller
                 'status' => 1
             ]);
         }
-
+        event(new TenantEvent($docu));
         return response()->json(['success' => 'Tenant added successfully']);
 
     }
@@ -255,23 +304,50 @@ class TenantsController extends Controller
         return response()->json($owners);
     }
 
+   public function populateTableTenant(Request $request)
+{
+    $owners = Owner::with(['companies','representatives','tenantDocuments.documents'])
+                   ->get()
+                   ->map(function($o){
+      $c = $o->companies->first();
+      $r = $o->representatives->first();
+      $d = $o->tenantDocuments;
+      return [
+        'owner_id'        => $o->id,
+        'company_name'    => $c->company_name,
+        'store_name'      => $c->store_name,
+        'company_address' => $c->company_address,
+        'tenant_type'     => $c->tenant_type,
+        'rep_fname'       => $r->rep_fname,
+        'rep_lname'       => $r->rep_lname,
+        'rep_address'     => $r->rep_address,
+        'rep_email'       => $r->rep_email,
+        'rep_status'      => (int)$r->status,
+        'doc_status'      => $d ? (int)$d->status : 0,
+      ];
+    });
+
+    return response()->json($owners);
+}
+
+
     public function deleteTenants(Request $request){
             $rep_email = Representative::where('id', $request->id)->value('rep_email');
-     
+
             $tenant = Owner::find($request->id);
-        
+
             if ($tenant) {
                 if ($rep_email) {
                     $user = User::where('email', $rep_email)->first();
-                    
+
                     if ($user) {
                         $user->delete();
                     }
                 }
-        
+
                 // Delete the tenant
                 $tenant->delete();
-        
+
                 return response()->json(['message' => 'Tenant and associated user successfully deleted']);
             } else {
                 return response()->json(['message' => 'Tenant not found'], 404);
@@ -288,11 +364,11 @@ class TenantsController extends Controller
         if ($request->hasFile('tenant_doc_file')) {
             $fileName = $request->file('tenant_doc_file')->getClientOriginalName();
             $file = $request->file('tenant_doc_file')->storeAs('public/tenant_documents/' . $ownerName, $fileName);
-            
+
             $uploadDoc = DocumentsTable::where('id', $tenant_doc_id)->update([
                 $tenant_doc_id2 => $fileName,
             ]);
-            
+
 
             return response()->json(['status' => 'Document added successfully', 'filename' => $fileName, 'ownerName' => $ownerName]);
         } else {
@@ -304,9 +380,12 @@ class TenantsController extends Controller
 
     public function adminApproveDocuments(Request $request){
         $proposalid = LeaseProposal::where('tenant_id', $request->ownerid)->pluck('id')->first();
-        TenantDocuments::where('owner_id', $request->ownerid)->update([
-            'status' => 1
-        ]);
+        // TenantDocuments::where('owner_id', $request->ownerid)->update([
+        //     'status' => 1
+        // ]);
+        $tenantDocument = TenantDocuments::where('owner_id', $request->ownerid)->first();
+        $tenantDocument->update(['status' => 1]);
+
         DocumentsTable::where('id', $proposalid)->update([
             'status' => 1
         ]);
@@ -314,11 +393,13 @@ class TenantsController extends Controller
             AwardNotice::where('proposal_id', $proposalid)->update([
                 'status' => 2
             ]);
+            event(new TenantEvent($tenantDocument)) ;
+
             return response()->json(['status' => 'Document approved successfully']);
         }else{
             return response()->json(['status' => 'No proposal found']);
         }
-        
+
     }
 
     public function adminDeleteTenants(Request $request){

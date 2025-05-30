@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\biller\ActivitiesController;
 use App\Http\Controllers\biller\BillController;
 use \App\Http\Controllers\biller\InvoicesController;
@@ -50,16 +49,27 @@ Route::post('/auth', [AuthController::class, 'login'])->name('authenticate');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Route::get('/service-worker.js', function () {
+//     return response()->file(
+//         public_path('service-worker.js'),
+//         ['Content-Type' => 'application/javascript']
+//     );
+// });
+
 Route::group(['middleware' => ['auth', 'authCheck']], function () {
+
+
+
     Route::prefix('admin')->middleware('role.check:admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'adminIndex'])->name('admin.dashboard');
+        Route::post('/delete-space', [SpaceController::class,'adminDelete'])->name('space.delete.space');
 
         Route::get('/space', [SpaceController::class, 'adminSpace'])->name('admin.space');
         Route::prefix('space')->group(function () {
             Route::get('/add-space', [SpaceController::class, 'adminAddSpace'])->name('space.add.space');
             Route::post('/submit-space', [SpaceController::class, 'sumbmitSpace'])->name('space.submit.space');
             Route::get('/view-space-modal', [SpaceController::class, 'adminViewSpace'])->name('space.view.space');
-            Route::post('/delete-space', [SpaceController::class,'adminDelete'])->name('space.delete.space');
+            Route::post('/delete-space', [SpaceController::class, 'adminDelete'])->name('space.delete.space');
 
             Route::get('/mall-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.mall');
             Route::get('/building-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.building');
@@ -73,9 +83,16 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/get-level', [SpaceController::class, 'adminShowLevel'])->name('space.get.level');
         });
 
-        Route::get('/tenants', [TenantsController::class, 'adminTenants'])->name('admin.tenants');
+
+
+
+
+
+
+
         Route::prefix('tenants')->group(function () {
-            Route::get('/', [TenantsController::class, 'retrieveTenants'])->name('admin.tenants');
+            Route::get('/', [TenantsController::class, 'adminTenants'])->name('admin.tenants');
+            Route::get('/data', [TenantsController::class, 'retrieveTenants'])->name('admin.tenants.data');
             Route::get('/add-tenants', [TenantsController::class, 'adminAddTenants'])->name('admin.add.tenants');
             Route::post('/submit-tenants', [TenantsController::class, 'adminSubmitTenants'])->name('admin.submit.tenants');
             Route::get('/get-sub-category', [TenantsController::class, 'getSubCategory'])->name('admin.get.sub.category');
@@ -115,6 +132,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         // });
 
         Route::get('/category', [CategoryController::class, 'adminCategory'])->name('admin.category');
+
         Route::prefix('category')->group(function () {
             Route::post('/submit-category', [CategoryController::class, 'store'])->name('submit.category');
             Route::get('/categories', [CategoryController::class, 'getCategories'])->name('get.category');
@@ -239,29 +257,22 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/work-permits', [WorkPermitController::class, 'index'])->name('work.permit.operation');
         });
 
-
-
-        //changes
         Route::prefix('notices')->group(function () {
             Route::get('/award-notices/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.notices');
             Route::get('operation/notices/get-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.get');
 
-            // Route::get('/get-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.get');
             Route::get('/view-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.view');
             Route::post('/submit-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.submit');
-
             Route::post('notice-option/{validation}', [OperationNoticesController::class, 'operationNoticeOptions'])->name('operation.notice.options');
-
             Route::get('/vacate-notices', [OperationNoticesController::class, 'operationVacateNotices'])->name('operation.vacate.notices');
 
         });
 
-        Route::prefix('contract')->group(function () {
+            Route::prefix('contract')->group(function () {
             Route::get('/renewal-contract', [OperationContractController::class, 'operationRenewalContract'])->name('operation.renewal.contract');
             Route::get('/view-contract', [ContractController::class, 'adminViewContract'])->name('operation.view.contract');
             Route::get('/termination-contract', [OperationContractController::class, 'operationTerminationContract'])->name('operation.termination.contract');
         });
-        //changes
 
         Route::prefix('construction')->group(function () {
             Route::get('/construction-release', [ConstructionController::class, 'index'])->name('space.construction.construction');
@@ -277,7 +288,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         });
     });
 
-    Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
+        Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
         Route::get('/dashboard', [LeaseAdminController::class, 'index'])->name('lease.admin.dashboard');
 
         Route::prefix('commencement')->group(function () {

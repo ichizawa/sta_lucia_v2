@@ -223,7 +223,7 @@
 
                         <div class="step4" style="display: none">
                             <div class="row" id="company-docu">
-                                
+
                             </div>
                             <!-- <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-primary" id="next-button2">Next</button>
@@ -261,7 +261,7 @@
                                         <button type="button" class="btn " id="submit-button"
                                             style="background-color: #304F23; color: white;">Submit</button>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -357,7 +357,7 @@
         /* animation: flipIn 0.6s ease-out; */
     }
 
-    .step4 
+    .step4
     .step5 {
         display: none;
     }

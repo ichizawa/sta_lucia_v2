@@ -1,11 +1,12 @@
 @extends('layouts')
-
 @section('content')
     @include('admin.components.modals.view-tenant-files-modal')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Tenants</h3>
+                <h3 class="fw-bold mb-3 title">Tenants</h3>
+                <h6 class="op-7 mb-2">Tenants Overview</h6>
+
             </div>
         </div>
 
@@ -39,65 +40,71 @@
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tenant-show-table">
+                                {{-- Orig --}}
+                                {{-- <tbody id="tenant-show-table">
                                     @foreach ($owners as $owner)
-                                                        @foreach ($owner->companies as $company)
-                                                                            @foreach ($owner->representatives as $rep)
-                                                                                                <!-- {{ $rep }} -->
-                                                                                                <tr>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $company->company_name }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ ucFirst($rep->rep_fname) . ' ' . ucFirst($rep->rep_lname) }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $company->store_name }}
+                                        @foreach ($owner->companies as $company)
+                                            @foreach ($owner->representatives as $rep)
+                                                <!-- {{ $rep }} -->
+                                                <tr>
+                                                    <td class="text-center">
+                                                        {{ $company->company_name }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ ucFirst($rep->rep_fname) . ' ' . ucFirst($rep->rep_lname) }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ $company->store_name }}
 
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $company->company_address }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $rep->rep_address }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ $company->company_address }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ $rep->rep_address }}
 
-                                                                                                    </td class="text-center">
-                                                                                                    <td>
-                                                                                                        {{ $rep->rep_email }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {!! $rep->status
-                                                                                ? '<span class="badge bg-success">Active</span>'
-                                                                                : '<span class="badge bg-warning">Pending</span>' !!}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {!! $owner->doc_status
-                                                                                ? '<span class="badge bg-success">Approved</span>'
-                                                                                : '<span class="badge bg-warning">Pending</span>' !!}
-                                                                                                    </td>
+                                                    </td class="text-center">
+                                                    <td>
+                                                        {{ $rep->rep_email }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {!! $rep->status
+                                                            ? '<span class="badge bg-success">Active</span>'
+                                                            : '<span class="badge bg-warning">Pending</span>' !!}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {!! $owner->doc_status
+                                                            ? '<span class="badge bg-success">Approved</span>'
+                                                            : '<span class="badge bg-warning">Pending</span>' !!}
+                                                    </td>
 
-                                                                                                    <td>
-                                                                                                        <div class="d-flex gap-2">
-                                                                                                            <a class="btn btn-warning btn-sm view_documents"
-                                                                                                                data-owner-id="{{ $company->owner_id }}"
-                                                                                                                data-company-name="{{ $company->company_name }}"
-                                                                                                                data-tenant-type="{{ $company->tenant_type }}" data-bs-toggle="modal"
-                                                                                                                data-docu-status="{{ $owner->doc_status }}"
-                                                                                                                data-bs-target="#tenantDocuments">
-                                                                                                                <i class="fa fa-pen" aria-hidden="true"></i>
-                                                                                                            </a>
-                                                                                                            <a class="btn btn-danger btn-sm deleteTenant"
-                                                                                                                onClick="delete_tenant_func({{ $company->owner_id }})">
-                                                                                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                                                                                            </a>
-                                                                                                        </div>
-                                                                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex gap-2">
+                                                            <a class="btn btn-warning btn-sm view_documents"
+                                                                data-owner-id="{{ $company->owner_id }}"
+                                                                data-company-name="{{ $company->company_name }}"
+                                                                data-tenant-type="{{ $company->tenant_type }}"
+                                                                data-bs-toggle="modal"
+                                                                data-docu-status="{{ $owner->doc_status }}"
+                                                                data-bs-target="#tenantDocuments">
+                                                                <i class="fa fa-pen" aria-hidden="true"></i>
+                                                            </a>
+                                                            <a class="btn btn-danger btn-sm deleteTenant"
+                                                                onClick="delete_tenant_func({{ $company->owner_id }})">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
 
-                                                                                                </tr>
-                                                                            @endforeach
-                                                        @endforeach
+                                                </tr>
+                                            @endforeach
+                                        @endforeach
                                     @endforeach
+                                </tbody> --}}
+                               <tbody id="tenant-show-table">
+                                {{-- JS will populate here --}}
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -106,8 +113,8 @@
         </div>
     </div>
     <script>
-        $(document).ready(function (e) {
-            $('.view_documents').click(function () {
+        $(document).ready(function(e) {
+            $('.view_documents').click(function() {
                 var owner_id = $(this).data('owner-id');
                 var tenant_type = $(this).data('tenant-type');
                 var company_name = $(this).data('company-name');
@@ -122,12 +129,12 @@
                         owner_id: owner_id
                     },
                     dataType: "json",
-                    success: function (data) {
+                    success: function(data) {
                         $('#tenant-documents').empty();
 
                         var checkFalse = true;
 
-                        $.each(data[0].documents, function (key, value) {
+                        $.each(data[0].documents, function(key, value) {
                             if (tenant_type == 'Individual') {
                                 if (key === 'sec_reg' || key === 'valid_idSig1' ||
                                     key === 'valid_idSig2') {
@@ -158,7 +165,7 @@
                                             `);
                         }
 
-                        $('.approveTenantDocuments').click(function () {
+                        $('.approveTenantDocuments').click(function() {
                             var owner_id = $(this).data('owner-id');
                             $.ajax({
                                 url: "{{ route('admin.tenant.documents.approve') }}",
@@ -167,7 +174,7 @@
                                     ownerid: owner_id,
                                 },
                                 dataType: "json",
-                                success: function (data) {
+                                success: function(data) {
                                     //    console.log(data);
                                     $('#tenant-show-table').find('td').eq(7)
                                         .html(
@@ -175,15 +182,15 @@
                                         );
                                     $('#tenantDocuments').modal('hide');
                                 },
-                                error: function (xhr, status, error) {
+                                error: function(xhr, status, error) {
                                     console.log(xhr.responseText);
                                 }
                             });
                         });
 
-                        $.each(data, function (key, value) {
+                        $.each(data, function(key, value) {
                             var documentid = value.document_id;
-                            $.each(value.documents, function (key, value) {
+                            $.each(value.documents, function(key, value) {
                                 const keyMappings = {
                                     dti_reg: 'DTI Registration',
                                     valid_id1: 'Valid ID 1',
@@ -256,7 +263,7 @@
 
                         });
 
-                        $('.viewDocument').click(function () {
+                        $('.viewDocument').click(function() {
                             var documentName = $(this).data('document-name');
                             var company_name = $(this).data('company_name');
                             var documents_id = $(this).data('documents-id');
@@ -285,7 +292,7 @@
                                                     <button class="btn btn-secondary" data-bs-target="#tenantDocuments" data-bs-toggle="modal">Back</button>
                                                 `);
                                 if (['jpg', 'jpeg', 'png', 'gif'].includes(
-                                    fileExtension)) {
+                                        fileExtension)) {
                                     $('#tenant-documents-pdf').append(`
                                                         <img src="{{ asset('storage/tenant_documents') }}/${company_name}/${documentName}" width="100%" height="100%" style="border: none; object-fit: cover;">
                                                     `);
@@ -300,7 +307,7 @@
                                 }
                             }
 
-                            $('#upload-File').click(function () {
+                            $('#upload-File').click(function() {
                                 $('#tenant-documents-file').trigger('click');
                                 var tenant_doc_id = $('#tenant-documents-id')
                                     .val();
@@ -309,7 +316,7 @@
                                 var owner_id = $('#tenant-documents-owner-id')
                                     .val();
                                 $('#tenant-documents-file').on('change',
-                                    function () {
+                                    function() {
                                         var e = this.files[0];
                                         var formData = new FormData();
                                         formData.append('tenant_doc_id',
@@ -327,13 +334,13 @@
                                             processData: false,
                                             contentType: false,
                                             data: formData,
-                                            success: function (
+                                            success: function(
                                                 data) {
                                                 window.location
                                                     .reload();
                                                 // console.log(data);
                                             },
-                                            error: function (xhr,
+                                            error: function(xhr,
                                                 status, error) {
                                                 console.log(xhr
                                                     .responseText
@@ -366,7 +373,7 @@
                         data: {
                             id: tenant_id
                         },
-                        success: function (response) {
+                        success: function(response) {
                             console.log(response);
                             $.notify({
                                 content: response.status,
@@ -382,7 +389,7 @@
                                 delay: 1500,
                             });
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             $.notify({
                                 content: 'Something went wrong, please try again!',
                                 title: 'Error!',
@@ -402,4 +409,120 @@
             });
         }
     </script>
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+
+<script>
+  $(function() {
+    // helper to capitalize
+    function capitalize(s) {
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    // Initialize DataTable
+    var dtTenant = $('#multi-filter-select').DataTable({
+      processing: false,
+      serverSide: false,   // client‐side paging/filtering of the JSON payload
+      ajax: {
+        url: "{{ route('admin.tenants.data') }}",
+        dataSrc: ''        // your endpoint returns a flat array
+      },
+      columns: [
+        { data: 'company_name', name: 'company_name' },
+        {
+          data: null,
+          name: 'rep_name',
+          render: function (row) {
+            return capitalize(row.rep_fname) + ' ' + capitalize(row.rep_lname);
+          }
+        },
+        { data: 'store_name', name: 'store_name' },
+        { data: 'company_address', name: 'company_address' },
+        { data: 'rep_address', name: 'rep_address' },
+        { data: 'rep_email', name: 'rep_email' },
+        {
+          data: 'rep_status',
+          name: 'rep_status',
+          render: function(val) {
+            return val
+              ? '<span class="badge bg-success">Active</span>'
+              : '<span class="badge bg-warning">Pending</span>';
+          }
+        },
+        {
+          data: 'doc_status',
+          name: 'doc_status',
+          render: function(val) {
+            return val
+              ? '<span class="badge bg-success">Approved</span>'
+              : '<span class="badge bg-warning">Pending</span>';
+          }
+        },
+        {
+          data: null,
+          name: 'actions',
+          orderable: false,
+          searchable: false,
+          className: 'text-center',
+          render: function(row) {
+            return `
+              <button class="btn btn-warning btn-sm view_documents"
+                      data-owner-id="${row.owner_id}"
+                      data-company-name="${row.company_name}"
+                      data-tenant-type="${row.tenant_type}"
+                      data-docu-status="${row.doc_status}"
+                      data-bs-toggle="modal"
+                      data-bs-target="#tenantDocuments">
+                <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn btn-danger btn-sm deleteTenant"
+                      data-owner-id="${row.owner_id}">
+                <i class="fa fa-trash"></i>
+              </button>`;
+          }
+        }
+      ],
+      autoWidth: false,
+      responsive: true,
+      language: {
+        info: "_START_-_END_ of _TOTAL_ tenants",
+        searchPlaceholder: "Search tenants",
+        paginate: {
+          next: '<i class="dw dw-right-chevron"></i>',
+          previous: '<i class="dw dw-left-chevron"></i>'
+        }
+      },
+      order: [[ 2, 'asc' ]]  // default sort by Store Name
+    });
+
+    // manual reload (if you want a button)
+    $('#btnReloadTenants').on('click', function() {
+      dtTenant.ajax.reload(null, false);
+    });
+
+    // delegate delete button click
+    $('#multi-filter-select').on('click', '.deleteTenant', function() {
+      delete_tenant_func($(this).data('owner-id'));
+    });
+
+    // Pusher — refresh the DataTable on any TenantEvent
+    Pusher.logToConsole = true;
+    const pusher = new Pusher('1eedc3e004154aadb5dc', {
+      cluster: 'ap1', forceTLS: true
+    });
+    const channel = pusher.subscribe('tenant.documents');
+    channel.bind('tenant.document.changed', () => {
+      dtTenant.ajax.reload(null, false);
+    });
+  });
+</script>
+
+
+
+
+
+
 @endsection

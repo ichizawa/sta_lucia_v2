@@ -1,13 +1,7 @@
-<style>
-    #periodBillings tbody tr td {
-        text-align: center !important;
-    }
-</style>
-
 <div class="modal fade" id="billingPeriodLists" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header brown-border-top">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Billing</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
