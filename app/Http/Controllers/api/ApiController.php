@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -13,4 +14,6 @@ class ApiController extends Controller
             'status' => 'Ticket scanned successfully'
         ], 200);
     }
+
+    
 }
