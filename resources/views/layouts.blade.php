@@ -49,9 +49,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="{{ asset('assets/js/plugin/ckeditor/ckeditor.js') }}"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/quill.snow.css') }}" />
 
 
     <style>
@@ -212,8 +210,12 @@
     <script src="{{ asset('assets/js/shared/sidebar-responsive.js') }}"></script>
     <script src="{{ asset('assets/js/shared/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/plugin/sweetalert/sweetalert2@11.js') }}"></script>
-
-
+    <script src="{{ asset('assets/js/plugin/quill.js/quill.min.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/admin/settings/email_notifications.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/admin/settings/privacy_and_safety.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/admin/settings/web_notifications.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/admin/settings/your_data.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/admin/settings/delete_accounts.js') }}"></script>
 </body>
 
 </html>
