@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('file_path')->nullable();
             $table->boolean('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

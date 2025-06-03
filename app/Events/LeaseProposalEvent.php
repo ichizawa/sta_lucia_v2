@@ -11,32 +11,31 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class LeaseProposalEvent
+class LeaseProposalEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     */
     public $space;
-    public function __construct(Space $space)
+
+    public function __construct($space)
     {
         $this->space = $space;
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(): array
+    public function broadcastOn()
+    {
+        return new Channel('space-channel');
+    }
+
+    public function broadcastAs()
+    {
+        return 'my-space';
+    }
+
+    public function broadcasWith()
     {
         return [
-            new Channel('spaces'),
+            'space' => $this->space
         ];
-    }
-    public function broadcastWith()
-    {
-        return $this->space;
     }
 }

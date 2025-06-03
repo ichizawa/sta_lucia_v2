@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/add-space', [SpaceController::class, 'adminAddSpace'])->name('space.add.space');
             Route::post('/submit-space', [SpaceController::class, 'sumbmitSpace'])->name('space.submit.space');
             Route::get('/view-space-modal', [SpaceController::class, 'adminViewSpace'])->name('space.view.space');
+            Route::post('/delete-space', [SpaceController::class,'adminDelete'])->name('space.delete.space');
 
             Route::get('/mall-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.mall');
             Route::get('/building-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.building');
@@ -119,6 +120,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/submit-category', [CategoryController::class, 'store'])->name('submit.category');
             Route::get('/categories', [CategoryController::class, 'getCategories'])->name('get.category');
             Route::post('/submit-sub-category', [CategoryController::class, 'storeSubCategory'])->name('submit.sub.category');
+            Route::post('/delete-category', [CategoryController::class, 'delete'])->name('admin.delete.category');
         });
 
         Route::get('/amenities', [AdminController::class, 'adminAmenities'])->name('admin.amenities');
@@ -266,6 +268,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/save-reading', [UtilityReadingController::class, 'save'])->name('reading.save');
         });
     });
+    
 
     Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
         Route::get('/dashboard', [LeaseAdminController::class, 'index'])->name('lease.admin.dashboard');
@@ -288,6 +291,18 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::prefix('permits')->group(function () {
             Route::get('/list', [IssuePermitscontroller::class, 'permits_index'])->name('lease.admin.permits.lists');
             Route::get('/contract-lists', [IssuePermitscontroller::class, 'get_contracts'])->name('lease.admin.contract.lists');
+        });
+    });
+    Route::prefix('reader')->middleware('role.check:reader')->group(function () {
+        Route::get('/dashboard', [ReadingController::class, 'index'])->name('reader.dashboard');
+
+        Route::prefix('utility')->group(function () {
+            Route::get('/reading', [ReadingController::class, 'reading'])->name('reader.reading');
+            Route::get('/lists', [ReadingController::class, 'lists'])->name('reader.reading.lists');
+            Route::get('/utility-lists', [ReadingController::class, 'utilityLists'])->name('reader.reading.utility.lists');
+            Route::get('/utility-reading', [ReadingController::class, 'utilityReading'])->name('reader.reading.bills');
+            Route::post('/prepare-reading', [ReadingController::class, 'prepare'])->name('reader.reading.store');
+            Route::post('/save-reading', [ReadingController::class, 'save'])->name('reader.reading.save');
         });
     });
 });

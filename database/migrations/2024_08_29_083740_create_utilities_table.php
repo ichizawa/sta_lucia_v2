@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('utility_description');
             $table->float('utility_price', 15, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

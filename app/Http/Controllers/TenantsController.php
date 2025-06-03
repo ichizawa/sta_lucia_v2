@@ -324,7 +324,7 @@ class TenantsController extends Controller
     public function adminDeleteTenants(Request $request){
         $docid = TenantDocuments::where('owner_id', $request->id)->pluck('document_id')->first();
         DocumentsTable::where('id', $docid)->delete();
-        $rep_email = Representative::where('owner_id', $request->id)->pluck('email')->first();
+        $rep_email = Representative::where('owner_id', $request->id)->pluck('rep_email')->first();
         Owner::where('id', $request->id)->delete();
         User::where('email', $rep_email)->delete();
         if($docid){
@@ -333,5 +333,4 @@ class TenantsController extends Controller
             return response()->json(['status' => 'No tenant found']);
         }
     }
-
 }

@@ -16,10 +16,11 @@ class CategoryController extends Controller
 
     public function getCategories(Request $request)
     {
-        $categories = Categories::with('subCategories')->get();
+        $categories = Categories::with('subCategories')->orderBy('id', 'desc')->get();
     
         $data = $categories->map(function ($category) {
             return [
+                'id'=> $category->id,  
                 'category_name' => $category->name,
                 'subcategory_names' => $category->subCategories->pluck('name')->implode(', ')
             ];
@@ -81,5 +82,16 @@ class CategoryController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Sub-Category added successfully']);
 
+    }
+
+    public function delete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:categories,id',
+        ]);
+
+        $category = Categories::find($request->id);
+        $category->delete();
+        return response()->json(['success'=> true,'message'=> 'Category deleted successfully']);
     }
 }

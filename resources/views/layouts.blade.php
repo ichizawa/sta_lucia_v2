@@ -159,6 +159,15 @@
 
                 @include('lease-admin.components.footer')
             </div>
+        @elseif (Auth::user()->type === 'reader')
+            @include('reader.components.sidebar')
+            <div class="main-panel">
+                @include('reader.components.navbar')
+                <div class="container">
+                    @yield('content')
+                </div>
+                @include('reader.components.footer')
+            </div>
         @else
             @include('client.components.sidebar')
             <div class="main-panel">
