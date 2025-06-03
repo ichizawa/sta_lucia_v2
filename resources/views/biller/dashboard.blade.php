@@ -1,19 +1,10 @@
-<style>
-    .center-table th,
-    .center-table td {
-        text-align: center;
-        vertical-align: middle;
-    }
-</style>
-
-
 @extends('layouts')
 
 @section('content')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Dashboard</h3>
+                <h3 class="fw-bold mb-3 title">Dashboard</h3>
                 <h6 class="op-7 mb-2">Tenant Billing System</h6>
             </div>
         </div>
@@ -89,14 +80,12 @@
                                 <div class="numbers">
                                     <p class="card-category">Current Billing Period</p>
                                     <h4 class="card-title">April 2025</h4>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
@@ -104,7 +93,7 @@
                     </div>
                     <div class="card-body">
                         <table class="table center-table">
-                            <thead class="bg-info text-white">
+                            <thead class="biller-thead">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">First</th>
@@ -155,10 +144,8 @@
                                     <td>Thornton</td>
                                     <td>784503</td>
                                 </tr>
-
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>

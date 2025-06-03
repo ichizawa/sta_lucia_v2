@@ -3,7 +3,7 @@
         <form id="comm-date-form" method="POST">
             @csrf
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header brown-border-top">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Commencement Date Update</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-sta">Save changes</button>
                 </div>
             </div>
         </form>

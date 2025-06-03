@@ -1,33 +1,3 @@
-<style>
-    @media (min-width: 600px) and (max-width: 991.98px) {
-        .navbar-brand {
-            /* margin-top: -10px; */
-            height: 90px !important;
-            width: 90px !important;
-        }
-
-        .nav-bg {
-            background-color: #ded8c1 !important;
-        }
-    }
-
-    .dropdown-menu::after {
-        border-bottom-color: #8B7231 !important;
-    }
-
-    .text-brown {
-        color: #8B7231 !important;
-    }
-
-    .main-header {
-        background-color: #ded8c1 !important;
-    }
-
-    .quick-actions-header {
-        background-color: #8B7231 !important;
-    }
-</style>
-
 <div class="main-header">
     <div class="main-header-logo">
         <!-- Logo Header -->
@@ -214,8 +184,8 @@
                         <i class="fas fa-layer-group"></i>
                     </a>
                     <div class="dropdown-menu quick-actions animated fadeIn" style="width: 280px;">
-                        <div class="quick-actions-header" style="background-color: #8B7231">
-                            <span class="title mb-1">Quick Actions</span>
+                        <div class="quick-actions-header">
+                            <span class="mb-1">Quick Actions</span>
                             <span class="subtitle op-7">Shortcuts</span>
                         </div>
                         <div class="quick-actions-scroll scrollbar-outer">

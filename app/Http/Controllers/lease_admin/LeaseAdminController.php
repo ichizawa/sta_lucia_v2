@@ -9,12 +9,36 @@ use App\Models\LeaseProposal;
 use Barryvdh\DomPDF\Facade\Pdf;
 use File;
 use Illuminate\Http\Request;
+use App\Models\LeasableInfoModel;
+use App\Models\Contracts;
 
 class LeaseAdminController extends Controller
 {
     public function index()
     {
         return view('lease-admin.dashboard');
+    }
+
+    public function leasesProposal()
+    {
+        $proposal = LeaseProposal::join('company', 'proposal.tenant_id', '=', 'company.owner_id')
+            ->select('company.company_name', 'proposal.status', 'proposal.id', 'company.owner_id', 'proposal.tenant_id', 'company.tenant_type')
+            ->orderBy('proposal.id', 'desc')
+            ->get();
+        $spaces_proposal = LeasableInfoModel::join('space', 'leasable_space.space_id', '=', 'space.id')
+            ->select('leasable_space.owner_id', 'leasable_space.proposal_id', 'space.*')
+            ->get();
+
+        $proposal->map(function ($proposals) use ($spaces_proposal) {
+            $matching_space_proposals = $spaces_proposal->filter(function ($space) use ($proposals) {
+                return $space->proposal_id == $proposals->id;
+            });
+            $proposals->space_selected = $matching_space_proposals;
+
+            return $proposals;
+        });
+
+        return view('lease-admin.leases.leases-proposal', compact('proposal'));
     }
 
     public function commcenemnt_index()
@@ -84,6 +108,20 @@ class LeaseAdminController extends Controller
         }
 
         return response()->json($data);
+    }
 
+    public function renewalContract()
+    {
+        $all = Contracts::join('award_notice', 'contracts.award_notice_id', '=', 'award_notice.id')
+            ->join('proposal', 'award_notice.proposal_id', '=', 'proposal.id')
+            ->join('company', 'proposal.tenant_id', '=', 'company.owner_id')
+            ->select('company.company_name', 'company.company_address', 'proposal.total_rent', 'proposal.lease_term', 'contracts.id', 'proposal.commencement', 'proposal.end_contract')
+            ->get();
+        return view('lease-admin.contracts.renew-contract', compact('all'));
+    }
+
+    public function terminationContract()
+    {
+        return view('lease-admin.contracts.termination-contract');
     }
 }

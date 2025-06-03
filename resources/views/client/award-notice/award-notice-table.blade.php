@@ -4,8 +4,8 @@
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Award Notices</h3>
-                <h6 class="op-7 mb-2">Tenant Billing System</h6>
+                <h3 class="fw-bold mb-3 title">Award Notices</h3>
+                <h6 class="op-7 mb-2">Notices Overview</h6>
             </div>
         </div>
         <div class="row">
@@ -42,15 +42,15 @@
                                     @endforeach
                                 </tbody>
                                 <!-- <tfoot>
-                                        <tr>
-                                            <th>Proposal ID</th>
-                                            <th>Space/s</th>
-                                            <th>Total Floor Area/s</th>
-                                            <th>Tenant Type</th>
-                                            <th>Status</th>
-                                            <th>View Proposal</th>
-                                        </tr>
-                                    </tfoot> -->
+                                                                <tr>
+                                                                    <th>Proposal ID</th>
+                                                                    <th>Space/s</th>
+                                                                    <th>Total Floor Area/s</th>
+                                                                    <th>Tenant Type</th>
+                                                                    <th>Status</th>
+                                                                    <th>View Proposal</th>
+                                                                </tr>
+                                                            </tfoot> -->
                             </table>
                         </div>
                     </div>

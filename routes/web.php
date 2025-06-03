@@ -115,6 +115,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         // });
 
         Route::get('/category', [CategoryController::class, 'adminCategory'])->name('admin.category');
+
         Route::prefix('category')->group(function () {
             Route::post('/submit-category', [CategoryController::class, 'store'])->name('submit.category');
             Route::get('/categories', [CategoryController::class, 'getCategories'])->name('get.category');
@@ -225,7 +226,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::prefix('ledger')->group(function () {
             Route::get('/ledger-table', [CollectionLedgerController::class, 'collect_index'])->name('collect.ledger.table');
         });
-
     });
 
     Route::prefix('operation')->middleware('role.check:operation')->group(function () {
@@ -239,21 +239,14 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/work-permits', [WorkPermitController::class, 'index'])->name('work.permit.operation');
         });
 
-
-
-        //changes
         Route::prefix('notices')->group(function () {
             Route::get('/award-notices/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.notices');
             Route::get('operation/notices/get-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.get');
 
-            // Route::get('/get-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.get');
             Route::get('/view-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.view');
             Route::post('/submit-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.submit');
-
             Route::post('notice-option/{validation}', [OperationNoticesController::class, 'operationNoticeOptions'])->name('operation.notice.options');
-
             Route::get('/vacate-notices', [OperationNoticesController::class, 'operationVacateNotices'])->name('operation.vacate.notices');
-
         });
 
         Route::prefix('contract')->group(function () {
@@ -261,7 +254,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/view-contract', [ContractController::class, 'adminViewContract'])->name('operation.view.contract');
             Route::get('/termination-contract', [OperationContractController::class, 'operationTerminationContract'])->name('operation.termination.contract');
         });
-        //changes
 
         Route::prefix('construction')->group(function () {
             Route::get('/construction-release', [ConstructionController::class, 'index'])->name('space.construction.construction');
@@ -281,6 +273,16 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
     Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
         Route::get('/dashboard', [LeaseAdminController::class, 'index'])->name('lease.admin.dashboard');
 
+        Route::prefix('leases')->group(function () {
+            Route::get('/proposals', [LeaseAdminController::class, 'leasesProposal'])->name('lease.admin.leases.proposals');
+            Route::get('/add-proposal', [LeaseAdminController::class, 'addLease'])->name('lease.admin.leases.add.proposal');
+        });
+      
+        Route::prefix('contracts')->group(function () {
+            Route::get('/renewal', [LeaseAdminController::class, 'renewalContract'])->name('lease.admin.contracts.renewal');
+            Route::get('/termination', [LeaseAdminController::class, 'terminationContract'])->name('lease.admin.contracts.termination');
+        });
+
         Route::prefix('commencement')->group(function () {
             Route::get('/lists', [LeaseAdminController::class, 'commcenemnt_index'])->name('lease.admin.commencement.lists');
             Route::post('/commencement-update', [LeaseAdminController::class, 'commencementUpdate'])->name('lease.admin.commencement.update');
@@ -290,7 +292,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/list', [IssuePermitscontroller::class, 'permits_index'])->name('lease.admin.permits.lists');
             Route::get('/contract-lists', [IssuePermitscontroller::class, 'get_contracts'])->name('lease.admin.contract.lists');
         });
-
     });
     Route::prefix('reader')->middleware('role.check:reader')->group(function () {
         Route::get('/dashboard', [ReadingController::class, 'index'])->name('reader.dashboard');
