@@ -48,6 +48,33 @@
     @include('admin.components.modals.categories')
     @include('admin.components.modals.add-subcategories-modal')
 
+    <!-- Edit Category Modal -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="edit-category-form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Category</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="edit_category_id" name="id">
+                        <div class="form-group">
+                            <label for="edit_category_name">Category</label>
+                            <input type="text" class="form-control" id="edit_category_name" name="name" required>
+                        </div>
+                      
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Category</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         $(document).ready(function () {
             // Destroy existing DataTable if it exists
@@ -89,13 +116,12 @@
                         title: 'Action',
                         className: 'text-center',
                         render: function (data, type, row) {
-                            // console.log(row);
                             return `
-                                        <div>
-                                            <button class="btn btn-sta btn-sm ms-auto"><i class="fa fa-edit"></i></button>
-                                            <button class="btn btn-danger btn-sm ms-auto" onClick="deleteCategory(${row.id})"><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    `;
+        <div>
+            <button class="btn btn-sta btn-sm ms-auto" onclick="openEditCategoryModal(${row.id}, '${row.category_name}')"><i class="fa fa-edit"></i></button>
+            <button class="btn btn-danger btn-sm ms-auto" onClick="deleteCategory(${row.id})"><i class="fa fa-trash"></i></button>
+        </div>
+    `;
                         }
                     }
                 ]
@@ -149,5 +175,48 @@
                 $('.category-item').DataTable().ajax.reload();
             }
         }
+
+        function openEditCategoryModal(id, name) {
+            $('#edit_category_id').val(id);
+            $('#edit_category_name').val(name);
+            $('#edit_sub_category_name').val(name);
+            $('#editCategoryModal').modal('show');
+        }
+
+        $('#edit-category-form').submit(function(e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                url: '{{ route('admin.update.category') }}',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    $('#editCategoryModal').modal('hide');
+                    reloadDataTable();
+                    var content = {
+                        message: "Category updated successfully",
+                        title: "Success",
+                        icon: "fa fa-bell"
+                    };
+                    $.notify(content, {
+                        type: 'success',
+                        placement: {
+                            from: 'top',
+                            align: 'right',
+                        },
+                        time: 1000,
+                        delay: 1500,
+                    });
+                },
+                error: function() {
+                    toastr.error('An error occurred while updating the category.');
+                }
+            });
+        });
+
+        
+
+
+
     </script>
 @endsection

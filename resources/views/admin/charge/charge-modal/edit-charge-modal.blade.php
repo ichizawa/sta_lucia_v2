@@ -22,7 +22,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Charge Fee</label>
-                                <input type="text" class="form-control" id="charge_fee" name="chargefee">
+                                <input type="number" class="form-control" id="charge_fee" name="chargefee" step="any">
                                 </input>
                             </div>
                         </div>
@@ -52,9 +52,13 @@
         $('#editChargeForm')[0].reset();
         $('.editCharge').click(function(){
             var charges = $(this).data('charges');
+            $('#charge_id').val(charges.id);
             $('#charge_name').val(charges.charge_name);
             $('#charge_fee').val(charges.charge_fee);
             $('#charge_freq').val(charges.frequency);
+
+            // Set the form action to the update route
+            $('#editChargeForm').attr('action', '/admin/charges/' + charges.id + '/update');
         });
     });
 </script>

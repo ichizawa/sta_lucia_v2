@@ -41,4 +41,22 @@ class ChargeController extends Controller
         return response()->json(['success'=> 'Charge deleted successfully']);
         // return back()->with('success', 'Charge deleted successfully');
     }
+
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'chargename' => 'required|string|max:255',
+            'chargefee' => 'required|numeric',
+            'chargefrequency' => 'required|string|max:255',
+        ]);
+
+        $charge = Charge::findOrFail($id);
+        $charge->charge_name = $request->chargename;
+        $charge->charge_fee = $request->chargefee;
+        $charge->frequency = $request->chargefrequency;
+        $charge->save();
+
+        return back()->with('success', 'Charge updated successfully');
+    }
 }

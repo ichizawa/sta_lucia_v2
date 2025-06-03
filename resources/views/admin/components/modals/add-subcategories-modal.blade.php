@@ -45,9 +45,9 @@
 <div class="modal fade" id="addSubCategoriesModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header brown-border-top">
                 <h5 class="modal-title">Categories</h5>
-                <button type="button" class="btn btn-secondary" id="add-subcategory">Add Another
+                <button type="button" class="btn btn-outline-secondary" id="add-subcategory">Add Another
                     Sub-Category</button>
             </div>
             <div class="modal-body">
@@ -77,20 +77,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" id="submit-new-sub-category" class="btn btn-primary">Submit</button>
+                <button type="button" id="submit-new-sub-category" class="btn btn-sta">Submit</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         let subCategoryCounter = 1;
 
-        $('#add-subcategory').click(function() {
+        $('#add-subcategory').click(function () {
             subCategoryCounter++;
             const newSubCategoryField = `
             <div class="form-group">
@@ -101,7 +101,7 @@
             $('#subcategory-container').append(newSubCategoryField);
         });
 
-        $("#submit-new-sub-category").click(function() {
+        $("#submit-new-sub-category").click(function () {
 
             var formData = new FormData($("#form-sub-category")[0])
             $.ajax({
@@ -110,12 +110,12 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(data) {
+                success: function (data) {
                     toastr.success(data.message, 'Success');
                     reloadDataTable();
                     $('#addSubCategoriesModal').modal('hide');
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log(data);
                 }
             })

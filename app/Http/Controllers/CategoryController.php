@@ -8,6 +8,7 @@ use App\Events\CategoryUpdated;
 use App\Models\SubCategory;
 class CategoryController extends Controller
 {
+    
     public function adminCategory()
     {
         $categories = Categories::all();
@@ -93,5 +94,18 @@ class CategoryController extends Controller
         $category = Categories::find($request->id);
         $category->delete();
         return response()->json(['success'=> true,'message'=> 'Category deleted successfully']);
+    }
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:categories,id',
+            'name' => 'required|string|max:255',
+        ]);
+
+        $category = Categories::find($request->id);
+        $category->name = $request->name;
+        $category->save();
+
+        return response()->json(['success' => true, 'message' => 'Category updated successfully']);
     }
 }

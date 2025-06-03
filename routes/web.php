@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/charges', [ChargeController::class, 'adminCharges'])->name('admin.charges');
         Route::post('/delete-charges', [ChargeController::class, 'adminDeleteCharges'])->name('admin.delete.charges');
         Route::post('/submit-charges', [ChargeController::class, 'adminAddCharges'])->name('submit.charges');
+        Route::post('/charges/{id}/update', [ChargeController::class, 'update'])->name('admin.update.charges');
 
         // Route::get('/branch', [BranchController::class, 'adminBranch'])->name('admin.branch');
         // Route::prefix('branch')->group(function () {
@@ -120,6 +121,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/categories', [CategoryController::class, 'getCategories'])->name('get.category');
             Route::post('/submit-sub-category', [CategoryController::class, 'storeSubCategory'])->name('submit.sub.category');
             Route::post('/delete-category', [CategoryController::class, 'delete'])->name('admin.delete.category');
+            Route::post('/admin/category/update', [CategoryController::class, 'update'])->name('admin.update.category');
         });
 
         Route::get('/amenities', [AdminController::class, 'adminAmenities'])->name('admin.amenities');
@@ -291,4 +293,11 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         });
 
     });
+
+    Route::put('/admin/amenities/{id}', [AdminController::class, 'updateAmenities'])->name('admin.update.amenities');
+    Route::put('/admin/utilities/{id}', [AdminController::class, 'updateUtility'])->name('admin.update.utility');
+    Route::get('/admin/categories/{id}/edit', [CategoryController::class, 'edit']);
+    Route::post('/admin/categories/{id}/update', [CategoryController::class, 'update']);
+ 
+
 });

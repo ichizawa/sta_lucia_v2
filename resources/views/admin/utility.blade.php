@@ -27,6 +27,7 @@
                             <table id="basic-datatables" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
+                                        <th class="text-center">Utility Name</th>
                                         <th class="text-center">Utility Type</th>
                                         <th class="text-center">Utility Description</th>
                                         <th class="text-center">Price</th>
@@ -35,21 +36,30 @@
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($all as $utility)
-                                        <tr>
-                                            <td class="text-center">{{ $utility->utility_type }}</td>
-                                            <td class="text-center">{{ $utility->utility_description }}</td>
-                                            <td class="text-center">{{ $utility->utility_price }}</td>
-                                            <td class="text-center">
-                                                <a class="btn btn-sm btn-sta ms-auto">
-                                                    <i class="fa fa-pen"></i>
-                                                </a>
-                                                <a class="btn btn-sm btn-danger ms-auto deleteBTN" data-id="{{ $utility->id }}">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+            @foreach ($all as $utility)
+                <tr>
+                    <td class="text-center">{{ $utility->utility_name }}</td>
+                    <td class="text-center">{{ $utility->utility_type }}</td>
+                    <td class="text-center">{{ $utility->utility_description }}</td>
+                    <td class="text-center">{{ $utility->utility_price }}</td>
+                    <td class="text-center">
+                        <a href="javascript:void(0);"
+                           class="btn btn-sm btn-success editUtilityBTN"
+                           data-id="{{ $utility->id }}"
+                           data-utility_name="{{ $utility->utility_name }}"
+                           data-utility_type="{{ $utility->utility_type }}"
+                           data-utility_description="{{ $utility->utility_description }}"
+                           data-utility_price="{{ $utility->utility_price }}"
+                           data-bs-toggle="modal"
+                           data-bs-target="#editUtilityModalAdmin">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a class="btn btn-sm btn-danger ms-auto deleteBTN" data-id="{{ $utility->id }}">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -59,6 +69,7 @@
         </div>
     </div>
     @include('admin.components.modals.add-utility-modal')
+    @include('admin.components.modals.edit-utility-modal')
     @include('admin.components.modals.utility-modal')
     {{-- @include('admin.components.modals.utility-reading') --}}
     @if (session('success'))
@@ -150,6 +161,15 @@
                             });
                         }
                     });
+            });
+
+            $('.editUtilityBTN').click(function() {
+                $('#edit_utility_id').val($(this).data('id'));
+                $('#edit_utility_name').val($(this).data('utility_name'));
+                $('#edit_utility_type').val($(this).data('utility_type'));
+                $('#edit_utility_description').val($(this).data('utility_description'));
+                $('#edit_utility_price').val($(this).data('utility_price'));
+                $('#editUtilityForm').attr('action', '/admin/utilities/' + $(this).data('id'));
             });
         });
     </script>

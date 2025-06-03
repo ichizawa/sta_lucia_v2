@@ -10,6 +10,7 @@ use App\Models\ChargesSelected;
 use App\Models\Company;
 use App\Models\LeaseProposal;
 use App\Models\UtilitiesSelected;
+use App\Models\UtilitiesModel;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Models\User;
@@ -66,5 +67,30 @@ class AdminController extends Controller
     public function adminActivityLog()
     {
         return view('admin.activity-log');
+    }
+    public function updateAmenities(Request $request, $id)
+    {
+        $amenity = Amenities::find($id);
+        if ($amenity) {
+            $amenity->update([
+                'amenity_name' => $request->amenity_name,
+            ]);
+            return back()->with('success', 'Amenity updated successfully');
+        }
+        return back()->with('error', 'Amenity not found');
+    }
+    public function updateUtility(Request $request, $id)
+    {
+        $utility = UtilitiesModel::find($id);
+        if ($utility) {
+            $utility->update([
+                'utility_name' => $request->utility_name,
+                'utility_type' => $request->utility_type,
+                'utility_description' => $request->utility_description,
+                'utility_price' => $request->utility_price,
+            ]);
+            return back()->with('success', 'Utility updated successfully');
+        }
+        return back()->with('error', 'Utility not found');
     }
 }

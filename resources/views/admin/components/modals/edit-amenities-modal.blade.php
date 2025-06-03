@@ -1,7 +1,9 @@
 <div class="modal fade" id="editAmenityModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form id="newBranch" action="{{ route('admin.submit.amenities') }}" method="POST" enctype="multipart/form-data">
+        <form id="editAmenityForm" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
+            <input type="hidden" id="amenity_id" name="amenity_id" />
             <div class="modal-content">
                 <div class="modal-header border-0">
                     <h5 class="modal-title">
@@ -44,6 +46,8 @@
         $('.editAmenitiesBTN').click(function() {
             var amenities = $(this).data('amenity');
             $('#amenity_name').val(amenities.amenity_name);
+            $('#amenity_id').val(amenities.id);
+            $('#editAmenityForm').attr('action', '/admin/amenities/' + amenities.id);
         });
     });
 </script>
