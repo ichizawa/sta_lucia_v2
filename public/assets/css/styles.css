@@ -1,0 +1,31 @@
+.nav-link{
+  color: #575962 !important;
+}
+.nav-link:hover{
+  background-color: #cfdbe7 !important;
+}
+.badge.bg-primary{
+    background-color: red !important;
+}
+.badge.bg-success.ms-auto{
+    background-color: none;
+}
+.badge.bg-secondary.me-2{
+    background-color: #0d6efd !important;
+}
+.list-group-item:hover{
+    background-color: #cfdbe7 !important;
+  
+}
+#chat-contact{
+    cursor: pointer;
+}
+#chat-contact:hover{
+    background-color: #cfdbe7 !important;
+}
+#online-indicator{
+    color: rgb(29, 232, 49) !important;
+}
+#offline-indicator{
+    color: rgb(157, 151, 151) !important;
+}

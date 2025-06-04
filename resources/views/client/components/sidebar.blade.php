@@ -118,6 +118,58 @@
                         </a>
                     </li>
                     <li
+                        class="nav-item {{ request()->routeIs('client.contract.reports') ||
+                        request()->routeIs('client.award.notice.reports') ||
+                        request()->routeIs('client.permit.reports') ||
+                        request()->routeIs('client.tenant.sales.reports')
+                            ? 'active'
+                            : '' }}">
+                        <a data-bs-toggle="collapse" href="#reports" aria-expanded="false">
+                            <i class="fa-solid fa-file-lines"></i>
+                            <p>Reports</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="reports">
+                            <ul class="nav nav-collapse">
+                                <li class=" {{ request()->routeIs('client.contract.reports') ? 'active' : '' }}">
+                                    <a href="{{ route('client.contract.reports') }}">
+                                        <span class="sub-item">Contract Reports</span>
+                                    </a>
+                                </li>
+                                <li class="{{ request()->routeIs('client.award.notice.reports') ? 'active' : '' }}">
+                                    <a href="{{ route('client.award.notice.reports') }}">
+                                        <span class="sub-item">Award Notice Reports</span>
+                                    </a>
+                                </li>
+                                <li class="{{ request()->routeIs('client.permit.reports') ? 'active' : '' }}">
+                                    <a href="{{ route('client.permit.reports') }}">
+                                        <span class="sub-item">Permit Reports</span>
+                                    </a>
+                                </li>
+                                <li class="{{ request()->routeIs('client.tenant.sales.reports') ? 'active' : '' }}">
+                                    <a href="{{ route('client.tenant.sales.reports') }}">
+                                        <span class="sub-item">Tenants Sales Reports</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item {{ request()->routeIs('client.news') ? 'active' : '' }}">
+                        <a href="{{ route('client.news') }}" aria-expanded="false">
+                            <i class="fa-solid fa-book"></i>
+                            <p>News</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item {{ request()->routeIs('client.inbox') ? 'active' : '' }}">
+                        <a href="{{ route('client.inbox') }}" aria-expanded="false">
+                            <i class="fa-solid fa-envelope"></i>
+                            <p>Email/Chat Inbox</p>
+                        </a>
+                    </li>
+
+                    <li
                         class="nav-item {{ request()->routeIs('client.auth.person') || request()->routeIs('client.documents') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#leases" aria-expanded="false">
                             <i class="fa-solid fa-screwdriver-wrench"></i>

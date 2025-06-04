@@ -13,7 +13,13 @@ use App\Http\Controllers\client\ClientLedgerController;
 use App\Http\Controllers\client\ClientProposal;
 use App\Http\Controllers\client\ClientProposalController;
 use App\Http\Controllers\client\ClientSpaceController;
+use App\Http\Controllers\client\inbox\InboxController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\client\reports\ClientContractReportsController;
+use App\Http\Controllers\client\reports\ClientAwardNoticeReportsController;
+use App\Http\Controllers\client\reports\ClientPermitReportsController;
+use App\Http\Controllers\client\reports\ClientTenantSalesReportsController;
+use App\Http\Controllers\client\news\NewsController;
 use App\Http\Controllers\collect\CollectionController;
 use App\Http\Controllers\collect\CollectionLedgerController;
 use App\Http\Controllers\CommencementController;
@@ -40,6 +46,11 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\TenantsController;
 use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\VacateNoticesController;
+use App\Http\Controllers\admin\reports\ContractReportsController;
+use App\Http\Controllers\admin\reports\NoticeReportsController;
+use App\Http\Controllers\admin\reports\PermitReportsController;
+use App\Http\Controllers\admin\reports\SpaceLeasesReportsController;
+use App\Http\Controllers\admin\reports\TenantsSalesReportsController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -84,6 +95,14 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/approve-tenant-documents', [TenantsController::class, 'adminApproveDocuments'])->name('admin.tenant.documents.approve');
 
             Route::post('/delete-tenant', [TenantsController::class, 'adminDeleteTenants'])->name('admin.delete.tenants');
+        });
+
+        Route::prefix('reports')->group(function () {
+            Route::get('/contracts-reports', [ContractReportsController::class, 'adminContractReports'])->name('admin.contracts.reports');
+            Route::get('/notice-reports', [NoticeReportsController::class, 'adminNoticeReports'])->name('admin.notice.reports');
+            Route::get('/permit-reports', [PermitReportsController::class, 'adminPermitReports'])->name('admin.permit.reports');
+            Route::get('/space-leases-reports', [SpaceLeasesReportsController::class, 'adminSpaceLeasesReports'])->name('admin.space.leases.reports');
+            Route::get('/tenants-sales-reports', [TenantsSalesReportsController::class, 'adminTenantsSalesReports'])->name('admin.tenants.sales.reports');
         });
 
         Route::prefix('leases')->group(function () {
@@ -175,7 +194,16 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/billing', [ClientBillingController::class, 'index'])->name('client.billing');
 
         Route::get('/ledger', [ClientLedgerController::class, 'index'])->name('client.ledger');
+        Route::get('/news', [NewsController::class, 'index'])->name('client.news');
+        Route::get('/inbox', [InboxController::class, 'index'])->name('client.inbox');
 
+        Route::prefix('reports')->group(function () {
+            Route::get('/contract-reports', [ClientContractReportsController::class, 'index'])->name('client.contract.reports');
+            Route::get('/notice-reports', [ClientAwardNoticeReportsController::class, 'index'])->name('client.award.notice.reports');
+            Route::get('/permit-reports', [ClientPermitReportsController::class, 'index'])->name('client.permit.reports');
+            Route::get('/tenant-sales-reports', [ClientTenantSalesReportsController::class, 'index'])->name('client.tenant.sales.reports');
+        });
+        
         Route::prefix('setup')->group(function () {
             Route::get('/authorized-personnel', [ClientAuthorizedPersonelController::class, 'index'])->name('client.auth.person');
             Route::get('/documents', [ClientDocumentsController::class, 'index'])->name('client.documents');
@@ -238,9 +266,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/work-permits', [WorkPermitController::class, 'index'])->name('work.permit.operation');
         });
 
-
-
-        //changes
         Route::prefix('notices')->group(function () {
             Route::get('/award-notices/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.notices');
             Route::get('operation/notices/get-files/{option}', [OperationNoticesController::class, 'operationAwardNotices'])->name('operation.award.get');
@@ -260,7 +285,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/view-contract', [ContractController::class, 'adminViewContract'])->name('operation.view.contract');
             Route::get('/termination-contract', [OperationContractController::class, 'operationTerminationContract'])->name('operation.termination.contract');
         });
-        //changes
+        
 
         Route::prefix('construction')->group(function () {
             Route::get('/construction-release', [ConstructionController::class, 'index'])->name('space.construction.construction');
@@ -288,6 +313,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/list', [IssuePermitscontroller::class, 'permits_index'])->name('lease.admin.permits.lists');
             Route::get('/contract-lists', [IssuePermitscontroller::class, 'get_contracts'])->name('lease.admin.contract.lists');
         });
-
     });
+
 });

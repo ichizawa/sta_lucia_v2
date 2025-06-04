@@ -9,11 +9,11 @@
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
                 <h3 class="fw-bold mb-3">Collection</h3>
+                <h6 class="op-7 mb-2">Tenant Overview</h6>
             </div>
-            <div class="ms-md-auto py-2 py-md-0">
-
-            </div>
+            <div class="ms-md-auto py-2 py-md-0"></div>
         </div>
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-xl-8 col-lg-12">
@@ -47,10 +47,10 @@
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">Select Year</h4>
                                 <!-- <button class="btn btn-sta ms-auto create-bill me-2" data-bs-toggle="modal"
-                                        data-bs-target="#collectionModal">
-                                        <i class="fa fa-plus"></i>
-                                        Pay Collection
-                                    </button> -->
+                                                                        data-bs-target="#collectionModal">
+                                                                        <i class="fa fa-plus"></i>
+                                                                        Pay Collection
+                                                                    </button> -->
                             </div>
                         </div>
                         <div class="card-body">

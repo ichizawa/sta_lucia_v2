@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
                 'status' => '1',
                 'password' => Hash::make('123456789'),
             ],
-            [
+            [   
                 'name' => 'Lease Admin',
                 'email' => 'leaseadmin@gmail.com',
                 'type' => 'lease',

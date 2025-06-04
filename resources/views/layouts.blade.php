@@ -24,6 +24,7 @@
     <link href="{{ URL::asset('assets/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/plugins.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/kaiadmin.min.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('assets/css/styles.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('assets/shared/shared.css') }}" />
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">

@@ -172,6 +172,8 @@
                         <p>Commencement</p>
                     </a>
                 </li> --}}
+
+
                 <li
                     class="nav-item  {{ request()->routeIs('admin.utility') ||
                     request()->routeIs('admin.category') ||
@@ -187,6 +189,7 @@
                         <p>Setup</p>
                         <span class="caret"></span>
                     </a>
+
                     <div class="collapse" id="setup">
                         <ul class="nav nav-collapse">
                             <li class=" {{ request()->routeIs('admin.utility') ? 'active' : '' }}">
@@ -253,12 +256,56 @@
                         <p>Settings</p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('admin.reports') ? 'active' : '' }}">
+                {{-- <li class="nav-item {{ request()->routeIs('admin.reports') ? 'active' : '' }}">
                     <a href="{{ route('admin.reports') }}" aria-expanded="false">
                         <i class="fa-solid fa-file-lines"></i>
                         <p>Reports</p>
                     </a>
+                </li> --}}
+                <li
+                    class="nav-item {{ request()->routeIs('admin.contracts.reports') ||
+                    request()->routeIs('admin.notice.reports') ||
+                    request()->routeIs('admin.permit.reports') ||
+                    request()->routeIs('admin.space.leases.reports') ||
+                    request()->routeIs('admin.tenants.sales.reports')
+                        ? 'active'
+                        : '' }}">
+                    <a data-bs-toggle="collapse" href="#reports" aria-expanded="false">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <p>Reports</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="reports">
+                        <ul class="nav nav-collapse">
+                            <li class=" {{ request()->routeIs('admin.contracts.reports') ? 'active' : '' }}">
+                                <a href="{{ route('admin.contracts.reports') }}">
+                                    <span class="sub-item">Contract Reports</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.notice.reports') ? 'active' : '' }}">
+                                <a href="{{ route('admin.notice.reports') }}">
+                                    <span class="sub-item">Notice Reports</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.permit.reports') ? 'active' : '' }}">
+                                <a href="{{ route('admin.permit.reports') }}">
+                                    <span class="sub-item">Permit Reports</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.space.leases.reports') ? 'active' : '' }}">
+                                <a href="{{ route('admin.space.leases.reports') }}">
+                                    <span class="sub-item">Space Leases Reports</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.tenants.sales.reports') ? 'active' : '' }}">
+                                <a href="{{ route('admin.tenants.sales.reports') }}">
+                                    <span class="sub-item">Tenants Sales Reports</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
+
                 <li class="nav-item {{ request()->routeIs('admin.activity-log') ? 'active' : '' }}">
                     <a href="{{ route('admin.activity-log') }}" aria-expanded="false">
                         <i class="fa-solid fa-clock"></i>
