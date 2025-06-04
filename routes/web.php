@@ -154,6 +154,8 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/specific-amenities-delete', [AdminController::class, 'deleteAmenities'])->name('amenities.delete');
         });
 
+        Route::get('/admin-inbox', [AdminController::class, 'adminInbox'])->name('admin.inbox.inbox');
+
         // Route::prefix('commencement')->group(function () {
         //     Route::get('/lists', [CommencementController::class, 'index'])->name('commencement.lists');
         //     Route::post('/commencement-update', [CommencementController::class, 'commencementUpdate'])->name('commencement.update');

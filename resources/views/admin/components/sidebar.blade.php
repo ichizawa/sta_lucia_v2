@@ -193,8 +193,8 @@
                         </div>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="#" aria-expanded="false">
+                    <li class="nav-item {{ request()->routeIs('admin.inbox.inbox') ? 'active' : '' }}">
+                        <a href="{{ route('admin.inbox.inbox') }}" aria-expanded="false">
                             <i class="fa-solid fa-inbox"></i>
                             <p>Inbox</p>
                         </a>

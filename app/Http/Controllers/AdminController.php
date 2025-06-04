@@ -82,4 +82,7 @@ class AdminController extends Controller
     {
         return view('admin.settings.settings');
     }
+    public function adminInbox(){
+        return view('admin.inbox.inbox');
+    }
 }
