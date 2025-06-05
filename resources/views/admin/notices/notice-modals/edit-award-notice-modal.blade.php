@@ -1,4 +1,4 @@
-<div class="modal fade" id="editAwardNoticeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="editAwardNoticeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content h-100">
             <form action="{{ route('admin.notice.options', 'award') }}" method="POST" class="d-flex flex-column h-100">
@@ -27,7 +27,51 @@
             </form>
         </div>
     </div>
+</div> --}}
+
+{{-- resources/views/admin/notices/notice-modals/edit-award-notice-modal.blade.php --}}
+<div class="modal fade" id="editAwardNoticeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content h-100">
+            {{-- The form must POST to the correct route and include the hidden award_notice_id --}}
+            <form action="{{ route('admin.notice.options', 'award') }}" method="POST" class="d-flex flex-column h-100">
+                @csrf
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Award Notice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-0 flex-grow-1">
+                    <div class="container-fluid h-100 p-0 d-flex justify-content-center align-items-center text-center">
+                        <iframe id="award-notice-pdf" width="100%" height="100%" style="border: none;"></iframe>
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-between" id="checkFileFooter">
+                    {{-- 1) Hidden field for award_notice_id (populated by JS) --}}
+                    <input type="hidden" name="award_notice_id" id="award_notice_id" value="">
+
+                    {{-- 2) Dropdown for status --}}
+                    <select name="status_award" class="form-select w-25" required>
+                        <option hidden selected>Select Option</option>
+                        <option value="1">Approve</option>
+                        <option value="3">Reject</option>
+                    </select>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+
+
+{{--
 <script>
     $(document).ready(function() {
         $('.approversModal').click(function() {
@@ -72,4 +116,4 @@
             });
         @endif
     });
-</script>
+</script> --}}

@@ -113,74 +113,92 @@
 
 <body >
     <div class="wrapper">
-        @if (Auth::user()->type === 'admin')
-            @include('admin.components.sidebar')
-            <div class="main-panel">
-                @include('admin.components.navbar')
+    @if (Auth::user()->type === 'admin')
+        @include('admin.components.sidebar')
+        <div class="main-panel">
+            @include('admin.components.navbar')
 
-                <div class="container">
-                    @yield('content')
-                </div>
-
-                @include('admin.components.footer')
+            <div class="container">
+                @yield('content')
             </div>
-        @elseif (Auth::user()->type === 'bill')
-            @include('biller.components.sidebar')
-            <div class="main-panel">
-                @include('biller.components.navbar')
 
-                <div class="container">
-                    @yield('content')
-                </div>
+            @include('admin.components.footer')
+        </div>
 
-                @include('biller.components.footer')
+    @elseif (Auth::user()->type === 'bill')
+        @include('biller.components.sidebar')
+        <div class="main-panel">
+            @include('biller.components.navbar')
+
+            <div class="container">
+                @yield('content')
             </div>
-        @elseif (Auth::user()->type === 'collect')
-            @include('collect.components.sidebar')
-            <div class="main-panel">
-                @include('collect.components.navbar')
 
-                <div class="container">
-                    @yield('content')
-                </div>
+            @include('biller.components.footer')
+        </div>
 
-                @include('collect.components.footer')
+    @elseif (Auth::user()->type === 'collect')
+        @include('collect.components.sidebar')
+        <div class="main-panel">
+            @include('collect.components.navbar')
+
+            <div class="container">
+                @yield('content')
             </div>
-        @elseif (Auth::user()->type === 'operation')
-            @include('operations.components.sidebar')
-            <div class="main-panel">
-                @include('operations.components.navbar')
 
-                <div class="container">
-                    @yield('content')
-                </div>
+            @include('collect.components.footer')
+        </div>
 
-                @include('operations.components.footer')
+    @elseif (Auth::user()->type === 'operation')
+        @include('operations.components.sidebar')
+        <div class="main-panel">
+            @include('operations.components.navbar')
+
+            <div class="container">
+                @yield('content')
             </div>
-        @elseif (Auth::user()->type === 'lease')
-            @include('lease-admin.components.sidebar')
-            <div class="main-panel">
-                @include('lease-admin.components.navbar')
 
-                <div class="container">
-                    @yield('content')
-                </div>
+            @include('operations.components.footer')
+        </div>
 
-                @include('lease-admin.components.footer')
+    @elseif (Auth::user()->type === 'lease')
+        @include('lease-admin.components.sidebar')
+        <div class="main-panel">
+            @include('lease-admin.components.navbar')
+
+            <div class="container">
+                @yield('content')
             </div>
-        @else
-            @include('client.components.sidebar')
-            <div class="main-panel">
-                @include('client.components.navbar')
 
-                <div class="container">
-                    @yield('content')
-                </div>
+            @include('lease-admin.components.footer')
+        </div>
 
-                @include('client.components.footer')
+    @elseif (Auth::user()->type === 'utility')
+        @include('utility.components.sidebar')
+        <div class="main-panel">
+            @include('utility.components.navbar')
+
+            <div class="container">
+                @yield('content')
             </div>
-        @endif
-    </div>
+
+            @include('utility.components.footer')
+        </div>
+
+    @else
+        @include('client.components.sidebar')
+        <div class="main-panel">
+            @include('client.components.navbar')
+
+            <div class="container">
+                @yield('content')
+            </div>
+
+            @include('client.components.footer')
+        </div>
+    @endif
+</div>
+
     <!-- Scripts -->
 
     <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>

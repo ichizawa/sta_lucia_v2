@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\LeaseProposalEvent;
+use App\Events\LeaseAdminEvent;
+use App\Events\AwardNoticeEvent;
 use App\Jobs\admin\ProposalStatus;
 use App\Models\ArchivedProposal;
 use App\Models\AwardNotice;
@@ -32,20 +34,47 @@ use App\Models\UtilitiesSelected;
 use App\Models\SpaceSelected;
 use App\Models\Amenities;
 use App\Models\AmenitySelected;
+use Illuminate\Support\Collection;
 use Storage;
 
 class LeasesController extends Controller
 {
-    public function adminMallLeaseableInfo()
-    {
-        $space = Space::join('leasable_space', 'space.id', '=', 'leasable_space.space_id')
-            ->leftJoin('representative', 'leasable_space.owner_id', '=', 'representative.owner_id')
-            ->select('space.*', 'leasable_space.status', 'leasable_space.owner_id', 'representative.rep_fname', 'representative.rep_lname')
-            ->orderBy('leasable_space.id', direction: 'desc')
+    // public function adminMallLeaseableInfo()
+    // {
+    //     $space = Space::join('leasable_space', 'space.id', '=', 'leasable_space.space_id')
+    //         ->leftJoin('representative', 'leasable_space.owner_id', '=', 'representative.owner_id')
+    //         ->select('space.*', 'leasable_space.status', 'leasable_space.owner_id', 'representative.rep_fname', 'representative.rep_lname')
+    //         ->orderBy('leasable_space.id', direction: 'desc')
+    //         ->get();
+    //     // dd($space); die();
+    //     return view('admin.leases.leases-information', compact('space'));
+    // }
+   public function adminMallLeaseableInfo(Request $request)
+{
+    if ($request->ajax() || $request->wantsJson()) {
+        $rows = Space::join('leasable_space', 'space.id', '=', 'leasable_space.space_id')
+            ->leftJoin('representative',    'leasable_space.owner_id', '=', 'representative.owner_id')
+            ->select([
+                'space.space_name',
+                'space.space_type',
+                'space.space_area',
+                'space.store_type',
+                'leasable_space.owner_id',
+                'leasable_space.status',
+                'representative.rep_fname',
+                'representative.rep_lname',
+            ])
+            ->orderBy('leasable_space.id', 'desc')
             ->get();
-        // dd($space); die();
-        return view('admin.leases.leases-information', compact('space'));
+
+        return response()->json($rows);
     }
+
+    return view('admin.leases.leases-information');
+}
+
+
+
     public function adminLeases()
     {
         $proposal = LeaseProposal::join('company', 'proposal.tenant_id', '=', 'company.owner_id')
@@ -115,82 +144,89 @@ class LeasesController extends Controller
     }
 
     public function newProposal(Request $request)
-    {
-        $data = [
-            'tenant_id' => $request->companyprop,
-            'proposal_uid' => rand(100000, 999999),
-            'bussiness_nature' => $request->businessnature,
-            'brent' => $request->brent,
-            'discount' => $request->paymentdisc ?? 0,
-            'total_rent' => $request->total_basic_rent,
-            'total_mgr' => $request->total_guaranteed_rent,
-            'min_mgr' => $request->minmgr,
-            'lease_term' => $request->termlease,
-            'commencement' => $request->commencementmonth,
-            'end_contract' => $request->leaseendmonth,
-            'const_period' => $request->constperiod,
-            'rent_deposit' => $request->advrent,
-            'sec_dep' => $request->secrent,
-            'escalation_rate' => $request->escrent,
-            'status' => 0
+{
+    $data = [
+        'tenant_id' => $request->companyprop,
+        'proposal_uid' => rand(100000, 999999),
+        'bussiness_nature' => $request->businessnature,
+        'brent' => $request->brent,
+        'discount' => $request->paymentdisc ?? 0,
+        'total_rent' => $request->total_basic_rent,
+        'total_mgr' => $request->total_guaranteed_rent,
+        'min_mgr' => $request->minmgr,
+        'lease_term' => $request->termlease,
+        'commencement' => $request->commencementmonth,
+        'end_contract' => $request->leaseendmonth,
+        'const_period' => $request->constperiod,
+        'rent_deposit' => $request->advrent,
+        'sec_dep' => $request->secrent,
+        'escalation_rate' => $request->escrent,
+        'status' => 0
+    ];
+    $lease_prop = LeaseProposal::create($data);
+
+    $spaceSelected = $request->input('spaceprop', []);
+    LeasableInfoModel::whereIn('space_id', $spaceSelected)->update([
+        'owner_id' => $request->companyprop,
+        'proposal_id' => $lease_prop->id,
+        'status' => 1
+    ]);
+
+    $charges = $request->input('chargeid', []);
+    $dataCharges = [];
+    foreach ($charges as $charge_id) {
+        $dataCharges[] = [
+            'lease_id' => $lease_prop->id,
+            'charge_id' => $charge_id,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
-        $lease_prop = LeaseProposal::create($data);
-        $spaceSelected = $request->input('spaceprop', []);
-        LeasableInfoModel::whereIn('space_id', $spaceSelected)->update([
-            'owner_id' => $request->companyprop,
+    }
+    ChargesSelected::insert($dataCharges);
+
+    $utilities = $request->input('utilityid', []);
+    $dataUtility = [];
+    foreach ($utilities as $utility_id) {
+        $dataUtility[] = [
+            'lease_id' => $lease_prop->id,
+            'utility_id' => $utility_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+    }
+    UtilitiesSelected::insert($dataUtility);
+
+    $tenantDocs = TenantDocuments::where('owner_id', $request->companyprop)->first();
+
+
+    if ($tenantDocs->status == 1) {
+        $awardnotice = AwardNotice::create([
             'proposal_id' => $lease_prop->id,
-            'status' => 1
+            'status' => 2
         ]);
 
-        $charges = $request->input('chargeid', []);
-        $dataCharges = [];
-        foreach ($charges as $charge_id) {
-            $dataCharges[] = [
-                'lease_id' => $lease_prop->id,
-                'charge_id' => $charge_id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
+        event(new AwardNoticeEvent($awardnotice));
+        $rep_email = Representative::where('owner_id', $request->companyprop)->pluck('rep_email')->first();
+        User::where('email', $rep_email)->update([
+            'status' => 2
+        ]);
+    } else {
+        $awardnotice = AwardNotice::create([
+            'proposal_id' => $lease_prop->id,
+            'status' => 0
+        ]);
 
-        ChargesSelected::insert($dataCharges);
-
-        $utilities = $request->input('utilityid', []);
-        $dataUtility = [];
-        foreach ($utilities as $utility_id) {
-            $dataUtility[] = [
-                'lease_id' => $lease_prop->id,
-                'utility_id' => $utility_id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
-
-        UtilitiesSelected::insert($dataUtility);
-
-        $tenantDocs = TenantDocuments::where('owner_id', $request->companyprop)->first();
-        if ($tenantDocs->status == 1) {
-            AwardNotice::create([
-                'proposal_id' => $lease_prop->id,
-                'status' => 2
-            ]);
-            $rep_email = Representative::where('owner_id', $request->companyprop)->pluck('rep_email')->first();
-            User::where('email', $rep_email)->update([
-                'status' => 2
-            ]);
-        } else {
-            AwardNotice::create([
-                'proposal_id' => $lease_prop->id,
-                'status' => 0
-            ]);
-        }
-
-        $this->newProposalPDF($lease_prop);
-
-        event(new LeaseProposalEvent($lease_prop));
-
-        return $lease_prop;
+    event(new AwardNoticeEvent($awardnotice));
     }
+
+    $this->newProposalPDF($lease_prop);
+
+    event(new LeaseProposalEvent($lease_prop));
+
+
+    return $lease_prop;
+}
+
 
     public function newProposalPDF($lease_prop)
     {
@@ -397,86 +433,262 @@ class LeasesController extends Controller
     }
 
     public function adminOptionsProposal(Request $request, $set, StatusService $notify_proposal)
-    {
-        $data = [];
-        if ($set == "new") {
-            $proposal = LeaseProposal::with(['representative', 'company', 'owner', 'selected_space.space', 'charges.charge'])->find($request->proposal_id);
+{
+    $data = [];
 
-            if ($request->option == 1) {
-                $proposal->status = $request->option;
-                $proposal->save();
+    if ($set === "new") {
 
-                $directory = "public/tenant_documents/{$proposal->company->company_name}/award_notice";
-                $pdfFileName = "award_notice_{$request->proposal_id}.pdf";
+        $proposal = LeaseProposal::with([
+            'representative',
+            'company',
+            'owner',
+            'selected_space.space',
+            'charges.charge'
+        ])->find($request->proposal_id);
 
-                if (!Storage::exists($directory)) {
-                    Storage::makeDirectory($directory, 0755, true);
-                }
+        if (! $proposal) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => "Proposal not found (ID: {$request->proposal_id})"
+            ], 404);
+        }
 
-                $pdf = PDF::loadView('admin.components.award-notice-template', compact('proposal'))->setPaper('legal', 'portrait');
-                $dompdf = $pdf->getDomPDF();
-                $canvas = $dompdf->getCanvas();
-                $pdf->save(storage_path("app/{$directory}/{$pdfFileName}"));
+        if ($request->option == 1) {
 
-                $data = [
-                    'status' => "success",
-                    'message' => "Proposal has been approved successfully"
-                ];
-            } else {
-                $data = [
-                    'status' => "error",
-                    'message' => "Proposal has been rejected successfully"
-                ];
+            $proposal->status = 1;
+            $proposal->save();
+
+
+            $awardNotice = AwardNotice::where('proposal_id', $proposal->id)->first();
+            if ($awardNotice) {
+                $awardNotice->status = 0;
+                $awardNotice->save();
+                event(new AwardNoticeEvent($awardNotice));
             }
 
-            ProposalStatus::dispatch($proposal);
-            
-        } else {
-            $counter_proposal = CounterProposal::find($request->proposal_id);
-            $counter_proposal->status = $request->option;
-            $counter_proposal->save();
 
-            if ($request->option == 1) {
-                $proposal = LeaseProposal::find($counter_proposal->proposal_id);
-                $push = ArchivedProposal::create($proposal->toArray());
-                if ($push) {
-                    $proposal->proposal_uid = $counter_proposal->proposal_uid;
-                    $proposal->discount = $counter_proposal->discount;
-                    $proposal->brent = $counter_proposal->brent;
-                    $proposal->total_rent = $counter_proposal->total_rent;
-                    $proposal->total_mgr = $counter_proposal->total_mgr;
-                    $proposal->min_mgr = $counter_proposal->min_mgr;
-                    $proposal->lease_term = $counter_proposal->lease_term;
-                    $proposal->commencement = $counter_proposal->commencement;
-                    $proposal->end_contract = $counter_proposal->end_contract;
-                    $proposal->const_period = $counter_proposal->const_period;
-                    $proposal->rent_deposit = $counter_proposal->rent_deposit;
-                    $proposal->sec_dep = $counter_proposal->sec_dep;
-                    $proposal->escalation_rate = $counter_proposal->escalation_rate;
-                    $proposal->status = 0;
-                    $proposal->is_counter = 1;
-                    $proposal->save();
+            $directory   = "public/tenant_documents/{$proposal->company->company_name}/award_notice";
+            $pdfFileName = "award_notice_{$request->proposal_id}.pdf";
+            if (! Storage::exists($directory)) {
+                Storage::makeDirectory($directory, 0755, true);
+            }
+            $pdf = Pdf::loadView('admin.components.award-notice-template', compact('proposal'))
+                      ->setPaper('legal', 'portrait');
+            $pdf->save(storage_path("app/{$directory}/{$pdfFileName}"));
 
-                    $this->newProposalPDF($proposal);
 
-                    $data = [
-                        'status' => "success",
-                        'message' => "Counter Proposal has been approved successfully"
-                    ];
-                } else {
-                    $data = [
-                        'status' => "danger",
-                        'message' => "Something went wrong"
-                    ];
+            event(new LeaseProposalEvent($proposal));
+            $updatedProposal = LeaseProposal::with(['company','commencement_proposal'])
+                ->find($proposal->id);
+            event(new LeaseAdminEvent($updatedProposal));
+
+
+            $data = [
+                'status'  => "success",
+                'message' => "Proposal has been approved successfully"
+            ];
+        }
+        elseif ($request->option == 2) {
+
+            $proposal->status = 2;
+            $proposal->save();
+
+
+            $awardNotice = AwardNotice::where('proposal_id', $proposal->id)->first();
+            if ($awardNotice) {
+                $awardNotice->status = 3; // Rejected
+                $awardNotice->save();
+                event(new AwardNoticeEvent($awardNotice));
+            }
+
+            event(new LeaseProposalEvent($proposal));
+            $updatedProposal = LeaseProposal::with(['company','commencement_proposal'])
+                ->find($proposal->id);
+            event(new LeaseAdminEvent($updatedProposal));
+
+            $data = [
+                'status'  => "error",
+                'message' => "Proposal has been rejected successfully"
+            ];
+        }
+        else {
+            $data = [
+                'status'  => "warning",
+                'message' => "Invalid option"
+            ];
+        }
+
+        ProposalStatus::dispatch($proposal);
+    }
+    else {
+
+        $counter_proposal = CounterProposal::find($request->proposal_id);
+        if (! $counter_proposal) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => "Counter proposal not found (ID: {$request->proposal_id})"
+            ], 404);
+        }
+
+        $counter_proposal->status = $request->option;
+        $counter_proposal->save();
+
+        if ($request->option == 1) {
+
+            $proposal = LeaseProposal::find($counter_proposal->proposal_id);
+            if (! $proposal) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => "Original proposal not found (ID: {$counter_proposal->proposal_id})"
+                ], 404);
+            }
+
+            $push = ArchivedProposal::create($proposal->toArray());
+            if ($push) {
+
+                $proposal->proposal_uid      = $counter_proposal->proposal_uid;
+                $proposal->discount          = $counter_proposal->discount;
+                $proposal->brent             = $counter_proposal->brent;
+                $proposal->total_rent        = $counter_proposal->total_rent;
+                $proposal->total_mgr         = $counter_proposal->total_mgr;
+                $proposal->min_mgr           = $counter_proposal->min_mgr;
+                $proposal->lease_term        = $counter_proposal->lease_term;
+                $proposal->commencement      = $counter_proposal->commencement;
+                $proposal->end_contract      = $counter_proposal->end_contract;
+                $proposal->const_period      = $counter_proposal->const_period;
+                $proposal->rent_deposit      = $counter_proposal->rent_deposit;
+                $proposal->sec_dep           = $counter_proposal->sec_dep;
+                $proposal->escalation_rate   = $counter_proposal->escalation_rate;
+                $proposal->status            = 1;
+                $proposal->is_counter        = 1;
+                $proposal->save();
+
+
+                $awardNotice = AwardNotice::where('proposal_id', $proposal->id)->first();
+                if ($awardNotice) {
+                    $awardNotice->status = 0;
+                    $awardNotice->save();
+                    event(new AwardNoticeEvent($awardNotice));
                 }
-            } else {
+
+                $this->newProposalPDF($proposal);
+
+
+                event(new LeaseProposalEvent($proposal));
+                $updatedProposal = LeaseProposal::with(['company','commencement_proposal'])
+                    ->find($proposal->id);
+                event(new LeaseAdminEvent($updatedProposal));
+
+
                 $data = [
-                    'status' => 'warning',
-                    'message' => 'Counter Proposal has been rejected successfully'
+                    'status'  => "success",
+                    'message' => "Counter Proposal has been approved successfully"
+                ];
+            }
+            else {
+                $data = [
+                    'status'  => "danger",
+                    'message' => "Something went wrong"
                 ];
             }
         }
+        elseif ($request->option == 2) {
 
-        return response()->json($data);
+            $proposal = LeaseProposal::find($counter_proposal->proposal_id);
+            if ($proposal) {
+                $proposal->status = 2;
+                $proposal->save();
+
+                $awardNotice = AwardNotice::where('proposal_id', $proposal->id)->first();
+                if ($awardNotice) {
+                    $awardNotice->status = 3;
+                    $awardNotice->save();
+                    event(new AwardNoticeEvent($awardNotice));
+                }
+
+                event(new LeaseProposalEvent($proposal));
+                $updatedProposal = LeaseProposal::with(['company','commencement_proposal'])
+                    ->find($proposal->id);
+                event(new LeaseAdminEvent($updatedProposal));
+            }
+
+            $data = [
+                'status'  => 'warning',
+                'message' => 'Counter Proposal has been rejected successfully'
+            ];
+        }
+        else {
+            $data = [
+                'status'  => "warning",
+                'message' => "Invalid option"
+            ];
+        }
     }
+
+    return response()->json($data);
+}
+
+
+
+
+     public function getProposalData()
+{
+    // 1. Fetch the basic proposal rows, joined to company for company_name and tenant_type
+    $proposals = LeaseProposal::join('company', 'proposal.tenant_id', '=', 'company.owner_id')
+        ->select([
+            'proposal.id',
+            'company.company_name',
+            'company.tenant_type',
+            'proposal.status',
+            'proposal.tenant_id' // we’ll need this to filter spaces
+        ])
+        ->orderBy('proposal.id', 'desc')
+        ->get();
+
+    // 2. Fetch all space-to-proposal assignments from leasable_space
+    $spaces_proposal = LeasableInfoModel::join('space', 'leasable_space.space_id', '=', 'space.id')
+        ->select([
+            'leasable_space.proposal_id',
+            'space.property_code',
+            'space.space_area'
+        ])
+        ->get();
+
+    // 3. Group by proposal_id to easily build “property_codes” and “total_space_area”
+    $groupedByProposal = $spaces_proposal->groupBy('proposal_id');
+
+    // 4. Build the final array
+    $result = $proposals->map(function ($row) use ($groupedByProposal) {
+        /** @var \Illuminate\Support\Collection|null $matchedSpaces */
+        $matchedSpaces = $groupedByProposal->get($row->id, collect());
+
+        // If there are no matched spaces, give empty collection
+        if (!$matchedSpaces instanceof Collection) {
+            $matchedSpaces = collect();
+        }
+
+        // Extract all property_code strings
+        $propertyCodes = $matchedSpaces
+            ->pluck('property_code')
+            ->unique()
+            ->implode(', ');
+
+        // Sum all space_area
+        $totalSpaceArea = $matchedSpaces
+            ->pluck('space_area')
+            ->sum();
+
+        return [
+            'id'               => $row->id,
+            'company_name'     => $row->company_name,
+            'property_codes'   => $propertyCodes,
+            'total_space_area' => $totalSpaceArea,
+            'tenant_type'      => $row->tenant_type,
+            'status'           => $row->status,
+        ];
+    });
+
+    // ⇩ Return as JSON here ⇩
+    return response()->json($result);
+}
 }

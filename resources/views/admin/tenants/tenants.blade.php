@@ -40,69 +40,8 @@
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                {{-- Orig --}}
-                                {{-- <tbody id="tenant-show-table">
-                                    @foreach ($owners as $owner)
-                                        @foreach ($owner->companies as $company)
-                                            @foreach ($owner->representatives as $rep)
-                                                <!-- {{ $rep }} -->
-                                                <tr>
-                                                    <td class="text-center">
-                                                        {{ $company->company_name }}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        {{ ucFirst($rep->rep_fname) . ' ' . ucFirst($rep->rep_lname) }}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        {{ $company->store_name }}
+                                <tbody id="tenant-show-table">
 
-                                                    </td>
-                                                    <td class="text-center">
-                                                        {{ $company->company_address }}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        {{ $rep->rep_address }}
-
-                                                    </td class="text-center">
-                                                    <td>
-                                                        {{ $rep->rep_email }}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        {!! $rep->status
-                                                            ? '<span class="badge bg-success">Active</span>'
-                                                            : '<span class="badge bg-warning">Pending</span>' !!}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        {!! $owner->doc_status
-                                                            ? '<span class="badge bg-success">Approved</span>'
-                                                            : '<span class="badge bg-warning">Pending</span>' !!}
-                                                    </td>
-
-                                                    <td>
-                                                        <div class="d-flex gap-2">
-                                                            <a class="btn btn-warning btn-sm view_documents"
-                                                                data-owner-id="{{ $company->owner_id }}"
-                                                                data-company-name="{{ $company->company_name }}"
-                                                                data-tenant-type="{{ $company->tenant_type }}"
-                                                                data-bs-toggle="modal"
-                                                                data-docu-status="{{ $owner->doc_status }}"
-                                                                data-bs-target="#tenantDocuments">
-                                                                <i class="fa fa-pen" aria-hidden="true"></i>
-                                                            </a>
-                                                            <a class="btn btn-danger btn-sm deleteTenant"
-                                                                onClick="delete_tenant_func({{ $company->owner_id }})">
-                                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-
-                                                </tr>
-                                            @endforeach
-                                        @endforeach
-                                    @endforeach
-                                </tbody> --}}
-                               <tbody id="tenant-show-table">
-                                {{-- JS will populate here --}}
                                 </tbody>
 
                             </table>
@@ -113,12 +52,145 @@
         </div>
     </div>
     <script>
-        $(document).ready(function(e) {
-            $('.view_documents').click(function() {
+        $(function() {
+            // helper functions (unchanged)
+            function capitalize(s) {
+                return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+            }
+
+            function orNA(value) {
+                return (value === null || value === undefined || value === '') ? 'N/A' : value;
+            }
+
+            // Initialize DataTable exactly as before:
+            var dtTenant = $('#multi-filter-select').DataTable({
+                processing: false,
+                serverSide: false,
+                ajax: {
+                    url: "{{ route('admin.tenants.data') }}",
+                    dataSrc: ''
+                },
+                columns: [{
+                        data: 'company_name',
+                        name: 'company_name',
+                        render: function(data) {
+                            return orNA(data);
+                        }
+                    },
+                    {
+                        data: null,
+                        name: 'rep_name',
+                        render: function(row) {
+                            var fname = orNA(row.rep_fname);
+                            var lname = orNA(row.rep_lname);
+                            if (fname === 'N/A' && lname === 'N/A') return 'N/A';
+                            var parts = [];
+                            if (row.rep_fname) parts.push(capitalize(row.rep_fname));
+                            if (row.rep_lname) parts.push(capitalize(row.rep_lname));
+                            return parts.length ? parts.join(' ') : 'N/A';
+                        }
+                    },
+                    {
+                        data: 'store_name',
+                        name: 'store_name',
+                        render: function(data) {
+                            return orNA(data);
+                        }
+                    },
+                    {
+                        data: 'company_address',
+                        name: 'company_address',
+                        render: function(data) {
+                            return orNA(data);
+                        }
+                    },
+                    {
+                        data: 'rep_address',
+                        name: 'rep_address',
+                        render: function(data) {
+                            return orNA(data);
+                        }
+                    },
+                    {
+                        data: 'rep_email',
+                        name: 'rep_email',
+                        render: function(data) {
+                            return orNA(data);
+                        }
+                    },
+                    {
+                        data: 'rep_status',
+                        name: 'rep_status',
+                        render: function(val) {
+                            if (val === null || val === undefined) {
+                                return '<span class="badge bg-secondary">N/A</span>';
+                            }
+                            return val ?
+                                '<span class="badge bg-success">Active</span>' :
+                                '<span class="badge bg-warning">Pending</span>';
+                        }
+                    },
+                    {
+                        data: 'doc_status',
+                        name: 'doc_status',
+                        render: function(val) {
+                            if (val === null || val === undefined) {
+                                return '<span class="badge bg-secondary">N/A</span>';
+                            }
+                            return val ?
+                                '<span class="badge bg-success">Approved</span>' :
+                                '<span class="badge bg-warning">Pending</span>';
+                        }
+                    },
+                    {
+                        data: null,
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center',
+                        render: function(row) {
+                            return `
+          <div class="d-flex justify-content-center gap-2">
+            <button class="btn btn-warning btn-sm view_documents"
+                    data-owner-id="${row.owner_id}"
+                    data-company-name="${row.company_name}"
+                    data-tenant-type="${row.tenant_type}"
+                    data-docu-status="${row.doc_status}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#tenantDocuments">
+              <i class="fa fa-pen"></i>
+            </button>
+            <button class="btn btn-danger btn-sm deleteTenant"
+                    data-owner-id="${row.owner_id}">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>`;
+                        }
+                    }
+                ],
+                autoWidth: false,
+                responsive: true,
+                language: {
+                    info: "_START_-_END_ of _TOTAL_ tenants",
+                    searchPlaceholder: "Search tenants",
+                    paginate: {
+                        next: '<i class="dw dw-right-chevron"></i>',
+                        previous: '<i class="dw dw-left-chevron"></i>'
+                    }
+                },
+                order: [
+                    [2, 'asc']
+                ]
+            });
+
+            // Delegate “view_documents” clicks (so it works on Ajax‐loaded rows)
+            $('#multi-filter-select').on('click', '.view_documents', function() {
                 var owner_id = $(this).data('owner-id');
                 var tenant_type = $(this).data('tenant-type');
                 var company_name = $(this).data('company-name');
                 var docu_status = $(this).data('docu-status');
+
+                // Clear previous contents
                 $('#tenant-documents').empty();
                 $('#tenant-doc-stats').empty();
 
@@ -131,11 +203,11 @@
                     dataType: "json",
                     success: function(data) {
                         $('#tenant-documents').empty();
+                        $('#tenant-doc-stats').empty();
 
                         var checkFalse = true;
-
                         $.each(data[0].documents, function(key, value) {
-                            if (tenant_type == 'Individual') {
+                            if (tenant_type === 'Individual') {
                                 if (key === 'sec_reg' || key === 'valid_idSig1' ||
                                     key === 'valid_idSig2') {
                                     return true;
@@ -150,379 +222,210 @@
                                 checkFalse = false;
                             }
                         });
-                        if (checkFalse) {
-                            if (data[0].status !== 1) {
-                                $('#tenant-doc-stats').append(`
-                                                    <button type="button" class="btn btn-primary approveTenantDocuments" data-owner-id="${owner_id}">Approve Documents</button>
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                `);
-                            }
-                        }
-                        if (data[0].status !== 1) {
-                            $('#tenant-doc-stats').append(`
-                                                <button type="button" class="btn btn-primary approveTenantDocuments" data-owner-id="${owner_id}">Approve Documents</button>
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            `);
+
+                        // Always append a “Close” button
+                        $('#tenant-doc-stats').append(`
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          `);
+
+                        // Only show “Approve Documents” if not already approved (status ≠ 1) AND all required files exist
+                        if (!checkFalse && data[0].status !== 1) {
+                            $('#tenant-doc-stats').prepend(`
+              <button type="button" class="btn btn-primary approveTenantDocuments" data-owner-id="${owner_id}">
+                Approve Documents
+              </button>
+            `);
+                        } else if (data[0].status !== 1 && checkFalse) {
+                            // If all files are present but status ≠ 1, still show Approve
+                            $('#tenant-doc-stats').prepend(`
+              <button type="button" class="btn btn-primary approveTenantDocuments" data-owner-id="${owner_id}">
+                Approve Documents
+              </button>
+            `);
                         }
 
-                        $('.approveTenantDocuments').click(function() {
-                            var owner_id = $(this).data('owner-id');
-                            $.ajax({
-                                url: "{{ route('admin.tenant.documents.approve') }}",
-                                type: "POST",
-                                data: {
-                                    ownerid: owner_id,
-                                },
-                                dataType: "json",
-                                success: function(data) {
-                                    //    console.log(data);
-                                    $('#tenant-show-table').find('td').eq(7)
-                                        .html(
-                                            '<span class="badge bg-success">Approved</span>'
-                                        );
-                                    $('#tenantDocuments').modal('hide');
-                                },
-                                error: function(xhr, status, error) {
-                                    console.log(xhr.responseText);
-                                }
+                        // Bind approve button (delegate in case it’s dynamic)
+                        $('#tenant-doc-stats').off('click', '.approveTenantDocuments').on(
+                            'click', '.approveTenantDocuments',
+                            function() {
+                                var oid = $(this).data('owner-id');
+                                $.ajax({
+                                    url: "{{ route('admin.tenant.documents.approve') }}",
+                                    type: "POST",
+                                    data: {
+                                        ownerid: oid
+                                    },
+                                    dataType: "json",
+                                    success: function(response) {
+                                        console.log(response);
+                                        $.notify({
+                                            content: "Documents successfully approved!",
+                                            title: 'Success!',
+                                            text: 'Successfully approved tenant documents.',
+                                            icon: "fa fa-bell"
+                                        }, {
+                                            type: 'success',
+                                            placement: {
+                                                from: 'top',
+                                                align: 'right'
+                                            },
+                                            time: 1000,
+                                            delay: 1500,
+                                        });
+
+                                        // Update DataTable cell
+                                        dtTenant.rows().every(function(rowIdx,
+                                            tableLoop, rowLoop) {
+                                            var d = this.data();
+                                            if (d.owner_id == oid) {
+                                                d.doc_status = 1;
+                                                this.invalidate();
+                                            }
+                                        });
+                                        dtTenant.draw(false);
+                                        $('#tenantDocuments').modal('hide');
+                                    },
+                                    error: function(xhr, status, error) {
+                                        $.notify({
+                                            content: 'Something went wrong, please try again!',
+                                            title: 'Error!',
+                                            icon: "fa fa-bell"
+                                        }, {
+                                            type: 'danger',
+                                            placement: {
+                                                from: 'top',
+                                                align: 'right'
+                                            },
+                                            time: 1000,
+                                            delay: 1500,
+                                        });
+                                    }
+                                });
                             });
-                        });
 
+
+
+
+
+                        // Build the list of document rows
                         $.each(data, function(key, value) {
                             var documentid = value.document_id;
-                            $.each(value.documents, function(key, value) {
-                                const keyMappings = {
-                                    dti_reg: 'DTI Registration',
-                                    valid_id1: 'Valid ID 1',
-                                    valid_id2: 'Valid ID 2',
-                                    sec_reg: 'SEC Registration',
-                                    valid_idSig1: 'Valid ID Signature 1',
-                                    valid_idSig2: 'Valid ID Signature 2',
-                                    bir_cor: 'BIR COR',
-                                    comp_prof: 'Company Profile',
-                                    menu_list: 'Menu List',
-                                    store_persp: 'Store Perspective',
-                                    franch_letter: 'Franchise Letter',
-                                    car_letter: 'CAR Letter',
-                                    service_letter: 'Service Letter',
-                                    realty_letter: 'Realty Letter',
-                                    hlurb: 'HLURB',
-                                };
-
-                                if (key === 'id' || key === 'created_at' ||
-                                    key === 'updated_at' || key === 'status') {
+                            $.each(value.documents, function(field, filename) {
+                                // Skip the meta‐fields
+                                if (field === 'id' || field === 'created_at' ||
+                                    field === 'updated_at' || field === 'status'
+                                    ) {
+                                    return true;
+                                }
+                                // Skip irrelevant fields based on tenant type
+                                if (tenant_type === 'Individual' && (field ===
+                                        'sec_reg' || field === 'valid_idSig1' ||
+                                        field === 'valid_idSig2')) {
+                                    return true;
+                                }
+                                if (tenant_type !== 'Individual' && (field ===
+                                        'dti_reg' || field === 'valid_id1' ||
+                                        field === 'valid_id2')) {
                                     return true;
                                 }
 
-                                if (tenant_type == 'Individual') {
-                                    if (key === 'sec_reg' || key ===
-                                        'valid_idSig1' || key === 'valid_idSig2'
-                                    ) {
-                                        return true;
-                                    }
-                                } else {
-                                    if (key === 'dti_reg' || key ===
-                                        'valid_id1' || key === 'valid_id2') {
-                                        return true;
-                                    }
+                                var displayName;
+                                switch (field) {
+                                    case 'dti_reg':
+                                        displayName = 'DTI Registration';
+                                        break;
+                                    case 'valid_id1':
+                                        displayName = 'Valid ID 1';
+                                        break;
+                                    case 'valid_id2':
+                                        displayName = 'Valid ID 2';
+                                        break;
+                                    case 'sec_reg':
+                                        displayName = 'SEC Registration';
+                                        break;
+                                    case 'valid_idSig1':
+                                        displayName = 'Valid ID Signature 1';
+                                        break;
+                                    case 'valid_idSig2':
+                                        displayName = 'Valid ID Signature 2';
+                                        break;
+                                    case 'bir_cor':
+                                        displayName = 'BIR COR';
+                                        break;
+                                    case 'comp_prof':
+                                        displayName = 'Company Profile';
+                                        break;
+                                    case 'menu_list':
+                                        displayName = 'Menu List';
+                                        break;
+                                    case 'store_persp':
+                                        displayName = 'Store Perspective';
+                                        break;
+                                    case 'franch_letter':
+                                        displayName = 'Franchise Letter';
+                                        break;
+                                    case 'car_letter':
+                                        displayName = 'CAR Letter';
+                                        break;
+                                    case 'service_letter':
+                                        displayName = 'Service Letter';
+                                        break;
+                                    case 'realty_letter':
+                                        displayName = 'Realty Letter';
+                                        break;
+                                    case 'hlurb':
+                                        displayName = 'HLURB';
+                                        break;
+                                    default:
+                                        displayName = field;
                                 }
 
-                                var documentStatus;
-
-                                if (value == null) {
-                                    documentStatus =
-                                        '<span class="badge bg-warning">Not Uploaded</span>';
-                                } else {
-                                    documentStatus =
-                                        '<span class="badge bg-success">Uploaded</span>';
-                                }
-
-                                var newKeyName = keyMappings[key] || key;
+                                var statusBadge = filename == null ?
+                                    '<span class="badge bg-warning">Not Uploaded</span>' :
+                                    '<span class="badge bg-success">Uploaded</span>';
 
                                 var tr = `
-                                                    <tr>
-                                                        <td class="text-center">${newKeyName}</td>
-                                                        <td class="text-center">${documentStatus}</td>
-                                                        <td class="text-center">
-                                                            <a class="btn btn-sta btn-sm viewDocument"
-                                                            data-document-name="${value}"
-                                                            data-company_name="${company_name}"
-                                                            data-documents-id="${key}"
-                                                            data-tenant-doc-id="${documentid}"
-                                                            data-owner-id="${owner_id}"
-                                                            data-bs-target="#tenantCheckDocument" data-bs-toggle="modal">
-                                                                <i class="fa fa-pen" aria-hidden="true"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                `;
+                <tr>
+                  <td class="text-center">${displayName}</td>
+                  <td class="text-center">${statusBadge}</td>
+                  <td class="text-center">
+                    <a class="btn btn-sta btn-sm viewDocument"
+                       data-document-name="${filename}"
+                       data-company_name="${company_name}"
+                       data-documents-id="${field}"
+                       data-tenant-doc-id="${documentid}"
+                       data-owner-id="${owner_id}"
+                       data-bs-target="#tenantCheckDocument"
+                       data-bs-toggle="modal">
+                      <i class="fa fa-pen" aria-hidden="true"></i>
+                    </a>
+                  </td>
+                </tr>`;
                                 $('#tenant-documents').append(tr);
-
-
-                            });
-
-                        });
-
-                        $('.viewDocument').click(function() {
-                            var documentName = $(this).data('document-name');
-                            var company_name = $(this).data('company_name');
-                            var documents_id = $(this).data('documents-id');
-                            var tenant_doc_id = $(this).data('tenant-doc-id');
-                            var owner_id = $(this).data('owner-id');
-                            $('#tenant-documents-pdf').empty();
-                            $('#tenant-documents-footer').empty();
-
-                            if (documentName == null) {
-                                $('#tenant-documents-footer').append(`
-                                                    <button class="btn btn-primary" id="upload-File">Upload</button>
-                                                    <button class="btn btn-secondary" data-bs-target="#tenantDocuments" data-bs-toggle="modal">Back</button>
-                                                    <input type="text" id="tenant-documents-id" name="tenant_doc_id" value="${tenant_doc_id}" hidden>
-                                                    <input type="text" id="tenant-documents-id2" name="tenant_doc_id2" value="${documents_id}" hidden>
-                                                    <input type="text" id="tenant-documents-owner-id" name="tenant_doc_owner_id" value="${owner_id}" hidden>
-                                                    <input type="file" id="tenant-documents-file" name="tenant_doc_file" style="display: none;"/>
-                                                `);
-                                $('#tenant-documents-pdf').append(`
-                                                    <img class="" src="https://as1.ftcdn.net/v2/jpg/08/43/39/72/1000_F_843397211_gPMOVXz9VjqN4uSxqQqwY2U1HgACwmAE.jpg" width="40%" height="100%" style="border: none;">
-                                                `);
-                            } else {
-                                var fileExtension = documentName.split('.').pop()
-                                    .toLowerCase();
-
-                                $('#tenant-documents-footer').append(`
-                                                    <button class="btn btn-secondary" data-bs-target="#tenantDocuments" data-bs-toggle="modal">Back</button>
-                                                `);
-                                if (['jpg', 'jpeg', 'png', 'gif'].includes(
-                                        fileExtension)) {
-                                    $('#tenant-documents-pdf').append(`
-                                                        <img src="{{ asset('storage/tenant_documents') }}/${company_name}/${documentName}" width="100%" height="100%" style="border: none; object-fit: cover;">
-                                                    `);
-                                } else if (fileExtension === 'pdf') {
-                                    $('#tenant-documents-pdf').append(`
-                                                        <iframe id="tenant-documents-pdf" src="{{ asset('storage/tenant_documents') }}/${company_name}/${documentName}" width="100%" height="100%" style="border: none;"></iframe>
-                                                    `);
-                                } else {
-                                    $('#tenant-documents-pdf').append(`
-                                                        <p>Unsupported file type</p>
-                                                    `);
-                                }
-                            }
-
-                            $('#upload-File').click(function() {
-                                $('#tenant-documents-file').trigger('click');
-                                var tenant_doc_id = $('#tenant-documents-id')
-                                    .val();
-                                var tenant_doc_id2 = $('#tenant-documents-id2')
-                                    .val();
-                                var owner_id = $('#tenant-documents-owner-id')
-                                    .val();
-                                $('#tenant-documents-file').on('change',
-                                    function() {
-                                        var e = this.files[0];
-                                        var formData = new FormData();
-                                        formData.append('tenant_doc_id',
-                                            tenant_doc_id);
-                                        formData.append('tenant_doc_id2',
-                                            tenant_doc_id2);
-                                        formData.append(
-                                            'tenant_doc_owner_id',
-                                            owner_id);
-                                        formData.append('tenant_doc_file',
-                                            e);
-                                        $.ajax({
-                                            url: "{{ route('admin.submit.documents') }}",
-                                            type: "POST",
-                                            processData: false,
-                                            contentType: false,
-                                            data: formData,
-                                            success: function(
-                                                data) {
-                                                window.location
-                                                    .reload();
-                                                // console.log(data);
-                                            },
-                                            error: function(xhr,
-                                                status, error) {
-                                                console.log(xhr
-                                                    .responseText
-                                                );
-                                            }
-                                        });
-                                    });
                             });
                         });
-
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
                     }
                 });
-
             });
 
+            // Delegate delete button click (unchanged)
+            $('#multi-filter-select').on('click', '.deleteTenant', function() {
+                delete_tenant_func($(this).data('owner-id'));
+            });
+
+            // Pusher: reload DataTable when tenant.documents channel fires
+            Pusher.logToConsole = true;
+            const pusher = new Pusher('1eedc3e004154aadb5dc', {
+                cluster: 'ap1',
+                forceTLS: true
+            });
+            const channel = pusher.subscribe('tenant.documents');
+            channel.bind('tenant.document.changed', function() {
+                dtTenant.ajax.reload(null, false);
+            });
         });
-
-        function delete_tenant_func(tenant_id) {
-            swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: "{{ route('admin.delete.tenants') }}",
-                        type: 'POST',
-                        data: {
-                            id: tenant_id
-                        },
-                        success: function(response) {
-                            console.log(response);
-                            $.notify({
-                                content: response.status,
-                                title: 'Success!',
-                                icon: "fa fa-bell"
-                            }, {
-                                type: 'success',
-                                placement: {
-                                    from: 'top',
-                                    align: 'right',
-                                },
-                                time: 1000,
-                                delay: 1500,
-                            });
-                        },
-                        error: function(xhr, status, error) {
-                            $.notify({
-                                content: 'Something went wrong, please try again!',
-                                title: 'Error!',
-                                icon: "fa fa-bell"
-                            }, {
-                                type: 'danger',
-                                placement: {
-                                    from: 'top',
-                                    align: 'right',
-                                },
-                                time: 1000,
-                                delay: 1500,
-                            });
-                        }
-                    });
-                }
-            });
-        }
     </script>
-
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-
-<script>
-  $(function() {
-    // helper to capitalize
-    function capitalize(s) {
-      return s.charAt(0).toUpperCase() + s.slice(1);
-    }
-
-    // Initialize DataTable
-    var dtTenant = $('#multi-filter-select').DataTable({
-      processing: false,
-      serverSide: false,   // client‐side paging/filtering of the JSON payload
-      ajax: {
-        url: "{{ route('admin.tenants.data') }}",
-        dataSrc: ''        // your endpoint returns a flat array
-      },
-      columns: [
-        { data: 'company_name', name: 'company_name' },
-        {
-          data: null,
-          name: 'rep_name',
-          render: function (row) {
-            return capitalize(row.rep_fname) + ' ' + capitalize(row.rep_lname);
-          }
-        },
-        { data: 'store_name', name: 'store_name' },
-        { data: 'company_address', name: 'company_address' },
-        { data: 'rep_address', name: 'rep_address' },
-        { data: 'rep_email', name: 'rep_email' },
-        {
-          data: 'rep_status',
-          name: 'rep_status',
-          render: function(val) {
-            return val
-              ? '<span class="badge bg-success">Active</span>'
-              : '<span class="badge bg-warning">Pending</span>';
-          }
-        },
-        {
-          data: 'doc_status',
-          name: 'doc_status',
-          render: function(val) {
-            return val
-              ? '<span class="badge bg-success">Approved</span>'
-              : '<span class="badge bg-warning">Pending</span>';
-          }
-        },
-        {
-          data: null,
-          name: 'actions',
-          orderable: false,
-          searchable: false,
-          className: 'text-center',
-          render: function(row) {
-            return `
-              <button class="btn btn-warning btn-sm view_documents"
-                      data-owner-id="${row.owner_id}"
-                      data-company-name="${row.company_name}"
-                      data-tenant-type="${row.tenant_type}"
-                      data-docu-status="${row.doc_status}"
-                      data-bs-toggle="modal"
-                      data-bs-target="#tenantDocuments">
-                <i class="fa fa-pen"></i>
-              </button>
-              <button class="btn btn-danger btn-sm deleteTenant"
-                      data-owner-id="${row.owner_id}">
-                <i class="fa fa-trash"></i>
-              </button>`;
-          }
-        }
-      ],
-      autoWidth: false,
-      responsive: true,
-      language: {
-        info: "_START_-_END_ of _TOTAL_ tenants",
-        searchPlaceholder: "Search tenants",
-        paginate: {
-          next: '<i class="dw dw-right-chevron"></i>',
-          previous: '<i class="dw dw-left-chevron"></i>'
-        }
-      },
-      order: [[ 2, 'asc' ]]  // default sort by Store Name
-    });
-
-    // manual reload (if you want a button)
-    $('#btnReloadTenants').on('click', function() {
-      dtTenant.ajax.reload(null, false);
-    });
-
-    // delegate delete button click
-    $('#multi-filter-select').on('click', '.deleteTenant', function() {
-      delete_tenant_func($(this).data('owner-id'));
-    });
-
-    // Pusher — refresh the DataTable on any TenantEvent
-    Pusher.logToConsole = true;
-    const pusher = new Pusher('1eedc3e004154aadb5dc', {
-      cluster: 'ap1', forceTLS: true
-    });
-    const channel = pusher.subscribe('tenant.documents');
-    channel.bind('tenant.document.changed', () => {
-      dtTenant.ajax.reload(null, false);
-    });
-  });
-</script>
-
-
-
-
-
-
 @endsection

@@ -10,13 +10,13 @@ class Space extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     protected $table = 'space';
     protected $fillable = [
         "space_name",
         "space_area",
         "mall_code",
-        "bldg_number",
+        "bldg_number",  // Building number
         "unit_number",
         "level_number",
         "store_type",

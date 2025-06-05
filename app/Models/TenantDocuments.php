@@ -22,6 +22,6 @@ class TenantDocuments extends Model
 
     public function documents()
     {
-        return $this->belongsTo(DocumentsTable::class, 'id');
+        return $this->belongsTo(DocumentsTable::class, 'document_id');
     }
 }

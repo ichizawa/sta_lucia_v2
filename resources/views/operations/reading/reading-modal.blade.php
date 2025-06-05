@@ -9,7 +9,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table id="operations-tenant-reading"
+                        <table id="
+
+
+                        utility-tenant-reading"
                             class="table table-hover table-striped table-bordered w-100">
                             <thead class="thead-light">
                                 <tr>
@@ -70,14 +73,14 @@
         //                 <div class="mt-4">
         //                     <table class="table table-bordered">
         //                         <thead class="thead-light">
-        //                             <tr>   
+        //                             <tr>
         //                                 <th>Contract #</th>
         //                                 <th>Status</th>
         //                                 <th>Reading Status</th>
         //                                 <th>Action</th>
         //                             </tr>
         //                         </thead>
-        //                         <tbody>        
+        //                         <tbody>
         //                         </tbody>
         //                     </table>
         //                 </div>
@@ -88,7 +91,7 @@
         //     }
         // });
 
-        const table = $("#operations-tenant-reading").DataTable({
+        const table = $("#utility-tenant-reading").DataTable({
             pageLength: 10,
         });
 
@@ -96,7 +99,7 @@
             var date = $(event.relatedTarget).data('date');
 
             $.ajax({
-                url: "{{ route('reading.get.list') }}",
+                 url: "{{ route('reading.get.list') }}",
                 method: 'GET',
                 dataType: 'json',
                 data: {
@@ -143,7 +146,7 @@
                                             data-bs-toggle="modal"
                                             data-bs-target="#contractUtilityLists"
                                             data-date="${date}"
-                                            data-proposal-id="${val.id}" 
+                                            data-proposal-id="${val.id}"
                                             data-id="${val.billing.id}">
                                         <i class="fa fa-pen"></i>
                                         </a>
@@ -159,7 +162,7 @@
                             <div class="collapse mt-4" id="utility_bill${key}">
                                 <table class="table table-bordered">
                                     <thead class="thead-light">
-                                        <tr>   
+                                        <tr>
                                             <th class="text-center">Contract #</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Reading Status</th>

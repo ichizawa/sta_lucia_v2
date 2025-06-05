@@ -1,9 +1,9 @@
-{{-- @extends('layouts')
+@extends('layouts')
 
 @section('content')
-    @include('operations.reading.lists-utility')
-    @include('operations.reading.reading-modal')
-    @include('operations.reading.input-reading-modal')
+    @include('utility.lists-utility')
+    @include('utility.reading-modal')
+    @include('utility.input-reading-modal')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
@@ -30,4 +30,4 @@
             </div>
         </div>
     </div>
-@endsection --}}
+@endsection

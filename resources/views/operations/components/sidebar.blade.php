@@ -106,12 +106,12 @@
                         <p>Space Construction</p>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('reading.reading.operation') ? 'active' : '' }}">
+                {{-- <li class="nav-item {{ request()->routeIs('reading.reading.operation') ? 'active' : '' }}">
                     <a href="{{ route('reading.reading.operation') }}" aria-expanded="false">
                         <i class="fa-solid fa-gears"></i>
                         <p>Utility Reading</p>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

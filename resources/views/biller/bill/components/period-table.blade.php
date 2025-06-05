@@ -55,7 +55,6 @@
                 }
             });
         });
-
         $('#period').on('show.bs.collapse', function (e) {
             $(e.target).prev('.card-header').find('.rotate-icon').addClass('rotate-up');
         });

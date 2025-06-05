@@ -15,6 +15,7 @@ use App\Models\SpaceUtility;
 use App\Models\UtilitiesModel;
 use Illuminate\Http\Request;
 use App\Models\Space;
+use App\Events\SpaceEvent;
 
 class SpaceController extends Controller
 {
@@ -61,7 +62,23 @@ class SpaceController extends Controller
         ]);
     }
 
-    public function sumbmitSpace(Request $request)
+ public function getSpaceData()
+    {
+       return Space::join('leasable_space', 'space.id', '=', 'leasable_space.space_id')
+            ->select([
+                'space.id',
+                'space.space_name',
+                'space.store_type',
+                'space.space_area',
+                'space.property_code',
+                'space.space_type',
+                'leasable_space.status',     // pull status from leasable_space
+                'space.space_tag'
+            ])
+            ->orderBy('leasable_space.id', 'desc')
+            ->get();
+    }
+    public function submitSpace(Request $request)
     {
         $space = Space::firstOrCreate(
             attributes: [
@@ -139,7 +156,7 @@ class SpaceController extends Controller
                 'proposal_id' => null,
                 'status' => 0,
             ]);
-
+        event(new SpaceEvent($space));
             return redirect()->route('admin.space')->with('status', 'Space Added Successfully');
         } else {
             return redirect()->route('admin.space')->with('status', 'Space Already Added, or Unit Number Already Exists');

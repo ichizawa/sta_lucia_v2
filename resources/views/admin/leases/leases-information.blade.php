@@ -1,3 +1,4 @@
+{{-- resources/views/admin/leases/leases-information.blade.php --}}
 @extends('layouts')
 
 @section('content')
@@ -19,7 +20,11 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="multi-filter-select" class="display table table-striped table-hover">
+                            {{-- Add style="width:100%" here so the table always fills its parent --}}
+                            <table
+                                id="multi-filter-select"
+                                class="display table table-striped table-hover"
+                                style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Space Name</th>
@@ -28,29 +33,9 @@
                                         <th class="text-center">Store Type</th>
                                         <th class="text-center">Assigned To</th>
                                         <th class="text-center">Availability</th>
-                                        <!-- <th>Actions</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($space as $leasable_space)
-                                        <!-- {{ $leasable_space }} -->
-                                        <tr>
-                                            <td class="text-center">{{ ucwords($leasable_space->space_name) }}</td>
-                                            <td class="text-center">{{ $leasable_space->store_type }}</td>
-                                            <td class="text-center">{{ $leasable_space->space_area }}</td>
-                                            <td class="text-center">{{ $leasable_space->store_type }}</td>
-                                            <td class="text-center">
-                                                {{ $leasable_space->owner_id ? ucwords($leasable_space->rep_fname . ' ' . $leasable_space->rep_lname) : 'Not Assigned' }}
-                                            </td>
-                                            <td class="text-center">{!! $leasable_space->status
-                                                ? '<span class="badge bg-secondary">Unavailable</span>'
-                                                : '<span class="badge bg-success">Available</span>' !!}
-                                                <!-- <td>
-                                                                                                            <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#view-lease"><i class="fa fa-eye"></i></a>
-                                                                                                            <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#edit-lease"><i class="fa fa-pen"></i></a>
-                                                                                                        </td> -->
-                                        </tr>
-                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -61,4 +46,81 @@
     </div>
     @include('admin.components.modals.view-leasable-info')
     @include('admin.components.modals.edit-leasable-info')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+
+    <script>
+        Pusher.logToConsole = true;
+        $(document).ready(function () {
+            function capitalize(str) {
+                if (!str) return '';
+                return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+            }
+            let dtSpace = $('#multi-filter-select').DataTable({
+                processing: false,
+                serverSide: false,
+                responsive: true,
+                autoWidth: false,
+
+                ajax: {
+                    url: "{{ route('leases.mall.leases') }}",
+                    dataSrc: ''
+                },
+                columns: [
+                    {
+                        data: 'space_name',
+                        className: 'text-center',
+                        render: d => capitalize(d)
+                    },
+                    {
+                        data: 'space_type',
+                        className: 'text-center',
+                        render: d => capitalize(d)
+                    },
+                    {
+                        data: 'space_area',
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'store_type',
+                        className: 'text-center',
+                        render: d => capitalize(d)
+                    },
+                    {
+                        data: 'owner_id',
+                        className: 'text-center',
+                        render: function (owner_id, type, row) {
+                            if (!owner_id) {
+                                return 'Not Assigned';
+                            }
+                            let fname = capitalize(row.rep_fname);
+                            let lname = capitalize(row.rep_lname);
+                            return fname + ' ' + lname;
+                        }
+                    },
+                    {
+                        data: 'status',
+                        className: 'text-center',
+                        render: function (d) {
+                            return d
+                                ? '<span class="badge bg-secondary">Unavailable</span>'
+                                : '<span class="badge bg-success">Available</span>';
+                        }
+                    }
+                ],
+                order: [[2, 'desc']]
+            });
+            Pusher.logToConsole = true;
+            const pusher = new Pusher('1eedc3e004154aadb5dc', {
+                cluster: 'ap1',
+                forceTLS: true
+            });
+            const channel = pusher.subscribe('space-channel');
+            channel.bind('space-updated', () => {
+                console.log('Pusher event caught: reloading DataTable');
+                dtSpace.ajax.reload(null, false);
+            });
+        });
+    </script>
 @endsection

@@ -1,41 +1,61 @@
 <?php
+// app/Events/LeaseProposalEvent.php
 
 namespace App\Events;
 
-use App\Models\Space;
+use App\Models\LeaseProposal;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\LeasableInfoModel;
 
-class LeaseProposalEvent implements ShouldBroadcast
+class LeaseProposalEvent implements ShouldBroadcastNow
 {
     use Dispatchable, SerializesModels;
 
-    public $space;
+    /** @var LeaseProposal */
+    public $proposal;
 
-    public function __construct($space)
+    public function __construct(LeaseProposal $proposal)
     {
-        $this->space = $space;
+        $this->proposal = $proposal;
     }
 
     public function broadcastOn()
     {
-        return new Channel('space-channel');
+        return new Channel('lease-channel');
     }
 
     public function broadcastAs()
     {
-        return 'my-space';
+        return 'proposal-updated';
     }
 
-    public function broadcasWith()
-    {
-        return [
-            'space' => $this->space
-        ];
-    }
+   public function broadcastWith(): array
+{
+    $spaces = LeasableInfoModel::join('space', 'leasable_space.space_id', '=', 'space.id')
+        ->where('leasable_space.proposal_id', $this->proposal->id)
+        ->select(['space.property_code', 'space.space_area'])
+        ->get();
+
+    $propertyCodes   = $spaces->pluck('property_code')->unique()->implode(', ');
+    $totalSpaceArea  = $spaces->pluck('space_area')->sum();
+
+    $companyName = optional($this->proposal->company)->company_name;
+    $tenantType  = optional($this->proposal->company)->tenant_type;
+
+    return [
+        'proposal' => [
+            'id'               => $this->proposal->id,
+            'company_name'     => $companyName,
+            'property_codes'   => $propertyCodes,
+            'total_space_area' => $totalSpaceArea,
+            'tenant_type'      => $tenantType,
+            'status'           => $this->proposal->status,
+        ],
+    ];
+}
+
+
 }

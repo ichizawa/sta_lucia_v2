@@ -63,7 +63,7 @@ class TenantsController extends Controller
     $owners = Owner::with([
         'companies',
         'representatives',
-        'tenantDocument.documents'
+        'tenantDocuments.documents'
     ])->get();
 
     // JSON endpoint
@@ -73,12 +73,12 @@ class TenantsController extends Controller
             ->filter(function($o){
                 return $o->companies->isNotEmpty()
                     && $o->representatives->isNotEmpty()
-                    && $o->tenantDocument !== null;
+                    && $o->tenantDocuments !== null;
             })
             ->map(function($o){
                 $c = $o->companies->first();       // now guaranteed non-null
                 $r = $o->representatives->first();
-                $d = $o->tenantDocument;           // hasOne
+                $d = $o->tenantDocuments;           // hasOne
 
                 return [
                     'owner_id'        => $o->id,

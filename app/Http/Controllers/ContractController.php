@@ -12,15 +12,56 @@ use Storage;
 
 class ContractController extends Controller
 {
-    public function adminRenewalContract()
+     public function adminRenewalContract(Request $request)
     {
-        $all = Contracts::join('award_notice', 'contracts.award_notice_id', '=', 'award_notice.id')
-            ->join('proposal', 'award_notice.proposal_id', '=', 'proposal.id')
-            ->join('company', 'proposal.tenant_id', '=', 'company.owner_id')
-            ->select('company.company_name', 'company.company_address', 'proposal.total_rent', 'proposal.lease_term', 'contracts.id', 'proposal.commencement', 'proposal.end_contract')
+        // Common query: join contracts → award_notice → proposal → company
+        $allContracts = Contracts::join('award_notice', 'contracts.award_notice_id', '=', 'award_notice.id')
+            ->join('proposal',       'award_notice.proposal_id',   '=', 'proposal.id')
+            ->join('company',        'proposal.tenant_id',         '=', 'company.owner_id')
+            ->select(
+                'contracts.id as contract_id',
+                'company.company_name',
+                'proposal.total_rent',
+                'proposal.lease_term',
+                'proposal.commencement',
+                'proposal.end_contract'
+            )
+            ->orderBy('contracts.id', 'desc')
             ->get();
-        return view('admin.contracts.renew-contract', compact('all'));
+
+        // If this is an AJAX request, return JSON instead of rendering the view:
+        if ($request->ajax() || $request->wantsJson()) {
+            // Map each contract row into exactly the fields needed by the DataTable
+            $rows = $allContracts->map(function ($c) {
+                return [
+                    'contract_id'     => $c->contract_id,
+                    'company_name'    => $c->company_name,
+                    'renewal_term'    => $c->lease_term,
+                    // Format “Monthly Rent” with two decimal places and a “P ” prefix:
+                    'monthly_rent'    => 'P ' . number_format($c->total_rent, 2),
+                    // Format “Due Date” as “F, Y” (e.g. “June, 2025”)
+                    'due_date'        => date('F, Y', strtotime($c->end_contract)),
+                    // Format “Date of Agreement” as “F, Y”
+                    'agreement_date'  => date('F, Y', strtotime($c->commencement)),
+                ];
+            });
+
+            return response()->json($rows);
+        }
+
+        // Otherwise (non‐AJAX), render the Blade view so that a normal page load still works:
+        return view('admin.contracts.renew-contract');
     }
+    // Orig
+    // public function adminRenewalContract()
+    // {
+    //     $all = Contracts::join('award_notice', 'contracts.award_notice_id', '=', 'award_notice.id')
+    //         ->join('proposal', 'award_notice.proposal_id', '=', 'proposal.id')
+    //         ->join('company', 'proposal.tenant_id', '=', 'company.owner_id')
+    //         ->select('company.company_name', 'company.company_address', 'proposal.total_rent', 'proposal.lease_term', 'contracts.id', 'proposal.commencement', 'proposal.end_contract')
+    //         ->get();
+    //     return view('admin.contracts.renew-contract', compact('all'));
+    // }
 
     public function adminViewContract(Request $request)
     {

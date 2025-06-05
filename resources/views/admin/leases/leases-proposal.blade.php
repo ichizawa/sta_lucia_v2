@@ -2,7 +2,6 @@
 
 @section('content')
     @include('admin.components.modals.proposal-modal')
-    <!-- @include('admin.components.modals.lease-documents-modal') -->
     @include('admin.components.modals.counter-proposals-modal')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
@@ -34,38 +33,10 @@
                                         <th class="text-center">Total Floor Area/s</th>
                                         <th class="text-center">Tenant Type</th>
                                         <th class="text-center">Status</th>
-                                        <th class="text-center">View Proposal</th>
+                                        <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="proposals_table">
-                                    @foreach ($proposal as $proposals)
-                                        <tr>
-                                            <td class="text-center">{{ ucfirst($proposals->company_name) }}</td>
-                                            <td class="text-center">
-                                                @php
-                                                    echo $propertyCodes = collect($proposals->space_selected)
-                                                        ->pluck('property_code')
-                                                        ->implode(', ');
-                                                @endphp
-                                            </td>
-                                            <td class="text-center">
-                                                {{ $totalSpaceArea = collect($proposals->space_selected)->sum('space_area') . ' sqm' }}
-                                            </td>
-                                            <td class="text-center">{{ $proposals->tenant_type }}</td>
-                                            <td class="text-center">{!! $proposals->status
-                                                ? '<span class="badge bg-success">Approved</span>'
-                                                : '<span class="badge bg-warning">Pending</span>' !!}</td>
-                                            <td class="text-center">
-                                                <a class="btn btn-sm btn-success showProposalContents"
-                                                    id="showProposalContents" data-show-proposal-id="{{ $proposals->id }}"
-                                                    data-bs-toggle="modal" data-bs-target="#leaseProposal"><i
-                                                        class="fa fa-eye"></i></a>
-                                                <a class="btn btn-sm btn-warning editProposalContents"
-                                                    data-edit-proposal-id="{{ $proposals->id }}" data-bs-toggle="modal"
-                                                    data-bs-target="#editProposal"><i class="fa fa-pen"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -74,25 +45,127 @@
             </div>
         </div>
     </div>
+
     @if (session('success'))
         <script>
             $(document).ready(function() {
-                var content = {
+                $.notify({
                     message: '{{ session('success') }}',
-                    title: '{{ session('success') }}',
-                    icon: "fa fa-bell"
-                };
-
-                $.notify(content, {
+                    title: 'Success',
+                    icon: 'fa fa-bell'
+                }, {
                     type: 'success',
-                    placement: {
-                        from: 'top',
-                        align: 'right',
-                    },
+                    placement: { from: 'top', align: 'right' },
                     time: 1000,
-                    delay: 1200,
+                    delay: 1200
                 });
             });
         </script>
     @endif
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+
+    <script>
+        let dtProposal;
+
+        $(document).ready(function() {
+            function orNA(value) {
+                return (value === null || value === undefined || value === '') ? 'N/A' : value;
+            }
+
+            if (! $.fn.DataTable.isDataTable('#multi-filter-select')) {
+                dtProposal = $('#multi-filter-select').DataTable({
+                    processing: false,
+                    serverSide: false,
+                    ajax: {
+                        url: "{{ route('leases.proposal.data') }}",
+                        dataSrc: ''
+                    },
+                    columns: [
+                        {
+                            data: 'company_name',
+                            className: 'text-center',
+                            render: data => orNA(data)
+                        },
+                        {
+                            data: 'property_codes',
+                            className: 'text-center',
+                            render: data => orNA(data)
+                        },
+                        {
+                            data: 'total_space_area',
+                            className: 'text-center',
+                            render: data => orNA(data) + (data ? ' sqm' : '')
+                        },
+                        {
+                            data: 'tenant_type',
+                            className: 'text-center',
+                            render: data => orNA(data)
+                        },
+                        {
+                            data: 'status',
+                            className: 'text-center',
+                            render: val => {
+                                if (val === null || val === undefined) {
+                                    return '<span class="badge bg-secondary">N/A</span>';
+                                }
+                                const statusInt = parseInt(val, 10);
+                                if (statusInt === 1) {
+                                    return '<span class="badge bg-success">Approved</span>';
+                                } else if (statusInt === 2) {
+                                    return '<span class="badge bg-danger">Rejected</span>';
+                                } else {
+                                    return '<span class="badge bg-warning">Pending</span>';
+                                }
+                            }
+                        },
+                        {
+                            data: null,
+                            orderable: false,
+                            searchable: false,
+                            className: 'text-center',
+                            render: row => `
+                                <button class="btn btn-sm btn-success showProposalContents"
+                                        data-show-proposal-id="${row.id}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#leaseProposal">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-warning editProposalContents"
+                                        data-edit-proposal-id="${row.id}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editProposal">
+                                    <i class="fa fa-pen"></i>
+                                </button>`
+                        }
+                    ],
+                    autoWidth: false,
+                    responsive: true,
+                    language: {
+                        info: "_START_-_END_ of _TOTAL_ proposals",
+                        searchPlaceholder: "Search proposals",
+                        paginate: {
+                            next: '<i class="dw dw-right-chevron"></i>',
+                            previous: '<i class="dw dw-left-chevron"></i>'
+                        }
+                    },
+                    order: [[0, 'asc']]
+                });
+            }
+            Pusher.logToConsole = true;
+            const pusher = new Pusher('1eedc3e004154aadb5dc', {
+                cluster: 'ap1',
+                forceTLS: true
+            });
+            const channel = pusher.subscribe('lease-channel');
+            channel.bind('proposal-updated', () => {
+                console.log('Pusher event caught: reloading proposals table');
+                $('#multi-filter-select').DataTable().ajax.reload(null, false);
+            });
+        });
+    </script>
 @endsection

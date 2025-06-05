@@ -225,6 +225,9 @@
                                     if (response.status == "tenant") {
                                         redirectUrl = "{{ route('client.dashboard') }}";
                                     }
+                                    if (response.status == "utility") {
+                                        redirectUrl = "{{ route('utility.dashboard') }}";
+                                    }
                                     window.location = redirectUrl;
                                 } else {
                                     var content = {

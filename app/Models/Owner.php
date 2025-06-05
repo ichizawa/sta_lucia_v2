@@ -34,8 +34,9 @@ class Owner extends Model
         return $this->hasMany(Representative::class, 'owner_id');
     }
 
+
     /** one-to-one tenant document record */
-    public function tenantDocument()
+    public function tenantDocuments()
     {
         return $this->hasOne(TenantDocuments::class, 'owner_id');
     }
