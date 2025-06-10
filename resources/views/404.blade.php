@@ -140,15 +140,23 @@
 </style>
 
 <body>
-    <div class="noise"></div>
-    <div class="overlay"></div>
+    @php
+    $dashboardRoute = auth()->check()
+    ? route(['admin' => 'admin.dashboard', 'tenant' => 'client.dashboard', 'bill' => 'bill.dashboard',
+    'collect' => 'collect.dashboard', 'operation' => 'operation.dashboard',
+    'lease' => 'lease.admin.dashboard', 'reader' => 'reader.dashboard'][auth()->user()->type] ?? 'login')
+    : route('login');
+    @endphp
     <div class="terminal">
         <h1>Error <span class="errorcode">404</span></h1>
-        <p class="output">The page you are looking for might have been removed, had its name changed or is temporarily
-            unavailable.</p>
-        <p class="output">Please try to <a href="{{ url()->previous() }}">go back</a> or <a href="#2">return to the homepage</a>.</p>
+        <p class="output">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+        <p class="output">
+            Please try to <a href="{{ url()->previous() }}" rel="noopener noreferrer">go back</a> or
+            <a href="{{ $dashboardRoute }}" rel="noopener noreferrer">
+                return to the {{ auth()->check() ? 'dashboard' : 'login page' }}
+            </a>.
+        </p>
         <p class="output">Good luck.</p>
     </div>
 </body>
-
 </html>

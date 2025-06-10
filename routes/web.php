@@ -268,7 +268,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/save-reading', [UtilityReadingController::class, 'save'])->name('reading.save');
         });
     });
-    
+
 
     Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
         Route::get('/dashboard', [LeaseAdminController::class, 'index'])->name('lease.admin.dashboard');
@@ -277,7 +277,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/proposals', [LeaseAdminController::class, 'leasesProposal'])->name('lease.admin.leases.proposals');
             Route::get('/add-proposal', [LeaseAdminController::class, 'addLease'])->name('lease.admin.leases.add.proposal');
         });
-      
+
         Route::prefix('contracts')->group(function () {
             Route::get('/renewal', [LeaseAdminController::class, 'renewalContract'])->name('lease.admin.contracts.renewal');
             Route::get('/termination', [LeaseAdminController::class, 'terminationContract'])->name('lease.admin.contracts.termination');
