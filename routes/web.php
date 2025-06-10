@@ -272,6 +272,8 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
     Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
         Route::get('/dashboard', [LeaseAdminController::class, 'index'])->name('lease.admin.dashboard');
+        Route::get('/award-notices/{option}', [LeaseAdminController::class, 'awardNotices'])->name('lease.admin.award.notices');
+        Route::get('/vacate-notices', [VacateNoticesController::class, 'adminVacateNotices'])->name('lease.admin.vacate.notices');
 
         Route::prefix('leases')->group(function () {
             Route::get('/proposals', [LeaseAdminController::class, 'leasesProposal'])->name('lease.admin.leases.proposals');

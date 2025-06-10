@@ -11,6 +11,7 @@ use File;
 use Illuminate\Http\Request;
 use App\Models\LeasableInfoModel;
 use App\Models\Contracts;
+use App\Models\AwardNotice;
 
 class LeaseAdminController extends Controller
 {
@@ -123,5 +124,25 @@ class LeaseAdminController extends Controller
     public function terminationContract()
     {
         return view('lease-admin.contracts.termination-contract');
+    }
+
+    public function awardNotices(Request $request, $option)
+    {
+        if ($option == 'view') {
+            $notices = AwardNotice::join('proposal', 'award_notice.proposal_id', '=', 'proposal.id')
+                ->join('company', 'proposal.tenant_id', '=', 'company.owner_id')
+                ->select(
+                    'award_notice.id as award_notice_id',
+                    'award_notice.status as award_notice_status',
+                    'award_notice.created_at as award_notice_created_at',
+                    'proposal.*',
+                    'company.tenant_type',
+                    'company.company_name',
+                    'company.owner_id as company_owner_id'
+                )
+                ->get();
+
+            return view('lease-admin.notices.award-notice', compact('notices'));
+        }
     }
 }

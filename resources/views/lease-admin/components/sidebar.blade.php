@@ -73,6 +73,28 @@
                         </ul>
                     </div>
                 </li>
+                <li
+                    class="nav-item {{ request()->routeIs('lease.admin.award.notices') || request()->routeIs('admin.vacate.notices') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#notices" aria-expanded="false">
+                        <i class="fa-solid fa-award"></i>
+                        <p>Notices</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="notices">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ request()->routeIs('lease.admin.award.notices') ? 'active' : '' }}">
+                                <a href="{{ route('lease.admin.award.notices', 'view') }}">
+                                    <span class="sub-item">Award Notice</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('lease.admin.vacate.notices') ? 'active' : '' }}">
+                                <a href="{{ route('lease.admin.vacate.notices') }}">
+                                    <span class="sub-item">Vacate Notice</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item {{ request()->routeIs('lease.admin.permits.lists') ? 'active' : '' }}">
                     <a href="{{ route('lease.admin.permits.lists') }}" aria-expanded="false">
                         <i class="far fa-chart-bar"></i>
