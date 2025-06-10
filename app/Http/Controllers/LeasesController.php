@@ -35,6 +35,7 @@ use App\Models\SpaceSelected;
 use App\Models\Amenities;
 use App\Models\AmenitySelected;
 use Illuminate\Support\Collection;
+use App\Events\CollectorEvent;
 use Storage;
 
 class LeasesController extends Controller
@@ -222,6 +223,7 @@ class LeasesController extends Controller
     $this->newProposalPDF($lease_prop);
 
     event(new LeaseProposalEvent($lease_prop));
+    event(new CollectorEvent($lease_prop));
 
 
     return $lease_prop;

@@ -288,22 +288,34 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
     });
 
-    Route::prefix('collector')->middleware('role.check:collect')->group(function () {
-        Route::get('/dashboard', [CollectionController::class, 'index'])->name('collect.dashboard');
+        Route::prefix('collector')->middleware('role.check:collect')->group(function () {
 
-        Route::get('/collect', [CollectionController::class, 'collect'])->name('collect.invoices');
-        Route::prefix('collection')->group(function () {
+            // GET /collector/dashboard
+            Route::get('/dashboard', [CollectionController::class, 'index'])->name('collect.dashboard');
+
+            // GET /collector/collect
+            Route::get('/collect', [CollectionController::class, 'collect']) ->name('collect.invoices');
+
+            // All the collection-related endpoints
+            Route::prefix('collection')->group(function () {
+                // GET  /collector/collection/ledger
             Route::get('/ledger', [CollectionController::class, 'get'])->name('collect.ledger.index');
+
+                // GET  /collector/collection/contract-info
             Route::get('/contract-info', [CollectionController::class, 'view'])->name('collect.get.bills');
+
+                // POST /collector/collection/collect-bill
             Route::post('/collect-bill', [CollectionController::class, 'store'])->name('collect.store.bills');
-            Route::get('/check-periods', [CollectionController::class, 'checkBills'])->name('collect.check.bills');
-        });
 
-        Route::prefix('ledger')->group(function () {
+                // GET  /collector/collection/check-periods
+                Route::get('/check-periods', [CollectionController::class, 'checkBills'])->name('collect.check.bills');
+            });
+
+            // Ledger table view
+            Route::prefix('ledger')->group(function () {
             Route::get('/ledger-table', [CollectionLedgerController::class, 'collect_index'])->name('collect.ledger.table');
+            });
         });
-
-    });
 
     Route::prefix('operation')->middleware('role.check:operation')->group(function () {
         Route::get('/dashboard', [OperationController::class, 'index'])->name('operation.dashboard');

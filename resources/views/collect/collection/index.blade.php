@@ -52,7 +52,7 @@
                                                                 data-bs-target="#collectionModal">
                                                                 <i class="fa fa-plus"></i>
                                                                 Pay Collection
-                                                            </button> -->
+                                </button> -->
                             </div>
                         </div>
                         <div class="card-body">
@@ -76,4 +76,7 @@
     <script>
         const BILL_CHECK = "{{ route('collect.check.bills') }}";
     </script>
+
+
+
 @endsection

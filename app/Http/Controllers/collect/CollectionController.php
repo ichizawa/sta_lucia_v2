@@ -11,6 +11,8 @@ use App\Models\LeaseProposal;
 use App\Models\UtilitiesReading;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Events\CollectorEvent;
+use Yajra\DataTables\Facades\DataTables;
 
 class CollectionController extends Controller
 {
@@ -26,7 +28,8 @@ class CollectionController extends Controller
         ]);
     }
 
-    public function get(Request $request)
+
+   public function get(Request $request)
     {
         $billing_id = LeaseProposal::with(['billing'])->where('tenant_id', $request->id)->get()->first()->billing->id;
         return response()->json(
@@ -79,7 +82,7 @@ class CollectionController extends Controller
     {
         $bill = Billing::find($request->billing_id);
         $response = [];
-        
+
         if ($bill) {
             // if ($bill->debit < $bill->total_amount) {
             //     $bill->is_prepared = Billing::PENDING;
@@ -95,7 +98,7 @@ class CollectionController extends Controller
                     $bill->change = $bill->change + $request->change;
                 }
             }
-            
+
             $bill->is_prepared = Billing::PENDING;
             $bill->status = 1;
             $bill->is_paid = Billing::PAID;
@@ -120,6 +123,9 @@ class CollectionController extends Controller
                 'status' => 0,
                 'is_paid' => 1
             ]);
+
+            $proposal = LeaseProposal::find($bill->proposal_id);
+           event(new CollectorEvent($proposal));
 
             $response = [
                 'status' => 'success',
