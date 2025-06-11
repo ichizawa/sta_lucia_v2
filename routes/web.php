@@ -153,7 +153,6 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/submit-amenities', [AdminController::class, 'adminSubmitAmenities'])->name('admin.submit.amenities');
             Route::get('/specific-amenities-delete', [AdminController::class, 'deleteAmenities'])->name('amenities.delete');
         });
-
         Route::get('/admin-inbox', [AdminController::class, 'adminInbox'])->name('admin.inbox.inbox');
 
         // Route::prefix('commencement')->group(function () {

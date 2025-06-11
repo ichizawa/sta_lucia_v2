@@ -149,9 +149,9 @@ circle {
     border-top: 5px solid #b8a36f !important;
 }
 
-//datatable
-#basic-datatables {
-}
+/* //datatable */
+/* #basic-datatables {
+} */
 
 table.dataTable {
     table-layout: fixed !important;
