@@ -329,4 +329,30 @@ class SpaceController extends Controller
         }
 
     }
+
+    public function updateSpace(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|exists:space,id',
+            'store_type' => 'required|string|max:255',
+            'property_code' => 'required|string|max:255',
+            'space_area' => 'required|numeric|min:0',
+            'mall_code' => 'required|string|max:255',
+            'bldg_number' => 'required|string|max:255',
+            'unit_number' => 'required|string|max:255',
+            'level_number' => 'required|string|max:255',
+        ]);
+    
+        $space = Space::find($validated['id']);
+        $space->store_type = $validated['store_type'];
+        $space->property_code = $validated['property_code'];
+        $space->space_area = $validated['space_area'];
+        $space->mall_code = $validated['mall_code'];
+        $space->bldg_number = $validated['bldg_number'];
+        $space->unit_number = $validated['unit_number'];
+        $space->level_number = $validated['level_number'];
+        $space->save();
+    
+        return response()->json(['success' => true, 'message' => 'Space updated successfully.']);
+    }
 }

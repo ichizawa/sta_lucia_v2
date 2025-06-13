@@ -298,6 +298,9 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
     Route::put('/admin/utilities/{id}', [AdminController::class, 'updateUtility'])->name('admin.update.utility');
     Route::get('/admin/categories/{id}/edit', [CategoryController::class, 'edit']);
     Route::post('/admin/categories/{id}/update', [CategoryController::class, 'update']);
- 
 
+    Route::post('/admin/space/update', [SpaceController::class, 'updateSpace'])->name('space.update.space');
+
+    Route::post('/delete-proposal', [LeasesController::class, 'deleteProposal'])->name('lease.delete.proposal');
+    
 });

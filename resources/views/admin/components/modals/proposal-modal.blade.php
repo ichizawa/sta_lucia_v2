@@ -45,7 +45,9 @@
                     <div class="container-fluid" id="counterProposalBTN">
                         <div class="row justify-content-end">
                             <div class="col-auto ">
-                                <a class="btn btn-sta counterProposalsAdd" data-bs-toggle="modal" id="counterProposalsAdd" data-bs-target="#counterProposals">Add Revised Leased Proposal</a>
+                                <a class="btn btn-sta counterProposalsAdd" data-bs-toggle="modal"
+                                    id="counterProposalsAdd" data-bs-target="#counterProposals">Add Revised Leased
+                                    Proposal</a>
                             </div>
                         </div>
                     </div>
@@ -81,106 +83,108 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('.showProposalContents').click(function (e) {
+$(document).ready(function() {
+    $('.showProposalContents').click(function(e) {
 
-            $('#exampleModalLabel').empty();
-            var proposal_id = $(this).data('show-proposal-id');
-            $('#proposal-pdf').attr('src', '');
-            $('#rejectNewProposal').attr('disabled', false);
-            $('#approveNewProposal').attr('disabled', false);
-            
-            $.ajax({
-                url: "{{ route('lease.show.proposal') }}",
-                type: "GET",
-                data: {
-                    proposal_id: proposal_id
-                },
-                success: function (data) {
-                    // console.log(data);
-                    if (data.pdf_url) {
-                        $('#proposal-pdf').attr('src', data.pdf_url + '#zoom=175');
-                    }
+        $('#exampleModalLabel').empty();
+        var proposal_id = $(this).data('show-proposal-id');
+        $('#proposal-pdf').attr('src', '');
+        $('#rejectNewProposal').attr('disabled', false);
+        $('#approveNewProposal').attr('disabled', false);
 
-                    $('#rejectNewProposal').attr('data-proposal-id', proposal_id);
-                    $('#approveNewProposal').attr('data-proposal-id', proposal_id);
-                    var Title = $('#exampleModalLabel');
-                    if(data.document_status.status == 0){
-                        Title.append(`Lease Proposal <span class="badge bg-danger">Files still not uploaded!</span>`);
-                        $('#rejectNewProposal').attr('disabled', true);
-                        $('#approveNewProposal').attr('disabled', true);
-                    }else{
-                        // $('.editProposalContents').hide();
-                        Title.append(`Lease Proposal`);
-                        if (data.data[0].status == 1) {
-                            $('#rejectNewProposal').hide();
-                            $('#approveNewProposal').hide();
-                        } else {
-                            $('#rejectNewProposal').show();
-                            $('#approveNewProposal').show();
-                        }
-                    }
-                    
+        $.ajax({
+            url: "{{ route('lease.show.proposal') }}",
+            type: "GET",
+            data: {
+                proposal_id: proposal_id
+            },
+            success: function(data) {
+                // console.log(data);
+                if (data.pdf_url) {
+                    $('#proposal-pdf').attr('src', data.pdf_url + '#zoom=175');
                 }
-            });
-        });
 
-        $('#approveNewProposal').click(function() {
-            var proposal_id = $(this).data('proposal-id');
-            swal({
-                title: "Are you sure?",
-                text: "You want to approve this proposal!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-                buttons: ["Cancel", "Confirm"],
-            }).then((willDelete) => {
-                if (willDelete) {
-                    proposalOptions(proposal_id, 1, 'new');
-                }
-            });
-        });
-
-        $('#rejectNewProposal').click(function() {
-            var proposal_id = $(this).data('proposal-id');
-            swal({
-                title: "Are you sure?",
-                text: "You want to reject this proposal!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-                buttons: ["Cancel", "Confirm"],
-            }).then((willDelete) => {
-                if (willDelete) {
-                    // proposalOptions(proposal_id, 2);
-                }
-            });
-        });
-
-        $('.editProposalContents').click(function (e) {
-            // e.preventDefault();
-            $('.table-group-divider').empty();
-            $('#counterProposalBTN').show();
-            var proposal_id = $(this).data('edit-proposal-id');
-            $('#counterProposalsAdd').data('counter-prop-id', proposal_id);
-
-            $.ajax({
-                url: "{{ route('lease.show.proposal') }}",
-                type: "GET",
-                data: {
-                    proposal_id: proposal_id
-                },
-                success: function (data) {
-                    if(data.data[0].is_counter == 1){
-                        $('#counterProposalBTN').hide();
+                $('#rejectNewProposal').attr('data-proposal-id', proposal_id);
+                $('#approveNewProposal').attr('data-proposal-id', proposal_id);
+                var Title = $('#exampleModalLabel');
+                if (data.document_status.status == 0) {
+                    Title.append(
+                        `Lease Proposal <span class="badge bg-danger">Files still not uploaded!</span>`
+                        );
+                    $('#rejectNewProposal').attr('disabled', true);
+                    $('#approveNewProposal').attr('disabled', true);
+                } else {
+                    // $('.editProposalContents').hide();
+                    Title.append(`Lease Proposal`);
+                    if (data.data[0].status == 1) {
+                        $('#rejectNewProposal').hide();
+                        $('#approveNewProposal').hide();
+                    } else {
+                        $('#rejectNewProposal').show();
+                        $('#approveNewProposal').show();
                     }
-                    
-                    $('#counter-proposal-footer').show();
-                    if (!data.counter_proposal) {
-                        $.each(data.counter_proposals, function (key, value) {
-                            
-                            $('.table-group-divider').append(
-                                `<tr>
+                }
+
+            }
+        });
+    });
+
+    $('#approveNewProposal').click(function() {
+        var proposal_id = $(this).data('proposal-id');
+        swal({
+            title: "Are you sure?",
+            text: "You want to approve this proposal!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            buttons: ["Cancel", "Confirm"],
+        }).then((willDelete) => {
+            if (willDelete) {
+                proposalOptions(proposal_id, 1, 'new');
+            }
+        });
+    });
+
+    $('#rejectNewProposal').click(function() {
+        var proposal_id = $(this).data('proposal-id');
+        swal({
+            title: "Are you sure?",
+            text: "You want to reject this proposal!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            buttons: ["Cancel", "Confirm"],
+        }).then((willDelete) => {
+            if (willDelete) {
+                // proposalOptions(proposal_id, 2);
+            }
+        });
+    });
+
+    $('.editProposalContents').click(function(e) {
+        // e.preventDefault();
+        $('.table-group-divider').empty();
+        $('#counterProposalBTN').show();
+        var proposal_id = $(this).data('edit-proposal-id');
+        $('#counterProposalsAdd').data('counter-prop-id', proposal_id);
+
+        $.ajax({
+            url: "{{ route('lease.show.proposal') }}",
+            type: "GET",
+            data: {
+                proposal_id: proposal_id
+            },
+            success: function(data) {
+                if (data.data[0].is_counter == 1) {
+                    $('#counterProposalBTN').hide();
+                }
+
+                $('#counter-proposal-footer').show();
+                if (!data.counter_proposal) {
+                    $.each(data.counter_proposals, function(key, value) {
+
+                        $('.table-group-divider').append(
+                            `<tr>
                                 <td>Counter Proposal #${value.id}</td>
                                 <td>${value.status == 0 ? '<span class="badge bg-warning">Pending</span>' : '<span class="badge bg-success">Approved</span>'}</td>
                                 <td>
@@ -189,86 +193,137 @@
                                     </a>
                                 </td>
                             </tr>`
-                            );
-                        });
+                        );
+                    });
 
-                        $('.getCounterProposal').click(function () {
-                            var counterProposal_id = $(this).data('counter-proposal-id');
-                            $.ajax({
-                                url: "{{ route('lease.show.counter.proposal') }}",
-                                type: "GET",
-                                data: {
-                                    counter_proposal_id: counterProposal_id
-                                },
-                                success: function (data) {
-                                    $('#counter-proposal-pdf').attr('src', data.pdf_url + '#zoom=175');
-                                    $('#approveCounter').attr('data-counter-proposal-id', counterProposal_id);
+                    $('.getCounterProposal').click(function() {
+                        var counterProposal_id = $(this).data(
+                        'counter-proposal-id');
+                        $.ajax({
+                            url: "{{ route('lease.show.counter.proposal') }}",
+                            type: "GET",
+                            data: {
+                                counter_proposal_id: counterProposal_id
+                            },
+                            success: function(data) {
+                                $('#counter-proposal-pdf').attr('src',
+                                    data.pdf_url + '#zoom=175');
+                                $('#approveCounter').attr(
+                                    'data-counter-proposal-id',
+                                    counterProposal_id);
 
-                                    if (data.prop.status == 1) {
-                                        $('#counter-proposal-footer').hide();
-                                    }
+                                if (data.prop.status == 1) {
+                                    $('#counter-proposal-footer')
+                                .hide();
                                 }
-                            });
+                            }
                         });
-                    }
-                    
+                    });
                 }
-            });
+
+            }
+        });
+    });
+
+    $('#approveCounter').click(function() {
+        var proposal_id = $(this).data('counter-proposal-id');
+        swal({
+            title: "Are you sure?",
+            text: "You want to approve this counter proposal!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            buttons: ["Cancel", "Confirm"],
+        }).then((willApprove) => {
+            if (willApprove) {
+                proposalOptions(proposal_id, 1, 'counter');
+            }
+        });
+    });
+
+    function proposalOptions(proposal_id, option, set) {
+        $.ajax({
+            url: "{{ url('admin/leases/lease-option-proposal') }}" + '/' + set,
+            type: "GET",
+            data: {
+                proposal_id: proposal_id,
+                option: option
+            },
+            success: function(data) {
+                $('#leaseProposal').modal('hide');
+                $('#viewCounterProposal').modal('hide');
+                // $('#editProposal').modal('show');
+
+                var content = {
+                    message: `${data.message}`,
+                    title: `${data.status}`,
+                    icon: "fa fa-bell"
+                };
+
+                $.notify(content, {
+                    type: `${data.status}`,
+                    placement: {
+                        from: 'top',
+                        align: 'right',
+                    },
+                    time: 1000,
+                    delay: 1200,
+                    z_index: 10000
+                });
+
+                if (set == 'new') {
+                    var row = $('a[data-show-proposal-id="' + proposal_id + '"]').closest('tr');
+                    row.find('td:nth-child(5)').html(
+                        '<span class="badge bg-success">Approved</span>');
+                }
+            }
         });
 
-        $('#approveCounter').click(function () {
-            var proposal_id = $(this).data('counter-proposal-id');
+    }
+
+    $(document).ready(function() {
+        $('.deleteProposal').click(function() {
+            var proposal_id = $(this).data('delete-proposal-id');
             swal({
                 title: "Are you sure?",
-                text: "You want to approve this counter proposal!",
+                text: "Once deleted, you will not be able to recover this proposal!",
                 icon: "warning",
-                buttons: true,
+                buttons: ["Cancel", "OK"],
                 dangerMode: true,
-                buttons: ["Cancel", "Confirm"],
-            }).then((willApprove) => {
-                if (willApprove) {
-                    proposalOptions(proposal_id, 1, 'counter');
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "{{ route('lease.delete.proposal') }}",
+                        type: "POST",
+                        data: {
+                            proposal_id: proposal_id,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                $('a[data-delete-proposal-id="' +
+                                        proposal_id + '"]').closest('tr')
+                                    .remove();
+                                $.notify({
+                                    message: data.message,
+                                    icon: "fa fa-bell"
+                                }, {
+                                    type: 'success'
+                                });
+                            } else {
+                                $.notify({
+                                    message: data.message,
+                                    icon: "fa fa-bell"
+                                }, {
+                                    type: 'danger'
+                                });
+                            }
+                        }
+                    });
                 }
             });
         });
-
-        function proposalOptions(proposal_id, option, set) {
-            $.ajax({
-                url: "{{ url('admin/leases/lease-option-proposal') }}" + '/' + set,
-                type: "GET",
-                data: {
-                    proposal_id: proposal_id,
-                    option: option
-                },
-                success: function (data) {
-                    $('#leaseProposal').modal('hide');
-                    $('#viewCounterProposal').modal('hide');
-                    // $('#editProposal').modal('show');
-
-                    var content = {
-                        message: `${data.message}`,
-                        title: `${data.status}`,
-                        icon: "fa fa-bell"
-                    };
-
-                    $.notify(content, {
-                        type: `${data.status}`,
-                        placement: {
-                            from: 'top',
-                            align: 'right',
-                        },
-                        time: 1000,
-                        delay: 1200,
-                        z_index: 10000
-                    });
-                    
-                    if(set == 'new'){
-                        var row = $('a[data-show-proposal-id="' + proposal_id + '"]').closest('tr');
-                        row.find('td:nth-child(5)').html('<span class="badge bg-success">Approved</span>');
-                    }
-                }
-            });
-        }
-
     });
+
+});
 </script>

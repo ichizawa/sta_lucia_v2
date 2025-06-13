@@ -430,7 +430,7 @@ class LeasesController extends Controller
             }
 
             ProposalStatus::dispatch($proposal);
-            
+
         } else {
             $counter_proposal = CounterProposal::find($request->proposal_id);
             $counter_proposal->status = $request->option;
@@ -478,5 +478,16 @@ class LeasesController extends Controller
         }
 
         return response()->json($data);
+    }
+
+
+    public function deleteProposal(Request $request)
+    {
+        $proposal = LeaseProposal::find($request->proposal_id);
+        if (!$proposal) {
+            return response()->json(['status' => 'error', 'message' => 'Proposal not found.']);
+        }
+        $proposal->delete(); // This will now soft delete if the model uses SoftDeletes
+        return response()->json(['status' => 'success', 'message' => 'Proposal deleted successfully.']);
     }
 }

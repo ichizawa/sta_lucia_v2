@@ -80,7 +80,7 @@
     $('#submit-new-category').click(function (e) {
         e.preventDefault();
         var formData = new FormData($('#add-category')[0]);
-        $('#addCategoriesModal').empty();
+        // $('#addCategoriesModal').empty();
         $.ajax({
             url: "{{ route('submit.category') }}",
             type: 'POST',
