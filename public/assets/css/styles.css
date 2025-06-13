@@ -304,3 +304,8 @@ div.swal2-container button.swal2-confirm {
     font-size: 14px;
     border-radius: 2px;
 }
+#deleteRole {
+    background: red !important;
+    color: #ffff !important;
+    border: none !important; 
+}

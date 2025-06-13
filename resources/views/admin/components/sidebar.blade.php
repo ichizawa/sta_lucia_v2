@@ -125,6 +125,7 @@
                     </li> --}}
                     <li
                         class="nav-item  {{ request()->routeIs('admin.utility') ||
+                        request()->routeIs('admin.roles') ||
                         request()->routeIs('admin.category') ||
                         request()->routeIs('admin.charges') ||
                         request()->routeIs('admin.amenities') ||
@@ -143,6 +144,11 @@
                                 <li class=" {{ request()->routeIs('admin.utility') ? 'active' : '' }}">
                                     <a href="{{ route('admin.utility') }}">
                                         <span class="sub-item">Utility</span>
+                                    </a>
+                                </li>
+                                <li class=" {{ request()->routeIs('admin.roles') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.roles') }}">
+                                        <span class="sub-item">Roles</span>
                                     </a>
                                 </li>
                                 <li class="{{ request()->routeIs('admin.category') ? 'active' : '' }}">

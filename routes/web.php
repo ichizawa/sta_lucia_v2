@@ -39,6 +39,7 @@ use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\TenantsController;
 use App\Http\Controllers\UtilityController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\VacateNoticesController;
 
 use Illuminate\Support\Facades\Route;
@@ -103,6 +104,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/add-utility', [UtilityController::class, 'adminAddUtility'])->name('admin.add.utility');
             Route::post('/delete-utility', [UtilityController::class, 'deleteUtility'])->name('admin.delete.utility');
         });
+        Route::get('/roles', [RolesController::class, 'adminRoles'])->name('admin.roles');
 
         Route::get('/charges', [ChargeController::class, 'adminCharges'])->name('admin.charges');
         Route::post('/delete-charges', [ChargeController::class, 'adminDeleteCharges'])->name('admin.delete.charges');
