@@ -45,14 +45,14 @@
                             <div class="col-sm-12">
                                 <div class="form-group d-none" id="check_num_div">
                                     <label class="form-label">Check Number</label>
-                                    <input type="text" class="form-control" name="check_num" id="check_num"
+                                    <input type="text" class="form-control" name="dep_check_num" id="check_num"
                                         placeholder="Enter Check Number" required />
                                 </div>
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group d-none" id="dep_slip_div">
                                     <label class="form-label">Deposit Slip Number</label>
-                                    <input type="text" class="form-control" name="dep_slip_num" id="dep_slip_num"
+                                    <input type="text" class="form-control" name="dep_check_num" id="dep_slip_num"
                                         placeholder="Enter Deposit Slip Number" required />
                                 </div>
                             </div>

@@ -209,7 +209,6 @@
     <script src="{{ asset('assets/js/shared/ledger.js') }}"></script>
     <script src="{{ asset('assets/js/shared/sidebar-responsive.js') }}"></script>
     <script src="{{ asset('assets/js/shared/scripts.js') }}"></script>
-    <script src="{{ asset('assets/js/plugin/sweetalert/sweetalert2@11.js') }}"></script>
     <script src="{{ asset('assets/js/plugin/quill.js/quill.min.js') }}"></script>
     <script src="{{ asset('assets/js/shared/admin/settings/email_notifications.js') }}"></script>
     <script src="{{ asset('assets/js/shared/admin/settings/privacy_and_safety.js') }}"></script>
