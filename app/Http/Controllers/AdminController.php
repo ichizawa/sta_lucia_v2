@@ -26,16 +26,6 @@ class AdminController extends Controller
         return redirect()->route('login');
     }
 
-    public function adminSettings()
-    {
-        return view('admin.settings');
-    }
-
-    public function adminReports()
-    {
-        return view('admin.reports');
-    }
-
     public function adminAmenities()
     {
         $all = Amenities::orderBy('id', 'desc')->get();
@@ -66,5 +56,33 @@ class AdminController extends Controller
     public function adminActivityLog()
     {
         return view('admin.activity-log');
+    }
+
+    public function adminNoticesReports()
+    {
+        return view('admin.reports.notice_reports');
+    }
+    public function adminTenantSalesReports()
+    {
+        return view('admin.reports.tenant_sales_reports');
+    }
+    public function adminSpaceLeasesReports()
+    {
+        return view('admin.reports.space_leases_reports');
+    }
+    public function adminPermitReports()
+    {
+        return view('admin.reports.permit_reports');
+    }
+    public function adminContractReports()
+    {
+        return view('admin.reports.contract_reports');
+    }
+    public function adminSettings()
+    {
+        return view('admin.settings.settings');
+    }
+    public function adminInbox(){
+        return view('admin.inbox.inbox');
     }
 }

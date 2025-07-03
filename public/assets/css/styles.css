@@ -1,0 +1,311 @@
+/* swal */
+div.swal2-container button.swal2-confirm {
+    margin-bottom: 20px !important;
+}
+
+/* privacy & safety */
+.main-panel .row {
+    --bs-gutter-x: 10px !important;
+}
+
+#privacy_safety .input {
+    border-radius: 0 !important;
+    border: 1px solid #ccced1 !important;
+}
+
+.editor {
+    height: 300px !important;
+}
+
+#privacy_safety .form-control {
+    border-radius: 0 !important;
+    border: 1px solid #ccced1 !important;
+}
+
+#privacy_safety .form-control:focus {
+    border-color: #5580ff !important;
+}
+
+/* web notifications */
+#web_notifications .card-body {
+    max-height: 550px;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+}
+
+#web_notifications #createAnnouncementBtn {
+    margin-right: -30px;
+}
+
+#web_notifications .card .card-footer,
+.card-light .card-footer {
+    background-color: transparent;
+    line-height: 30px;
+    border-top: 0px solid #ebecec !important;
+    font-size: 13px;
+    padding: 10px;
+}
+
+#web_notifications .scrollable-content {
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+#web_notifications .card-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+#web_notifications .card-body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+#web_notifications .sticky-search {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#announcementSearch {
+    padding-left: 2.2rem;
+}
+
+#web_notifications .modal-header {
+    padding: 5px !important;
+}
+
+#web_notifications .form-control {
+    border-radius: 0px;
+    border: 1px solid #ccced1 !important;
+}
+
+.swal2-container.swal2-center .swal2-popup {
+    padding-bottom: 40px !important;
+}
+
+@media (max-width: 768px) {
+    #web_notifications .justify-content-end {
+        justify-content: flex-start !important;
+    }
+}
+
+/* email notifications */
+
+/* #email_notifications {
+} */
+
+#email_notifications .form-control {
+    border-radius: 0 !important;
+    border: 1px solid #ccced1 !important;
+}
+
+#email_notifications .form-select {
+    border-radius: 0 !important;
+    border: 1px solid #ccced1 !important;
+}
+
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar {
+    display: none;
+}
+
+.email_notif_container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgb(255, 255, 255);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-top: 8px solid var(--theme-color);
+}
+
+.email_notif_header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.email_notif_header img {
+    max-width: 120px;
+    margin-bottom: 15px;
+}
+
+.email_notif_header h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+.email_notif_banner {
+    background: var(--theme-color);
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+}
+
+.email_notif_banner p {
+    margin-bottom: 0px;
+}
+
+.email_notif_body {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.email_notif_body p {
+    margin: 15px 0;
+}
+
+.signature {
+    margin-top: 40px;
+    line-height: 0.6;
+}
+
+.email_notif_footer {
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* /delete accounts */
+/* #delete_accounts {
+} */
+#userName {
+    color: #8f8258;
+}
+
+#accountDetails p {
+    color: #7a6e49;
+}
+
+/* inbox */
+
+#inbox-menu .nav-link{
+    color: #575962 !important;
+    border: none;
+}
+#inbox-menu .nav-link.active {
+    background-color: #f3e2ba !important;
+    color: #575962 !important;
+    padding-left: 10px !important;
+}
+#inbox-menu .nav-link:hover {
+    background-color: #f3e2ba !important;
+    padding-left: 10px !important;
+}
+#inbox-badge {
+    background-color: red !important;
+    color: white !important;
+}
+#inbox-list .list-group-item:hover {
+    background-color: #c7c7c733 !important;
+    cursor: pointer;
+}
+#chat-contact {
+    color: #575962 !important;
+    border-radius: 0px !important;
+    padding: 10px !important;
+    margin-bottom: 5px !important;
+    display: flex;
+    align-items: center;
+}
+#chat-contact:hover{
+    background-color: #f3e2ba !important;
+    cursor: pointer;
+}#online-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%; 
+    background-color: #00ff00 !important;
+
+}
+#offline-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #605e5e !important;
+}
+
+#chatBoxModal .modal-dialog {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    margin: 0;
+    z-index: 1055;
+    max-width: 400px;
+}
+#chatHeader {
+    background-color: #b29c64 !important;
+    padding: 0;
+}
+/* .btn-sm {
+    padding-left: 2px;
+} */
+#form-select {
+    background-color: #b29c64 !important;
+}
+#composeEmailActions{
+    margin-bottom: 15px;
+}
+
+#chatBnSend {
+    background-color: #b29c64 !important;
+    color: #ffff !important;
+    border: none;
+    font-size: 10px;
+    border-radius: 2px;
+}
+#chatBnSend:hover {
+    background-color: #ffff !important;
+    color: #b29c64 !important;
+    border: #b29c64 1px solid !important;
+    font-size: 10px;
+    border-radius: 2px;
+}
+#composeEmail {
+    background-color: #b29c64 !important;
+    color: #ffff !important;
+}
+/* #composeEmail:active {
+    background-color: #b29c64 !important;
+    color: #575962 !important;
+} */
+#composeEmail:hover {
+    background-color: #ffff !important;
+    color: #b29c64 !important;
+    border: #b29c64 1px solid !important;
+}
+#emailBtnSend {
+    background-color: #b29c64 !important;
+    color: white;
+    border: none;
+    font-size: 14px;
+    border-radius: 2px;
+}
+#emailBtnSend:hover {
+    background-color: #ffff !important;
+    color: #b29c64;
+    font-size: 14px;
+    border-radius: 2px;
+    border: #b29c64 1px solid !important;
+}
+#selectTheme .dropdown-item:hover {
+    background-color: #f3e2ba !important;
+    color: #575962 !important;
+    border: none;
+    font-size: 14px;
+    border-radius: 2px;
+}
+#deleteRole {
+    background: red !important;
+    color: #ffff !important;
+    border: none !important; 
+}

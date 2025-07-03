@@ -225,7 +225,7 @@
                                             <span class="text text-brown">Tenants</span>
                                         </div>
                                     </a>
-                                    <a class="col-6 col-md-4 p-0" href="{{ route('admin.reports') }}">
+                                    <a class="col-6 col-md-4 p-0" {{-- href="{{ route('admin.reports') }}" --}}>
                                         <div class="quick-actions-item">
                                             <div class="avatar-item bg-info rounded-circle">
                                                 <i class="fas fa-file-excel"></i>

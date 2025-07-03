@@ -36,12 +36,7 @@
                         </span>
                         <h4 class="text-section">Components</h4>
                     </li>
-                    {{-- <li class="nav-item {{ request()->routeIs('admin.branch') ? 'active' : '' }}">
-                        <a href="{{route('admin.branch')}}" aria-expanded="false">
-                            <i class="fas fa-layer-group"></i>
-                            <p>Branch</p>
-                        </a>
-                    </li> --}}
+
                     <li
                         class="nav-item {{ request()->routeIs('leases.mall.leases') || request()->routeIs('leases.leases.proposal') || request()->routeIs('leases.add.proposal') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#leases" aria-expanded="false">
@@ -130,6 +125,7 @@
                     </li> --}}
                     <li
                         class="nav-item  {{ request()->routeIs('admin.utility') ||
+                        request()->routeIs('admin.roles') ||
                         request()->routeIs('admin.category') ||
                         request()->routeIs('admin.charges') ||
                         request()->routeIs('admin.amenities') ||
@@ -148,6 +144,11 @@
                                 <li class=" {{ request()->routeIs('admin.utility') ? 'active' : '' }}">
                                     <a href="{{ route('admin.utility') }}">
                                         <span class="sub-item">Utility</span>
+                                    </a>
+                                </li>
+                                <li class=" {{ request()->routeIs('admin.roles') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.roles') }}">
+                                        <span class="sub-item">Roles</span>
                                     </a>
                                 </li>
                                 <li class="{{ request()->routeIs('admin.category') ? 'active' : '' }}">
@@ -197,6 +198,14 @@
                             </ul>
                         </div>
                     </li>
+
+                    <li class="nav-item {{ request()->routeIs('admin.inbox.inbox') ? 'active' : '' }}">
+                        <a href="{{ route('admin.inbox.inbox') }}" aria-expanded="false">
+                            <i class="fa-solid fa-inbox"></i>
+                            <p>Inbox</p>
+                        </a>
+                    </li>
+
                     <li class="nav-section">
                         <span class="sidebar-mini-icon">
                             <i class="fa fa-ellipsis-h"></i>
@@ -209,11 +218,48 @@
                             <p>Settings</p>
                         </a>
                     </li>
-                    <li class="nav-item {{ request()->routeIs('admin.reports') ? 'active' : '' }}">
-                        <a href="{{ route('admin.reports') }}" aria-expanded="false">
+                    <li
+                        class="nav-item  {{ request()->routeIs('admin.tenant.sales.reports') ||
+                        request()->routeIs('admin.permit.reports') ||
+                        request()->routeIs('admin.contract.reports') ||
+                        request()->routeIs('admin.notice.reports') ||
+                        request()->routeIs('admin.space.leases.reports')
+                            ? 'active'
+                            : '' }}">
+                        <a data-bs-toggle="collapse" href="#reports" aria-expanded="false">
                             <i class="fa-solid fa-file-lines"></i>
                             <p>Reports</p>
+                            <span class="caret"></span>
                         </a>
+                        <div class="collapse" id="reports">
+                            <ul class="nav nav-collapse">
+                                <li class=" {{ request()->routeIs('admin.tenant.sales.reports') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.tenant.sales.reports') }}">
+                                        <span class="sub-item">Tenant Sales Reports</span>
+                                    </a>
+                                </li>
+                                <li class="{{ request()->routeIs('admin.permit.reports') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.permit.reports') }}">
+                                        <span class="sub-item">Permits Reports</span>
+                                    </a>
+                                </li>
+                                <li class="{{ request()->routeIs('admin.contract.reports') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.contract.reports') }}">
+                                        <span class="sub-item">Contract Reports</span>
+                                    </a>
+                                </li>
+                                <li class="{{ request()->routeIs('admin.notices.reports') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.notices.reports') }}">
+                                        <span class="sub-item">Notice Reports</span>
+                                    </a>
+                                </li>
+                                <li class="{{ request()->routeIs('admin.space.leases.reports') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.space.leases.reports') }}">
+                                        <span class="sub-item">Space Leases Reports</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item {{ request()->routeIs('admin.activity-log') ? 'active' : '' }}">
                         <a href="{{ route('admin.activity-log') }}" aria-expanded="false">

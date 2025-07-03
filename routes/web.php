@@ -39,6 +39,7 @@ use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\TenantsController;
 use App\Http\Controllers\UtilityController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\VacateNoticesController;
 
 use Illuminate\Support\Facades\Route;
@@ -104,6 +105,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/add-utility', [UtilityController::class, 'adminAddUtility'])->name('admin.add.utility');
             Route::post('/delete-utility', [UtilityController::class, 'deleteUtility'])->name('admin.delete.utility');
         });
+        Route::get('/roles', [RolesController::class, 'adminRoles'])->name('admin.roles');
 
         Route::get('/charges', [ChargeController::class, 'adminCharges'])->name('admin.charges');
         Route::post('/delete-charges', [ChargeController::class, 'adminDeleteCharges'])->name('admin.delete.charges');
@@ -154,6 +156,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/submit-amenities', [AdminController::class, 'adminSubmitAmenities'])->name('admin.submit.amenities');
             Route::get('/specific-amenities-delete', [AdminController::class, 'deleteAmenities'])->name('amenities.delete');
         });
+        Route::get('/admin-inbox', [AdminController::class, 'adminInbox'])->name('admin.inbox.inbox');
 
         // Route::prefix('commencement')->group(function () {
         //     Route::get('/lists', [CommencementController::class, 'index'])->name('commencement.lists');
@@ -163,7 +166,16 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/billing-periods', [AdminController::class, 'adminBillingPeriods'])->name('admin.bill.period');
 
         Route::get('/settings', [AdminController::class, 'adminSettings'])->name('admin.settings');
-        Route::get('/reports', [AdminController::class, 'adminReports'])->name('admin.reports');
+
+        Route::prefix('reports')->group(function () {
+            Route::get('/notice-reports', [AdminController::class, 'adminNoticesReports'])->name('admin.notices.reports');
+            Route::get('/contract-reports', [AdminController::class, 'adminContractReports'])->name('admin.contract.reports');
+            Route::get('/permit-reports', [AdminController::class, 'adminPermitReports'])->name('admin.permit.reports');
+            Route::get('/space-leases-reports', [AdminController::class, 'adminSpaceLeasesReports'])->name('admin.space.leases.reports');
+            Route::get('/tenant-sales-reports', [AdminController::class, 'adminTenantSalesReports'])->name('admin.tenant.sales.reports');
+
+        });
+
         Route::get('/payments', [AdminController::class, 'adminPayments'])->name('admin.payments');
         Route::get('/activity-log', [AdminController::class, 'adminActivityLog'])->name('admin.activity-log');
     });

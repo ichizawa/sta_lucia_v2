@@ -146,5 +146,20 @@ circle {
 }
 
 .brown-border-top {
-    border-top: 5px solid rgb(184, 163, 111) !important;
+    border-top: 5px solid #b8a36f !important;
+}
+
+/* //datatable */
+/* #basic-datatables {
+} */
+
+table.dataTable {
+    table-layout: fixed !important;
+    width: 100% !important;
+    overflow-wrap: break-word !important;
+}
+
+table.dataTable th,
+table.dataTable td {
+    white-space: normal !important;
 }
