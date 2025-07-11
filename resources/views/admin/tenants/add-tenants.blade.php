@@ -24,7 +24,7 @@
                             <div class="progress-bar-line" id="step2-line"></div>
                             <div class="progress-bar-circle" id="step3-circle">3</div>
                         </div>
-                        <form id="addTenentsForm" enctype="multipart/form-data">
+                        <form id="addTenentsForm" action="{{route('admin.submit.tenants')}}" enctype="multipart/form-data">
                             @csrf
                             <div class="container-fluid">
 

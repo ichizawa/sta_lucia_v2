@@ -30,6 +30,7 @@
             <div class="modal-body"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary editInputs">Edit</button>
+                <button type="button" hidden class="btn btn-primary saveInputs">Save</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

@@ -284,6 +284,7 @@
                     <div>VP - Commercial Business Group</div>
                     <div>Sta. Lucia Land Inc.</div>
                 </div>
+                @foreach ($proposals as $proposal)
                 <div class="col">
                     <p>Conforme:</p>
                     <div>{{ ucfirst($proposal['rep_fname']) . ' ' . ucfirst($proposal['rep_lname']) }}</div>
@@ -291,6 +292,7 @@
                     <div>{{ ucwords($proposal['company_name']) }}</div>
                     <div>Date: <u>{{ date('m/d/Y', strtotime($proposal['created_at'])) }}</u></div>
                 </div>
+                @endforeach
             </div>
         </div>
     </div>

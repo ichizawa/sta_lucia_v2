@@ -169,7 +169,8 @@ class LeasesController extends Controller
         UtilitiesSelected::insert($dataUtility);
 
         $tenantDocs = TenantDocuments::where('owner_id', $request->companyprop)->first();
-        if ($tenantDocs->status == 1) {
+        if ($tenantDocs && $tenantDocs->status == 1)
+        {
             AwardNotice::create([
                 'proposal_id' => $lease_prop->id,
                 'status' => 2
@@ -428,7 +429,8 @@ class LeasesController extends Controller
                     'message' => "Proposal has been rejected successfully"
                 ];
             }
-
+            $counter_proposal = CounterProposal::find($request->proposal_id);
+            $proposal = LeaseProposal::find($counter_proposal->proposal_id);
             ProposalStatus::dispatch($proposal);
             
         } else {
