@@ -82,7 +82,13 @@ class AdminController extends Controller
     {
         return view('admin.settings.settings');
     }
-    public function adminInbox(){
+    public function adminInbox()
+    {
         return view('admin.inbox.inbox');
+    }
+    public function adminUsers()
+    {
+        $users = User::all();
+        return view('admin.users.users', compact('users'));
     }
 }

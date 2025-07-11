@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/add-space', [SpaceController::class, 'adminAddSpace'])->name('space.add.space');
             Route::post('/submit-space', [SpaceController::class, 'sumbmitSpace'])->name('space.submit.space');
             Route::get('/view-space-modal', [SpaceController::class, 'adminViewSpace'])->name('space.view.space');
-            Route::post('/delete-space', [SpaceController::class,'adminDelete'])->name('space.delete.space');
+            Route::post('/delete-space', [SpaceController::class, 'adminDelete'])->name('space.delete.space');
 
             Route::get('/mall-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.mall');
             Route::get('/building-option/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.edit.building');
@@ -174,6 +174,10 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/space-leases-reports', [AdminController::class, 'adminSpaceLeasesReports'])->name('admin.space.leases.reports');
             Route::get('/tenant-sales-reports', [AdminController::class, 'adminTenantSalesReports'])->name('admin.tenant.sales.reports');
 
+        });
+
+        Route::prefix('users')->group(function () {
+            Route::get('/users', [AdminController::class, 'adminUsers'])->name('admin.users');
         });
 
         Route::get('/payments', [AdminController::class, 'adminPayments'])->name('admin.payments');

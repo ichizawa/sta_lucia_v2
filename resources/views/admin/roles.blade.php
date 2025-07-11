@@ -15,11 +15,11 @@
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Add Roles</h4>
 
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#addRoleModal"
+                            <button href="#" data-bs-toggle="modal" data-bs-target="#addRoleModal"
                                 class="btn btn-sta ms-auto">
                                 <i class="fa fa-plus"></i>
                                 Add Roles
-                            </a>
+                            </button>
 
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr>
+                                    <!-- <tr>
                                         <td>Coco Martin</td>
                                         <td>Biller</td>
                                         <td class="text-center">
@@ -73,7 +73,7 @@
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </a>
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
