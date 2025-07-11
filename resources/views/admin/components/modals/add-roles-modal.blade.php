@@ -11,7 +11,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Name</label>
+                            <label>Role Name</label>
                             <input type="text" class="form-control" name="name" placeholder="Enter Name"
                                 required />
                         </div>
@@ -19,9 +19,8 @@
                             <label>Role</label>
                             <input type="text" class="form-control" name="role_type" placeholder="Enter Role Type"
                                 required />
-                            <small class="text-muted form-text">e.g., Admin, Super Admin, Biller, Collector, Operator,
-                                Lease
-                                Admin</small>
+                            <small class="text-muted form-text">e.g., admin, super admin, biller, collector, operator,
+                                lease admin</small>
                         </div>
                     </div>
                 </div>
