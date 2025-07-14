@@ -178,7 +178,9 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
         Route::prefix('users')->group(function () {
             Route::get('/users', [AdminController::class, 'adminUsers'])->name('admin.users');
+            Route::post('/add-user', [AdminController::class, 'adminAddUser'])->name('admin.add.user');
         });
+        
 
         Route::get('/payments', [AdminController::class, 'adminPayments'])->name('admin.payments');
         Route::get('/activity-log', [AdminController::class, 'adminActivityLog'])->name('admin.activity-log');

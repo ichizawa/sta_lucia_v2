@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("proposal_uid");
             $table->string("bussiness_nature");
             $table->float('discount')->nullable();
+            $table->float('percentage_sale')->nullable();
             $table->float("brent")->nullable();
             $table->float("min_mgr")->nullable();
             $table->float("total_rent")->nullable();

@@ -121,6 +121,7 @@ class LeasesController extends Controller
             'proposal_uid' => rand(100000, 999999),
             'bussiness_nature' => $request->businessnature,
             'brent' => $request->brent,
+            'percentage_sale' => $request->percentsale,
             'discount' => $request->paymentdisc ?? 0,
             'total_rent' => $request->total_basic_rent,
             'total_mgr' => $request->total_guaranteed_rent,
