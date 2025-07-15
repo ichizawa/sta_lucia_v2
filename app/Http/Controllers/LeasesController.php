@@ -235,7 +235,7 @@ class LeasesController extends Controller
 
         $pdf_size = array(0, 0, 349, 573);
         $pdf = PDF::loadview('admin.components.proposal-template', compact('proposals', 'space_proposals', 'getUtilities', 'getCharges', 'getAminities'))->setPaper('legal', 'portrait');
-
+        
         $dompdf = $pdf->getDomPDF();
         $canvas = $dompdf->getCanvas();
 

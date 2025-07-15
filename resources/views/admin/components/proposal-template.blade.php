@@ -137,6 +137,10 @@
                     <td>{{ collect($space_proposals)->pluck('space_name')->implode(', ') }}</td>
                 </tr>
                 <tr>
+                    <th>Floor Level</th>
+                    <td>{{ collect($space_proposals)->pluck('level_number')->implode(', ') }}</td>
+                </tr>
+                <tr>
                     <th>Area Code</th>
                     <td>{{ collect($space_proposals)->pluck('property_code')->implode(', ') }}</td>
                 </tr>
@@ -150,7 +154,12 @@
                 </tr>
                 <tr>
                     <th>Please Select if FOOD,NONFOOD or Percentage</th>
-                    <td>-</td>
+                    <td>
+                        {{ fmod($proposal->percentage_sale, 1) == 0
+            ? number_format($proposal->percentage_sale, 0)
+            : number_format($proposal->percentage_sale, 2) 
+                }}%
+                    </td>
                 </tr>
                 <tr>
                     <th>Space Type</th>
@@ -285,13 +294,13 @@
                     <div>Sta. Lucia Land Inc.</div>
                 </div>
                 @foreach ($proposals as $proposal)
-                <div class="col">
-                    <p>Conforme:</p>
-                    <div>{{ ucfirst($proposal['rep_fname']) . ' ' . ucfirst($proposal['rep_lname']) }}</div>
-                    <div>{{ ucfirst($proposal['rep_position']) }}</div>
-                    <div>{{ ucwords($proposal['company_name']) }}</div>
-                    <div>Date: <u>{{ date('m/d/Y', strtotime($proposal['created_at'])) }}</u></div>
-                </div>
+                    <div class="col">
+                        <p>Conforme:</p>
+                        <div>{{ ucfirst($proposal['rep_fname']) . ' ' . ucfirst($proposal['rep_lname']) }}</div>
+                        <div>{{ ucfirst($proposal['rep_position']) }}</div>
+                        <div>{{ ucwords($proposal['company_name']) }}</div>
+                        <div>Date: <u>{{ date('m/d/Y', strtotime($proposal['created_at'])) }}</u></div>
+                    </div>
                 @endforeach
             </div>
         </div>

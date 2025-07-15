@@ -94,31 +94,48 @@ class AdminController extends Controller
     }
 
 
-public function adminAddUser(Request $request)
-{
-    $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:users,email',
-        'type' => 'required|string|max:255',
-        'status' => 'required|boolean',
-        'address' => 'required|string|max:255',
-        'phone' => 'required|string|max:20',
-        'username' => 'required|string|max:255',
-        'password' => 'required|string|min:8',
-    ]);
+    public function adminAddUser(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'type' => 'required|string|max:255',
+            'status' => 'required|boolean',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
+        ]);
 
-    $user = new User();
-    $user->name = $validatedData['name'];
-    $user->username = $validatedData['username'];
-    $user->address = $validatedData['address'];
-    $user->phone = $validatedData['phone'];
-    $user->email = $validatedData['email'];
-    $user->type = $validatedData['type'];
-    $user->status = $validatedData['status'];
-    $user->password = Hash::make($validatedData['password']);
-    $user->save();
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->username = $validatedData['username'];
+        $user->address = $validatedData['address'];
+        $user->phone = $validatedData['phone'];
+        $user->email = $validatedData['email'];
+        $user->type = $validatedData['type'];
+        $user->status = $validatedData['status'];
+        $user->password = Hash::make($validatedData['password']);
+        $user->save();
 
-    return redirect()->back()->with('success', 'User added successfully.');
-}
+        return redirect()->back()->with('success', 'User added successfully.');
+    }
 
+    public function adminDeleteUser(Request $request)
+    {
+        $user = User::find($request->id);
+
+        if ($user) {
+            $user->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'User deleted successfully.'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'User not found.'
+        ]);
+    }
 }

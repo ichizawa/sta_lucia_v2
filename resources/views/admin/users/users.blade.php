@@ -1,5 +1,6 @@
 @extends('layouts')
 @include('admin.users.users-modal.add-user-modal')
+@include('admin.users.users-modal.edit-user-modal')
 @section('content')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
@@ -38,7 +39,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tenant-show-table">
-                                    @foreach ($users->sortBy('type') as $user)
+                                    @foreach ($users as $user)
                                         <tr>
                                             <td class="text-center">
                                                 {{ $user->name }}
@@ -50,10 +51,10 @@
                                                 {{ $user->address }}
                                             </td>
                                             <td class="text-center">
-                                                {{ $user->phone }}
+                                                {{ $user->email }}
                                             </td>
                                             <td class="text-center">
-                                                {{ $user->email }}
+                                                {{ $user->phone }}
                                             </td>
                                             <td class="text-center">
                                                 {{ ucfirst($user->type) }}
@@ -67,16 +68,13 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="d-flex gap-2 justify-content-center">
-                                                    <a class="btn btn-warning btn-sm view_user" {{--
-                                                        data-owner-id="{{ $company->owner_id }}"
-                                                        data-company-name="{{ $company->company_name }}"
-                                                        data-tenant-type="{{ $company->tenant_type }}" data-bs-toggle="modal"
-                                                        data-docu-status="{{ $owner->doc_status }}"
-                                                        data-bs-target="#tenantDocuments" --}}>
+                                                    <a href="#" class="btn btn-warning btn-sm editUserBtn"
+                                                        data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                                        data-user='@json($user)'>
                                                         <i class="fa fa-pen" aria-hidden="true"></i>
                                                     </a>
-                                                    <a class="btn btn-danger btn-sm deleteTenant" {{--
-                                                        onClick="delete_tenant_func()" --}}>
+                                                    <a class="btn btn-danger btn-sm deleteTenant"
+                                                        onClick="delete_user_func({{$user->id}})">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -93,32 +91,104 @@
     </div>
     <script>
         $(document).ready(function () {
-            $('multi-filter-select').DataTable({});
+            $('#multi-filter-select').DataTable({});
         });
-    </script>
-    
-    @if (session('success'))
-    <script>
-        $(document).ready(function () {
-            var content = {
-                message: '{{ session('success') }}',
-                title: 'Success',
-                icon: 'fa fa-check'
-            };
 
-            $.notify(content, {
-                type: 'success',
-                placement: {
-                    from: 'top',
-                    align: 'right',
-                },
-                delay: 2500,
-                timer: 1000,
-                z_index: 9999,
+        function delete_user_func(user_id) {
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "{{ route('admin.delete.user') }}",
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            id: user_id
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                $.notify({
+                                    title: '<strong>Deleted!</strong><br>',
+                                    message: response.message || 'User deleted successfully.',
+                                    icon: 'fa fa-check'
+                                }, {
+                                    type: 'success',
+                                    placement: {
+                                        from: 'top',
+                                        align: 'right',
+                                    },
+                                    delay: 1500,
+                                    z_index: 9999
+                                });
+
+                                // Remove row from table
+                                $(`a[onClick="delete_user_func(${user_id})"]`).closest('tr').remove();
+                            } else {
+                                $.notify({
+                                    title: '<strong>Error!</strong><br>',
+                                    message: response.message || 'Failed to delete user.',
+                                    icon: 'fa fa-exclamation'
+                                }, {
+                                    type: 'danger',
+                                    placement: {
+                                        from: 'top',
+                                        align: 'right',
+                                    },
+                                    delay: 1500,
+                                    z_index: 9999
+                                });
+                            }
+                        },
+                        error: function () {
+                            $.notify({
+                                title: '<strong>Error!</strong><br>',
+                                message: 'Something went wrong!',
+                                icon: 'fa fa-bell'
+                            }, {
+                                type: 'danger',
+                                placement: {
+                                    from: 'top',
+                                    align: 'right',
+                                },
+                                delay: 1500,
+                                z_index: 9999
+                            });
+                        }
+                    });
+                }
             });
-        });
+        }
+
+
     </script>
-@endif
+
+    @if (session('success'))
+        <script>
+            $(document).ready(function () {
+                var content = {
+                    message: '{{ session('success') }}',
+                    title: 'Success',
+                    icon: 'fa fa-check'
+                };
+
+                $.notify(content, {
+                    type: 'success',
+                    placement: {
+                        from: 'top',
+                        align: 'right',
+                    },
+                    delay: 2500,
+                    timer: 1000,
+                    z_index: 9999,
+                });
+            });
+        </script>
+    @endif
 
 
 @endsection
