@@ -76,7 +76,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
         Route::get('/tenants', [TenantsController::class, 'adminTenants'])->name('admin.tenants');
         Route::prefix('tenants')->group(function () {
-            Route::get('/', [TenantsController::class, 'retrieveTenants'])->name('admin.tenants');
+        //    Route::get('/', [TenantsController::class, 'retrieveTenants'])->name('admin.tenants');
             Route::get('/add-tenants', [TenantsController::class, 'adminAddTenants'])->name('admin.add.tenants');
             Route::post('/submit-tenants', [TenantsController::class, 'adminSubmitTenants'])->name('admin.submit.tenants');
             Route::get('/get-sub-category', [TenantsController::class, 'getSubCategory'])->name('admin.get.sub.category');
@@ -178,7 +178,10 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
         Route::prefix('users')->group(function () {
             Route::get('/users', [AdminController::class, 'adminUsers'])->name('admin.users');
+            Route::post('/add-user', [AdminController::class, 'adminAddUser'])->name('admin.add.user');
+            Route::post('/delete-user', [AdminController::class, 'adminDeleteUser'])->name('admin.delete.user');
         });
+        
 
         Route::get('/payments', [AdminController::class, 'adminPayments'])->name('admin.payments');
         Route::get('/activity-log', [AdminController::class, 'adminActivityLog'])->name('admin.activity-log');

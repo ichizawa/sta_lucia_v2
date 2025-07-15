@@ -219,6 +219,17 @@
 
                     $('.editInputs').click(function () {
                         $('.col').find('input').prop('readonly', false);
+                        $('.editInputs').prop('hidden', true);
+                        $('.saveInputs').prop('hidden', false);
+                    });
+
+                    $('.saveInputs').click(function () {
+                        $('.col').find('input').prop('readonly', true);
+                        $('.editInputs').prop('hidden', false);
+                        $('.saveInputs').prop('hidden', true);
+                        let spaceId = $('.space-view').data('spaceid');
+                        let formData = $('.modal-body').find('input').serialize();
+                        
                     });
                 },
                 error: function (xhr, status, error) {

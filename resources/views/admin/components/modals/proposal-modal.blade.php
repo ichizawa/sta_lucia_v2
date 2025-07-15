@@ -99,7 +99,7 @@
                 success: function (data) {
                     // console.log(data);
                     if (data.pdf_url) {
-                        $('#proposal-pdf').attr('src', data.pdf_url + '#zoom=175');
+                        $('#proposal-pdf').attr('src', data.pdf_url + '#zoom=125');
                     }
 
                     $('#rejectNewProposal').attr('data-proposal-id', proposal_id);
