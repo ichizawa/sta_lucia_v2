@@ -15,6 +15,11 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">List of Notices</h4>
+
+                            <a href="#" class="btn btn-sta ms-auto">
+                                <i class="fa fa-plus"></i>
+                                Add Notice
+                            </a>
                         </div>
                     </div>
                     <div class="card-body">

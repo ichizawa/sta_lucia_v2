@@ -1,7 +1,9 @@
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            {{-- <form action="{{ route('admin.add.roles') }}" method="POST"> --}}
+            <form
+            {{-- action="{{ route('admin.add.roles') }}" --}}
+            method="POST"> 
                 @csrf
                 <div class="modal-header brown-border-top">
                     <h5 class="modal-title">Create Role</h5>
