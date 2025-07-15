@@ -38,13 +38,23 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="brent">Basic Rent</label>
-                    <input name="brent" type="text" class="form-control" id="brent" placeholder="Basic Rent"
+                    <input name="brent" type="number" class="form-control" id="brent" placeholder="Basic Rent"
                         required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="payment_disc">Discount</label>
                     <input type="text" class="form-control" id="payment_disc" name="paymentdisc"
                         placeholder="Payment Discount (Leave empty if no discount)" readonly />
+                </div>
+                {{-- <div class="form-group col-md-6 grossSale" >
+                    <label for="gross_sale">Gross Sale</label>
+                    <input type="number" class="form-control" id="gross_sale" name="grosssale"
+                        placeholder="Gross Sales" />
+                </div> --}}
+                <div class="form-group col-md-6 percentageSale" hidden>
+                    <label for="percentage_sale">Percentage Sale</label>
+                    <input type="number" class="form-control" id="percentage_sale" name="percentsale"
+                        placeholder="Percentage Sale" readonly/>
                 </div>
             </div>
             <input type="text" id="selected_rent" name="total_basic_rent" placeholder="Selected Rent" hidden />

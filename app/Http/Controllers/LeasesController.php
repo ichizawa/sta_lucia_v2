@@ -121,6 +121,7 @@ class LeasesController extends Controller
             'proposal_uid' => rand(100000, 999999),
             'bussiness_nature' => $request->businessnature,
             'brent' => $request->brent,
+            'percentage_sale' => $request->percentsale,
             'discount' => $request->paymentdisc ?? 0,
             'total_rent' => $request->total_basic_rent,
             'total_mgr' => $request->total_guaranteed_rent,
@@ -169,7 +170,8 @@ class LeasesController extends Controller
         UtilitiesSelected::insert($dataUtility);
 
         $tenantDocs = TenantDocuments::where('owner_id', $request->companyprop)->first();
-        if ($tenantDocs->status == 1) {
+        if ($tenantDocs && $tenantDocs->status == 1)
+        {
             AwardNotice::create([
                 'proposal_id' => $lease_prop->id,
                 'status' => 2
@@ -233,7 +235,7 @@ class LeasesController extends Controller
 
         $pdf_size = array(0, 0, 349, 573);
         $pdf = PDF::loadview('admin.components.proposal-template', compact('proposals', 'space_proposals', 'getUtilities', 'getCharges', 'getAminities'))->setPaper('legal', 'portrait');
-
+        
         $dompdf = $pdf->getDomPDF();
         $canvas = $dompdf->getCanvas();
 
@@ -428,7 +430,8 @@ class LeasesController extends Controller
                     'message' => "Proposal has been rejected successfully"
                 ];
             }
-
+            $counter_proposal = CounterProposal::find($request->proposal_id);
+            $proposal = LeaseProposal::find($counter_proposal->proposal_id);
             ProposalStatus::dispatch($proposal);
             
         } else {

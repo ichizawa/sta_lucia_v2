@@ -105,56 +105,58 @@
     @endif
     <script>
         function deleteSpace(spaceId) {
-            swal({
-                title: "Are you sure?",
-                text: "Your about to delete a space, this action is irreversible!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: '{{ route('space.delete.space') }}',
-                        method: 'POST',
-                        data: {
-                            id: spaceId
+    swal({
+        title: "Are you sure?",
+        text: "You're about to delete a space. This action is irreversible!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                url: '{{ route('space.delete.space') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: spaceId
+                },
+                success: function (response) {
+                    // $('#multi-filter-select').DataTable().row($(`button[data-space-id="${spaceId}"]`).parents('tr')).remove();
+                    $.notify({
+                        message: "Space deleted successfully",
+                        title: "Success!",
+                        icon: "fa fa-bell"
+                    }, {
+                        type: 'success',
+                        placement: {
+                            from: 'top',
+                            align: 'right'
                         },
-                        success: function (response) {
-                            $('#multi-filter-select').DataTable().ajax.reload();
+                        delay: 1200
+                    });
+                    $(`a[onClick="deleteSpace(${spaceId})"]`).closest('tr').remove();
+                },
+                error: function (xhr) {
+                    console.error("Error response:", xhr.responseText);
 
-                            $.notify({
-                                message: "Space deleted successfuly",
-                                title: "Success!",
-                                icon: "fa fa-bell"
-                            }, {
-                                type: 'success',
-                                placement: {
-                                    from: 'top',
-                                    align: 'right'
-                                },
-                                time: 1000,
-                                delay: 1200
-                            });
+                    $.notify({
+                        message: "Something went wrong, please try again!",
+                        title: "Error!",
+                        icon: "fa fa-bell"
+                    }, {
+                        type: 'danger',
+                        placement: {
+                            from: 'top',
+                            align: 'right'
                         },
-                        error: function (xhr, status, error) {
-                            $.notify({
-                                message: "Something went wrong, please try again!",
-                                title: "Error!",
-                                icon: "fa fa-bell"
-                            }, {
-                                type: 'danger',
-                                placement: {
-                                    from: 'top',
-                                    align: 'right'
-                                },
-                                time: 1000,
-                                delay: 1200
-                            });
-                        }
+                        delay: 1200
                     });
                 }
             });
         }
+    });
+}
+
 
         $(".space-view").on('click', function () {
             var spaceId = $(this).data('spaceid');
@@ -219,6 +221,17 @@
 
                     $('.editInputs').click(function () {
                         $('.col').find('input').prop('readonly', false);
+                        $('.editInputs').prop('hidden', true);
+                        $('.saveInputs').prop('hidden', false);
+                    });
+
+                    $('.saveInputs').click(function () {
+                        $('.col').find('input').prop('readonly', true);
+                        $('.editInputs').prop('hidden', false);
+                        $('.saveInputs').prop('hidden', true);
+                        let spaceId = $('.space-view').data('spaceid');
+                        let formData = $('.modal-body').find('input').serialize();
+                        
                     });
                 },
                 error: function (xhr, status, error) {

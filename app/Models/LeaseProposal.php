@@ -16,6 +16,7 @@ class LeaseProposal extends Model
         'proposal_uid',
         'bussiness_nature',
         'discount',
+        'percentage_sale',
         'brent',
         'total_rent',
         'min_mgr',
