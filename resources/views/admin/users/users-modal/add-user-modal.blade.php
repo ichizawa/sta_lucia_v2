@@ -43,6 +43,18 @@
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
+                                <label>Category</label>
+                                <select class="form-control" name="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="sample">Sample</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Sub - category</label>
+                                <input type="text" class="form-control" name="subCategory" placeholder="Sub - category" required />
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
                                 <label>Status</label>
                                 <select class="form-control" name="status" required>
                                     <option value="1">Active</option>

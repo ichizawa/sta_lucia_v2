@@ -138,4 +138,10 @@ class AdminController extends Controller
             'message' => 'User not found.'
         ]);
     }
+
+    public function getUserDetails(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+        return response()->json($user);
+    }
 }

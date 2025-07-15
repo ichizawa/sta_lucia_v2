@@ -180,6 +180,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/users', [AdminController::class, 'adminUsers'])->name('admin.users');
             Route::post('/add-user', [AdminController::class, 'adminAddUser'])->name('admin.add.user');
             Route::post('/delete-user', [AdminController::class, 'adminDeleteUser'])->name('admin.delete.user');
+            Route::get('/user-details', [AdminController::class, 'getUserDetails'])->name('admin.user.details');
         });
         
 

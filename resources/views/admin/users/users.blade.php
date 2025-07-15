@@ -1,7 +1,8 @@
 @extends('layouts')
-@include('admin.users.users-modal.add-user-modal')
-@include('admin.users.users-modal.edit-user-modal')
+
 @section('content')
+    @include('admin.users.users-modal.add-user-modal')
+    @include('admin.users.users-modal.edit-user-modal')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
@@ -68,13 +69,12 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="d-flex gap-2 justify-content-center">
-                                                    <a href="#" class="btn btn-warning btn-sm editUserBtn"
-                                                        data-bs-toggle="modal" data-bs-target="#editUserModal"
-                                                        data-user='@json($user)'>
+                                                    <a href="#" class="btn btn-warning btn-sm editUserBtn" data-bs-toggle="modal"
+                                                        data-bs-target="#editUserModal" data-user-id="{{ $user->id }}">
                                                         <i class="fa fa-pen" aria-hidden="true"></i>
                                                     </a>
                                                     <a class="btn btn-danger btn-sm deleteTenant"
-                                                        onClick="delete_user_func({{$user->id}})">
+                                                        onClick="delete_user_func({{ $user->id }})">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -126,7 +126,6 @@
                                     z_index: 9999
                                 });
 
-                                // Remove row from table
                                 $(`a[onClick="delete_user_func(${user_id})"]`).closest('tr').remove();
                             } else {
                                 $.notify({
