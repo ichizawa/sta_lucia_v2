@@ -64,7 +64,10 @@
                         <p>Tenants</p>
                     </a>
                 </li>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d8a2e7cf8586b65046ef640b37b6f20e2e8f66f
                 <li
                     class="nav-item {{ request()->routeIs('lease.space') || request()->routeIs('space.add.space') ? 'active' : '' }}">
                     <a href="{{ route('lease.space') }}" aria-expanded="false">
@@ -72,9 +75,14 @@
                         <p>Space</p>
                     </a>
                 </li>
+<<<<<<< HEAD
 
                 <li
                     class="nav-item {{ request()->routeIs('lease.award.notices') || request()->routeIs('lease.vacate.notices') ? 'active' : '' }}">
+=======
+                <li
+                    class="nav-item {{ request()->routeIs('admin.award.notices') || request()->routeIs('admin.vacate.notices') ? 'active' : '' }}">
+>>>>>>> 5d8a2e7cf8586b65046ef640b37b6f20e2e8f66f
                     <a data-bs-toggle="collapse" href="#notices" aria-expanded="false">
                         <i class="fa-solid fa-award"></i>
                         <p>Notices</p>
@@ -82,6 +90,7 @@
                     </a>
                     <div class="collapse" id="notices">
                         <ul class="nav nav-collapse">
+<<<<<<< HEAD
                             <li class="{{ request()->routeIs('lease.award.notices') ? 'active' : '' }}">
                                 <a href="{{ route('lease.award.notices', 'view') }}">
                                     <span class="sub-item">Award Notice</span>
@@ -89,6 +98,15 @@
                             </li>
                             <li class="{{ request()->routeIs('lease.vacate.notices') ? 'active' : '' }}">
                                 <a href="{{ route('lease.vacate.notices') }}">
+=======
+                            <li class="{{ request()->routeIs('admin.award.notices') ? 'active' : '' }}">
+                                <a href="{{ route('admin.award.notices', 'view') }}">
+                                    <span class="sub-item">Award Notice</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.vacate.notices') ? 'active' : '' }}">
+                                <a href="{{ route('admin.vacate.notices') }}">
+>>>>>>> 5d8a2e7cf8586b65046ef640b37b6f20e2e8f66f
                                     <span class="sub-item">Vacate Notice</span>
                                 </a>
                             </li>
@@ -96,7 +114,11 @@
                     </div>
                 </li>
                 <li
+<<<<<<< HEAD
                     class="nav-item {{ request()->routeIs('lease.renewal.contract') || request()->routeIs('lease.termination.contract') ? 'active' : '' }}">
+=======
+                    class="nav-item {{ request()->routeIs('admin.renewal.contract') || request()->routeIs('admin.termination.contract') ? 'active' : '' }}">
+>>>>>>> 5d8a2e7cf8586b65046ef640b37b6f20e2e8f66f
                     <a data-bs-toggle="collapse" href="#contracts" aria-expanded="false">
                         <i class="fa-solid fa-file-signature"></i>
                         <p>Contract</p>
@@ -104,6 +126,7 @@
                     </a>
                     <div class="collapse" id="contracts">
                         <ul class="nav nav-collapse">
+<<<<<<< HEAD
                             <li class="{{ request()->routeIs('lease.renewal.contract') ? 'active' : '' }}">
                                 <a href="{{ route('lease.renewal.contract') }}">
                                     <span class="sub-item">Renewal of Contract</span>
@@ -111,12 +134,22 @@
                             </li>
                             <li class="{{ request()->routeIs('lease.termination.contract') ? 'active' : '' }}">
                                 <a href="{{ route('lease.termination.contract') }}">
+=======
+                            <li class="{{ request()->routeIs('admin.renewal.contract') ? 'active' : '' }}">
+                                <a href="{{ route('admin.renewal.contract') }}">
+                                    <span class="sub-item">Renewal of Contract</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.termination.contract') ? 'active' : '' }}">
+                                <a href="{{ route('admin.termination.contract') }}">
+>>>>>>> 5d8a2e7cf8586b65046ef640b37b6f20e2e8f66f
                                     <span class="sub-item">Termination of Contract</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
+<<<<<<< HEAD
                 
                 
                 
@@ -132,6 +165,8 @@
     request()->routeIs('space.edit.level')
     ? 'active'
     : '' }}">
+=======
+>>>>>>> 5d8a2e7cf8586b65046ef640b37b6f20e2e8f66f
                 <li class="nav-item {{ request()->routeIs('lease.admin.permits.lists') ? 'active' : '' }}">
                     <a href="{{ route('lease.admin.permits.lists') }}" aria-expanded="false">
                         <i class="far fa-chart-bar"></i>

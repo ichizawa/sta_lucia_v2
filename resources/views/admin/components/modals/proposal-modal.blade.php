@@ -45,7 +45,9 @@
                     <div class="container-fluid" id="counterProposalBTN">
                         <div class="row justify-content-end">
                             <div class="col-auto ">
-                                <a class="btn btn-sta counterProposalsAdd" data-bs-toggle="modal" id="counterProposalsAdd" data-bs-target="#counterProposals">Add Revised Leased Proposal</a>
+                                <a class="btn btn-sta counterProposalsAdd" data-bs-toggle="modal"
+                                    id="counterProposalsAdd" data-bs-target="#counterProposals">Add Revised Leased
+                                    Proposal</a>
                             </div>
                         </div>
                     </div>
@@ -89,7 +91,7 @@
             $('#proposal-pdf').attr('src', '');
             $('#rejectNewProposal').attr('disabled', false);
             $('#approveNewProposal').attr('disabled', false);
-            
+
             $.ajax({
                 url: "{{ route('lease.show.proposal') }}",
                 type: "GET",
@@ -105,11 +107,11 @@
                     $('#rejectNewProposal').attr('data-proposal-id', proposal_id);
                     $('#approveNewProposal').attr('data-proposal-id', proposal_id);
                     var Title = $('#exampleModalLabel');
-                    if(data.document_status.status == 0){
+                    if (data.document_status.status == 0) {
                         Title.append(`Lease Proposal <span class="badge bg-danger">Files still not uploaded!</span>`);
                         $('#rejectNewProposal').attr('disabled', true);
                         $('#approveNewProposal').attr('disabled', true);
-                    }else{
+                    } else {
                         // $('.editProposalContents').hide();
                         Title.append(`Lease Proposal`);
                         if (data.data[0].status == 1) {
@@ -120,12 +122,12 @@
                             $('#approveNewProposal').show();
                         }
                     }
-                    
+
                 }
             });
         });
 
-        $('#approveNewProposal').click(function() {
+        $('#approveNewProposal').click(function () {
             var proposal_id = $(this).data('proposal-id');
             swal({
                 title: "Are you sure?",
@@ -137,11 +139,14 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     proposalOptions(proposal_id, 1, 'new');
+                    $('#leaseProposal').modal('hide');
+                    $('#viewCounterProposal').modal('hide');
+                    location.reload();
                 }
             });
         });
 
-        $('#rejectNewProposal').click(function() {
+        $('#rejectNewProposal').click(function () {
             var proposal_id = $(this).data('proposal-id');
             swal({
                 title: "Are you sure?",
@@ -171,14 +176,14 @@
                     proposal_id: proposal_id
                 },
                 success: function (data) {
-                    if(data.data[0].is_counter == 1){
+                    if (data.data[0].is_counter == 1) {
                         $('#counterProposalBTN').hide();
                     }
-                    
+
                     $('#counter-proposal-footer').show();
                     if (!data.counter_proposal) {
                         $.each(data.counter_proposals, function (key, value) {
-                            
+
                             $('.table-group-divider').append(
                                 `<tr>
                                 <td>Counter Proposal #${value.id}</td>
@@ -211,7 +216,7 @@
                             });
                         });
                     }
-                    
+
                 }
             });
         });
@@ -228,6 +233,8 @@
             }).then((willApprove) => {
                 if (willApprove) {
                     proposalOptions(proposal_id, 1, 'counter');
+                    $('#leaseProposal').modal('hide');
+                    $('#viewCounterProposal').modal('hide');
                 }
             });
         });
@@ -261,8 +268,8 @@
                         delay: 1200,
                         z_index: 10000
                     });
-                    
-                    if(set == 'new'){
+
+                    if (set == 'new') {
                         var row = $('a[data-show-proposal-id="' + proposal_id + '"]').closest('tr');
                         row.find('td:nth-child(5)').html('<span class="badge bg-success">Approved</span>');
                     }
