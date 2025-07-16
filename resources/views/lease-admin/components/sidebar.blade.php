@@ -34,6 +34,103 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
+
+                <li
+                    class="nav-item {{ request()->routeIs('leases.mall.leases') || request()->routeIs('leases.leases.proposal') || request()->routeIs('leases.add.proposal') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#leases" aria-expanded="false">
+                        <i class="fa-solid fa-house"></i>
+                        <p>Leases</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="leases">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ request()->routeIs('leases.mall.leases') ? 'active' : '' }}">
+                                <a href="{{ route('leases.mall.leases') }}">
+                                    <span class="sub-item">Mall Leaseable Info</span>
+                                </a>
+                            </li>
+                            <li
+                                class="{{ request()->routeIs('leases.leases.proposal') || request()->routeIs('leases.add.proposal') ? 'active' : '' }}">
+                                <a href="{{ route('leases.leases.proposal') }}">
+                                    <span class="sub-item">Lease Proposal</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item {{ request()->routeIs('admin.tenants') ? 'active' : '' }}">
+                    <a href="{{ route('admin.tenants') }}" aria-expanded="false">
+                        <i class="fa-solid fa-people-carry-box"></i>
+                        <p>Tenants</p>
+                    </a>
+                </li>
+                <li
+                    class="nav-item {{ request()->routeIs('admin.space') || request()->routeIs('space.add.space') ? 'active' : '' }}">
+                    <a href="{{ route('admin.space') }}" aria-expanded="false">
+                        <i class="fas fa-layer-group"></i>
+                        <p>Space</p>
+                    </a>
+                </li>
+                <li
+                    class="nav-item {{ request()->routeIs('LEASEADMIN.award.notices') || request()->routeIs('LEASEADMIN.award.notices') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#notices" aria-expanded="false">
+                        <i class="fa-solid fa-award"></i>
+                        <p>Notices</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="notices">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ request()->routeIs('operation.award.notices') ? 'active' : '' }}">
+                                <a href="{{ route('operation.award.notices', 'view') }}">
+                                    <span class="sub-item">Award Notice</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('operation.vacate.notices') ? 'active' : '' }}">
+                                <a href="{{ route('operation.vacate.notices') }}">
+                                    <span class="sub-item">Vacate Notice</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li
+                    class="nav-item {{ request()->routeIs('admin.renewal.contract') || request()->routeIs('admin.termination.contract') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#contracts" aria-expanded="false">
+                        <i class="fa-solid fa-file-signature"></i>
+                        <p>Contract</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="contracts">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ request()->routeIs('admin.renewal.contract') ? 'active' : '' }}">
+                                <a href="{{ route('admin.renewal.contract') }}">
+                                    <span class="sub-item">Renewal of Contract</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.termination.contract') ? 'active' : '' }}">
+                                <a href="{{ route('admin.termination.contract') }}">
+                                    <span class="sub-item">Termination of Contract</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                {{-- <li class="nav-item {{ request()->routeIs('commencement.lists') ? 'active' : '' }}">
+                    <a href="{{ route('commencement.lists') }}" aria-expanded="false">
+                        <i class="fas fa-layer-group"></i>
+                        <p>Commencement</p>
+                    </a>
+                </li> --}}
+                <li class="nav-item  {{ request()->routeIs('admin.utility') ||
+    // request()->routeIs('admin.roles') ||
+    request()->routeIs('admin.category') ||
+    request()->routeIs('admin.charges') ||
+    request()->routeIs('admin.amenities') ||
+    request()->routeIs('space.edit.mall') ||
+    request()->routeIs('space.edit.building') ||
+    request()->routeIs('space.edit.level')
+    ? 'active'
+    : '' }}">
                 <li class="nav-item {{ request()->routeIs('lease.admin.permits.lists') ? 'active' : '' }}">
                     <a href="{{ route('lease.admin.permits.lists') }}" aria-expanded="false">
                         <i class="far fa-chart-bar"></i>
@@ -50,3 +147,5 @@
         </div>
     </div>
 </div>
+
+

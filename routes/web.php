@@ -52,11 +52,36 @@ Route::post('/auth', [AuthController::class, 'login'])->name('authenticate');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-//nly users with admin role can access
+
 Route::group(['middleware' => ['auth', 'authCheck']], function () {
     Route::prefix('admin')->middleware('role.check:admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'adminIndex'])->name('admin.dashboard');
-//SPACE
+
+        //LEASES
+        Route::prefix('leases')->group(function () {
+            Route::get('/mall-leaseable-info', [LeasesController::class, 'adminMallLeaseableInfo'])->name('leases.mall.leases');
+            Route::get('/leases-proposal', [LeasesController::class, 'adminLeases'])->name('leases.leases.proposal');
+            Route::get('/add-proposal', [LeasesController::class, 'addLease'])->name('leases.add.proposal');
+            Route::get('/pull-utilities-charges', [LeasesController::class, 'getChargesUtilities'])->name('admin.pull.utilities.charges');
+            Route::post('/submit-lease-proposal/{option}', [LeasesController::class, 'adminSubmitLeaseProposal'])->name('lease.submit.lease.proposal');
+            Route::get('/show-proposal', [LeasesController::class, 'showProposal'])->name('lease.show.proposal');
+            Route::get('/show-counter-proposal', [LeasesController::class, 'showCounterProposal'])->name('lease.show.counter.proposal');
+            Route::get('/get-business-info', [LeasesController::class, 'adminGetBusinessInfo'])->name('lease.business.info');
+            Route::get('/lease-option-proposal/{set}', [LeasesController::class, 'adminOptionsProposal'])->name('lease.option.proposals');
+        });
+
+
+
+
+
+
+
+
+
+        
+
+
+        //SPACE
         Route::get('/space', [SpaceController::class, 'adminSpace'])->name('admin.space');
         Route::prefix('space')->group(function () {
             Route::get('/add-space', [SpaceController::class, 'adminAddSpace'])->name('space.add.space');
@@ -75,14 +100,10 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/space-options/{setup}', [SpaceController::class, 'adminOptionSpace'])->name('space.option.space');
             Route::get('/get-level', [SpaceController::class, 'adminShowLevel'])->name('space.get.level');
         });
-//TENANTS
+
+        //TENANTS
         Route::get('/tenants', [TenantsController::class, 'adminTenants'])->name('admin.tenants');
         Route::prefix('tenants')->group(function () {
-<<<<<<< HEAD
-           // Route::get('/', [TenantsController::class, 'retrieveTenants'])->name('admin.tenants');
-=======
-        //    Route::get('/', [TenantsController::class, 'retrieveTenants'])->name('admin.tenants');
->>>>>>> 35b459a9b6480d36b212a3794f9a6c33025d845f
             Route::get('/add-tenants', [TenantsController::class, 'adminAddTenants'])->name('admin.add.tenants');
             Route::post('/submit-tenants', [TenantsController::class, 'adminSubmitTenants'])->name('admin.submit.tenants');
             Route::get('/get-sub-category', [TenantsController::class, 'getSubCategory'])->name('admin.get.sub.category');
@@ -93,56 +114,21 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
             Route::post('/delete-tenant', [TenantsController::class, 'adminDeleteTenants'])->name('admin.delete.tenants');
         });
-//LEASES
-        Route::prefix('leases')->group(function () {
-            Route::get('/mall-leaseable-info', [LeasesController::class, 'adminMallLeaseableInfo'])->name('leases.mall.leases');
-            Route::get('/leases-proposal', [LeasesController::class, 'adminLeases'])->name('leases.leases.proposal');
-            Route::get('/add-proposal', [LeasesController::class, 'addLease'])->name('leases.add.proposal');
-            Route::get('/pull-utilities-charges', [LeasesController::class, 'getChargesUtilities'])->name('admin.pull.utilities.charges');
-            Route::post('/submit-lease-proposal/{option}', [LeasesController::class, 'adminSubmitLeaseProposal'])->name('lease.submit.lease.proposal');
-            Route::get('/show-proposal', [LeasesController::class, 'showProposal'])->name('lease.show.proposal');
-            Route::get('/show-counter-proposal', [LeasesController::class, 'showCounterProposal'])->name('lease.show.counter.proposal');
-            Route::get('/get-business-info', [LeasesController::class, 'adminGetBusinessInfo'])->name('lease.business.info');
-            Route::get('/lease-option-proposal/{set}', [LeasesController::class, 'adminOptionsProposal'])->name('lease.option.proposals');
-        });
-//UTILITIES
+
+
+        //UTILITIES
         Route::get('/utility', [UtilityController::class, 'adminUtility'])->name('admin.utility');
         Route::prefix('utility')->group(function () {
             Route::post('/add-utility', [UtilityController::class, 'adminAddUtility'])->name('admin.add.utility');
             Route::post('/delete-utility', [UtilityController::class, 'deleteUtility'])->name('admin.delete.utility');
         });
-//ROLES
-        //Route::get('/roles', [RolesController::class, 'adminRoles'])->name('admin.roles');
-        Route::get('/roles', [RoleTypeController::class, 'adminRoles'])->name('admin.roles');
-        Route::post('/admin/add-roles', [RoleTypeController::class, 'store'])->name('admin.add.roles');
-        //Route::post('/admin/update-role', [RoleTypeController::class, 'update'])->name('admin.update.roles');
-        Route::post('/admin/update-role', [RoleTypeController::class, 'update'])->name('admin.update.roles');
-        //Route::post('/admin/update-role', [RoleTypeController::class, 'update'])->name('admin.update.roles');
-        Route::post('/admin/delete-role-type', [RoleTypeController::class, 'destroy'])->name('admin.delete.roleType');
-        //Route::post('/roles/delete', [RoleTypeController::class, 'destroy'])->name('admin.delete.roles');
 
-
-
-
-
-
-        //Route::get('/roles', [RoleTypeController::class, 'index'])->name('roles.index');
-        //Route::post('/roles', [RoleTypeController::class, 'store'])->name('roles.store');
-        //Route::put('/roles/{id}', [RoleTypeController::class, 'update'])->name('roles.update');
-        //Route::delete('/roles/{id}', [RoleTypeController::class, 'destroy'])->name('roles.destroy');
-
-
-
-//CHARGES
+        //CHARGES
         Route::get('/charges', [ChargeController::class, 'adminCharges'])->name('admin.charges');
         Route::post('/delete-charges', [ChargeController::class, 'adminDeleteCharges'])->name('admin.delete.charges');
         Route::post('/submit-charges', [ChargeController::class, 'adminAddCharges'])->name('submit.charges');
-
-        // Route::get('/branch', [BranchController::class, 'adminBranch'])->name('admin.branch');
-        // Route::prefix('branch')->group(function () {
-        //     Route::post('/add-branch', [BranchController::class, 'adminAddBranch'])->name('branch.add.branch');
-        // });
-//CATEGORY
+        
+        //CATEGORY
         Route::get('/category', [CategoryController::class, 'adminCategory'])->name('admin.category');
 
         Route::prefix('category')->group(function () {
@@ -151,13 +137,15 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/submit-sub-category', [CategoryController::class, 'storeSubCategory'])->name('submit.sub.category');
             Route::post('/delete-category', [CategoryController::class, 'delete'])->name('admin.delete.category');
         });
-//AMMENITIES
+
+        //AMMENITIES
         Route::get('/amenities', [AdminController::class, 'adminAmenities'])->name('admin.amenities');
         Route::prefix('amenities')->group(function () {
             Route::post('/submit-amenities', [AdminController::class, 'adminSubmitAmenities'])->name('admin.submit.amenities');
             Route::post('/delete-amenities', [AdminController::class, 'deleteAmenities'])->name('admin.delete.amenities');
         });
-//AWARD NOTICE
+        
+        //AWARD NOTICE
         Route::prefix('notices')->group(function () {
             Route::get('/award-notices/{option}', [VacateNoticesController::class, 'adminAwardNotices'])->name('admin.award.notices');
             Route::get('/get-files/{option}', [VacateNoticesController::class, 'adminAwardNotices'])->name('admin.award.get');
@@ -169,12 +157,11 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/vacate-notices', [VacateNoticesController::class, 'adminVacateNotices'])->name('admin.vacate.notices');
         });
 
-//CONTRACT
+        //CONTRACT
         Route::prefix('contract')->group(function () {
             Route::get('/renewal-contract', [ContractController::class, 'adminRenewalContract'])->name('admin.renewal.contract');
             Route::get('/view-contract', [ContractController::class, 'adminViewContract'])->name('admin.view.contract');
             Route::get('/termination-contract', [ContractController::class, 'adminTerminationContract'])->name('admin.termination.contract');
-
             // Route::get('/download-vacate-notice', [ContractController::class, 'downloadVacateNoticePDF'])->name('download.vacate.notice');
         });
 
@@ -202,7 +189,8 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/tenant-sales-reports', [AdminController::class, 'adminTenantSalesReports'])->name('admin.tenant.sales.reports');
 
         });
-//USERS
+        
+        //USERS
         Route::prefix('users')->group(function () {
             Route::get('/users', [AdminController::class, 'adminUsers'])->name('admin.users');
             Route::post('/add-user', [AdminController::class, 'adminAddUser'])->name('admin.add.user');
@@ -214,7 +202,8 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/payments', [AdminController::class, 'adminPayments'])->name('admin.payments');
         Route::get('/activity-log', [AdminController::class, 'adminActivityLog'])->name('admin.activity-log');
     });
-//CLIENT
+    
+    //CLIENT
     Route::prefix('client')->middleware('role.check:tenant')->group(function () {
         Route::get('/dashboard', [ClientController::class, 'clientIndex'])->name('client.dashboard');
         Route::get('/lease-proposals', [ClientProposalController::class, 'index'])->name('client.proposal');
@@ -318,8 +307,13 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         });
     });
 
+
+//LEASE ADMIN
     Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
         Route::get('/dashboard', [LeaseAdminController::class, 'index'])->name('lease.admin.dashboard');
+
+       
+
 
         Route::prefix('commencement')->group(function () {
             Route::get('/lists', [LeaseAdminController::class, 'commcenemnt_index'])->name('lease.admin.commencement.lists');

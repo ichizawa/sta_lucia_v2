@@ -1,6 +1,5 @@
 @extends('layouts')
 
-@include ('admin.users.add-user-modal')
 
 @section('content')
     @include('admin.users.users-modal.add-user-modal')
