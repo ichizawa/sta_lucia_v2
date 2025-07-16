@@ -1,8 +1,8 @@
 <div class="modal fade editUserModal" id="editUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="editUserForm" method="POST" enctype="multipart/form-data" {{--
-                action="{{ route('admin.update.user') }}" --}}>
+            <form id="editUserForm" method="POST" enctype="multipart/form-data" 
+                action="{{ route('admin.submit.user') }}">
                 @csrf
                 <input type="hidden" name="id" id="user_id">
                 <div class="modal-header brown-border-top">
@@ -85,30 +85,6 @@
     </div>
 </div>
 
-
-{{--
-<script>
-    $(document).on('click', '.editUserBtn', function () {
-        let userData = $(this).attr('user-details');
-
-        try {
-            let user = JSON.parse(userData);
-            console.log("Test");
-            console.log("User data loaded:", user);
-
-            $('#user_id').val(user.id);
-            $('#name').val(user.name);
-            $('#username').val(user.username);
-            $('#address').val(user.address);
-            $('#email').val(user.email);
-            $('#phone').val(user.phone);
-            $('#type').val(user.type);
-            $('#status').val(user.status);
-        } catch (error) {
-            console.error("Error parsing user data:", error, userData);
-        }
-    });
-</script> --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {

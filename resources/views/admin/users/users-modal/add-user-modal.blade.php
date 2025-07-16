@@ -1,7 +1,7 @@
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="{{ route('admin.add.user') }}" method="POST">
+            <form action="{{ route('admin.submit.user') }}" method="POST">
                 @csrf
                 <div class="modal-header brown-border-top">
                     <h5 class="modal-title">Add User</h5>
@@ -17,19 +17,26 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Username</label>
-                                <input type="text" class="form-control" name="username" placeholder="Enter Username" required />
+                                <input type="text" class="form-control" name="username" placeholder="Enter Username"
+                                    required />
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Address</label>
-                                <input type="text" class="form-control" name="address" placeholder="Enter Address" required />
+                                <input type="text" class="form-control" name="address" placeholder="Enter Address"
+                                    required />
                             </div>
                             <div class="col-md-6 mb-3">
+                                @if ($errors->has('email'))
+                                    <div class="text-danger">{{ $errors->first('email') }}</div>
+                                @endif
                                 <label>Email</label>
-                                <input type="email" class="form-control" name="email" placeholder="Enter Email" required />
+                                <input type="email" class="form-control" name="email" placeholder="Enter Email"
+                                    required />
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Phone Number</label>
-                                <input type="text" class="form-control" name="phone" placeholder="Phone Number" required />
+                                <input type="text" class="form-control" name="phone" placeholder="Phone Number"
+                                    required />
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Role</label>
@@ -51,9 +58,10 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Sub - category</label>
-                                <input type="text" class="form-control" name="subCategory" placeholder="Sub - category" required />
+                                <input type="text" class="form-control" name="subCategory" placeholder="Sub - category"
+                                    required />
                             </div>
-                            
+
                             <div class="col-md-6 mb-3">
                                 <label>Status</label>
                                 <select class="form-control" name="status" required>
@@ -63,7 +71,8 @@
                             </div>
                             <div class="col-md-6 mb-3 ">
                                 <label>Password</label>
-                                <input type="password" class="form-control" name="password" placeholder="Password" required />
+                                <input type="password" class="form-control" name="password" placeholder="Password"
+                                    required />
                             </div>
                         </div>
 
@@ -78,4 +87,3 @@
         </div>
     </div>
 </div>
-

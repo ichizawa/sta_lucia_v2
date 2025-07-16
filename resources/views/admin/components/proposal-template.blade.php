@@ -158,7 +158,7 @@
                         {{ fmod($proposal->percentage_sale, 1) == 0
             ? number_format($proposal->percentage_sale, 0)
             : number_format($proposal->percentage_sale, 2) 
-                }}%
+                    }}%
                     </td>
                 </tr>
                 <tr>
@@ -207,7 +207,10 @@
                 @foreach ($getCharges as $charges)
                     <tr>
                         <th>{{ $charges->charge_name }}</th>
-                        <td>PHP {{ $charges->charge_fee }}/sqm ({{ $charges->frequency }})</td>
+                        <td>
+                            PHP {{ number_format($charges->total_charge, 2) }}
+                            ({{ $charges->frequency }})
+                        </td>
                     </tr>
                 @endforeach
             </table>
