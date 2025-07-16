@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("lease_id");
             $table->foreign("lease_id")->references("id")->on("proposal")->cascadeOnDelete();
             $table->unsignedBigInteger("charge_id");
+            $table->float("total_charge");
             // $table->foreign("charge_id")->references("id")->on("charges");
             $table->timestamps();
             $table->softDeletes();

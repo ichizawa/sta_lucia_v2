@@ -388,7 +388,7 @@
                 <div class="form-group col-md-6">
                     <label for="extra_value_${counters}">Extra Charge Value</label>
                     <input type="text" class="form-control extra_value" id="extra_value_${counters}" name="chargeValue[]"
-                        placeholder="Extra Charge Value">
+                        placeholder="Extra Charge Value" readonly>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="extra_frequency_${counters}">Frequency</label>

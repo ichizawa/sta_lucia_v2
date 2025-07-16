@@ -11,8 +11,7 @@
         data-bs-parent="#leaseProposalAccordion">
         <div class="card-body">
             <div class="d-flex justify-content-end mb-3">
-                <button type="button" class="btn btn-sta" id="add-another-utility">Add Another
-                    Utility
+                <button type="button" class="btn btn-sta" id="add-another-utility">Add Utility
                 </button>
             </div>
             <div id="utility-container" class="row">

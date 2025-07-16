@@ -16,6 +16,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
 {
@@ -94,20 +96,38 @@ class AdminController extends Controller
     }
 
 
-    public function adminAddUser(Request $request)
-    {
+    public function adminSubmitUser(Request $request)
+{
+    $userId = $request->input('id');
+
+    try {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                $userId
+                    ? Rule::unique('users', 'email')->ignore($userId)
+                    : 'unique:users,email',
+            ],
             'type' => 'required|string|max:255',
             'status' => 'required|boolean',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            'username' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                $userId
+                    ? Rule::unique('users', 'username')->ignore($userId)
+                    : 'unique:users,username',
+            ],
+            'password' => $userId ? 'nullable|string|min:8' : 'required|string|min:8',
         ]);
 
-        $user = new User();
+        $user = $userId ? User::findOrFail($userId) : new User();
+
         $user->name = $validatedData['name'];
         $user->username = $validatedData['username'];
         $user->address = $validatedData['address'];
@@ -115,11 +135,19 @@ class AdminController extends Controller
         $user->email = $validatedData['email'];
         $user->type = $validatedData['type'];
         $user->status = $validatedData['status'];
-        $user->password = Hash::make($validatedData['password']);
+
+        if (!empty($validatedData['password'])) {
+            $user->password = Hash::make($validatedData['password']);
+        }
+
         $user->save();
 
-        return redirect()->back()->with('success', 'User added successfully.');
+        return redirect()->back()->with('success', $userId ? 'User updated successfully.' : 'User added successfully.');
+    } catch (ValidationException $e) {
+        $errorMessage = collect($e->validator->errors()->all())->first();
+        return redirect()->back()->with('error', $errorMessage)->withInput();
     }
+}
 
     public function adminDeleteUser(Request $request)
     {
@@ -144,4 +172,5 @@ class AdminController extends Controller
         $user = User::findOrFail($request->id);
         return response()->json($user);
     }
+
 }

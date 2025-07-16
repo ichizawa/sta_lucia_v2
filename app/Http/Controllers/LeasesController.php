@@ -143,12 +143,17 @@ class LeasesController extends Controller
             'status' => 1
         ]);
 
+        $totalArea = Space::whereIn('id', $spaceSelected)->sum('space_area');
+
         $charges = $request->input('chargeid', []);
         $dataCharges = [];
         foreach ($charges as $charge_id) {
+            $charge = Charge::find($charge_id); 
+            $totalChargeAmount = $charge->charge_fee * $totalArea;
             $dataCharges[] = [
                 'lease_id' => $lease_prop->id,
                 'charge_id' => $charge_id,
+                'total_charge' => $totalChargeAmount,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

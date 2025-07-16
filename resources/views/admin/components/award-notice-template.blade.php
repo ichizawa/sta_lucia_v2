@@ -105,7 +105,8 @@
                 <tr>
                     <td>2. Location</td>
                     <td class="separator">:</td>
-                    <td>{{ collect($proposal->selected_space)->pluck('space.space_name')->implode(', ') }} ({{ collect($proposal->selected_space)->pluck('space.store_type')->implode(', ') }})</td>
+                    <td>{{ collect($proposal->selected_space)->pluck('space.space_name')->implode(', ') }}
+                        ({{ collect($proposal->selected_space)->pluck('space.store_type')->implode(', ') }})</td>
                 </tr>
                 <tr>
                     <td>3. Area</td>
@@ -123,7 +124,10 @@
                 <tr>
                     <td class="unique_td">Percentage Rent</td>
                     <td class="separator">:</td>
-                    <td><strong>Five Percent (3%) of Gross Sales OR</strong></td>
+                    <td><strong>
+                        
+                        {{$proposal->percentage_sale}}% of Gross Sales OR
+                        </strong></td>
                 </tr>
                 <tr>
                     <td class="unique_td">Minimum Guaranteed Rent</td>
@@ -149,7 +153,8 @@
                     <tr>
                         <td class="unique_td">{{ $charges->charge->charge_name }}</td>
                         <td class="separator">:</td>
-                        <td><strong>P {{ number_format($charges->charge->charge_fee, 2) }}/sqm. {{ $charges->charge->frequency }}</strong>
+                        <td><strong>P {{ number_format($charges->charge->charge_fee, 2) }}/sqm.
+                                {{ $charges->charge->frequency }}</strong>
                         </td>
                     </tr>
                 @endforeach
@@ -172,7 +177,7 @@
                     <td>{{ $proposal->bussiness_nature }}</td>
                 </tr>
                 <tr>
-                    <td>9. Items Allowed to Sell</td>
+                    <td>9. Items Allowed</td>
                     <td class="separator">:</td>
                     <td>Footwear as approved by the Lessor</td>
                 </tr>
@@ -188,6 +193,18 @@
                     <td class="unique_td">Security Deposit</td>
                     <td class="separator">:</td>
                     <td><strong>P {{ number_format($proposal->sec_dep, 2) }}</strong> – Equivalent to two (2) months
+                        basic rent and refundable upon
+                        termination
+                        of Contract of Lease. This is payable upon signing of the Award Notice. If the LESSEE
+                        pre-terminates the
+                        contract for whatever reason, the Security Deposit will be automatically forfeited in favor of
+                        Sta Lucia
+                        Mall of Davao.</td>
+                </tr>
+                <tr>
+                    <td class="unique_td">Advance Deposit</td>
+                    <td class="separator">:</td>
+                    <td><strong>P {{ number_format($proposal->rent_deposit, 2) }}</strong> – Equivalent to two (2) months
                         basic rent and refundable upon
                         termination
                         of Contract of Lease. This is payable upon signing of the Award Notice. If the LESSEE
@@ -297,11 +314,11 @@
                 the stated period shall be construed to mean that you are agreeable to the provisions stated herein.</p>
             <p style="margin-top: 20px; margin-bottom: 30px;">Very truly yours,</p>
             <p><strong>MS. MARY GRACE C. AGUSTO</strong></p>
-            <p>Leasing Consultant</p>
+            <p>LEASING HEAD</p>
             <p style="text-indent: 5in;">Conforme:</p>
             <p>Noted by:</p>
             <p style="text-indent: 5in;"><strong>MR. WEE SHIONG HOW</strong></p>
-            <p style="text-indent: 5in;">Director</p>
+            <p style="text-indent: 5in;">OWNER/LEESSE</p>
             <p><strong>MS. MA.ROSARIO L. SANTOS</strong></p>
             <p>VP – Marketing and Mall Operations</p>
             <p style="text-indent: 5in;">Date:_________</p>

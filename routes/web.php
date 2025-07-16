@@ -178,7 +178,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
 
         Route::prefix('users')->group(function () {
             Route::get('/users', [AdminController::class, 'adminUsers'])->name('admin.users');
-            Route::post('/add-user', [AdminController::class, 'adminAddUser'])->name('admin.add.user');
+            Route::post('/add-user', [AdminController::class, 'adminSubmitUser'])->name('admin.submit.user');
             Route::post('/delete-user', [AdminController::class, 'adminDeleteUser'])->name('admin.delete.user');
             Route::get('/user-details', [AdminController::class, 'getUserDetails'])->name('admin.user.details');
         });

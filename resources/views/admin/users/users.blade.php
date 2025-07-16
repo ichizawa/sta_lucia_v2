@@ -167,27 +167,51 @@
     </script>
 
     @if (session('success'))
-        <script>
-            $(document).ready(function () {
-                var content = {
-                    message: '{{ session('success') }}',
-                    title: 'Success',
-                    icon: 'fa fa-check'
-                };
+    <script>
+        $(document).ready(function () {
+            var content = {
+                message: '{{ session('success') }}',
+                title: 'Success',
+                icon: 'fa fa-check'
+            };
 
-                $.notify(content, {
-                    type: 'success',
-                    placement: {
-                        from: 'top',
-                        align: 'right',
-                    },
-                    delay: 2500,
-                    timer: 1000,
-                    z_index: 9999,
-                });
+            $.notify(content, {
+                type: 'success',
+                placement: {
+                    from: 'top',
+                    align: 'right',
+                },
+                delay: 2500,
+                timer: 1000,
+                z_index: 9999,
             });
-        </script>
-    @endif
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        $(document).ready(function () {
+            var content = {
+                message: '{{ session('error') }}',
+                title: 'Error',
+                icon: 'fa fa-times'
+            };
+
+            $.notify(content, {
+                type: 'danger',
+                placement: {
+                    from: 'top',
+                    align: 'right',
+                },
+                delay: 2500,
+                timer: 1000,
+                z_index: 9999,
+            });
+        });
+    </script>
+@endif
+
 
 
 @endsection
