@@ -37,6 +37,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\lease_admin\LeaseSpaceController;
 use App\Http\Controllers\TenantsController;
 use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\RolesController;
@@ -52,7 +53,7 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'authCheck']], function () {
-    Route::prefix('admin')->middleware('role.check:admin')->group(function () {
+    Route::prefix('admin')->middleware('role.check:admin, lease')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'adminIndex'])->name('admin.dashboard');
 
         Route::get('/space', [SpaceController::class, 'adminSpace'])->name('admin.space');
@@ -294,6 +295,39 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
     Route::prefix('lease-admin')->middleware('role.check:lease')->group(function () {
         Route::get('/dashboard', [LeaseAdminController::class, 'index'])->name('lease.admin.dashboard');
 
+        Route::get('/space', [LeaseSpaceController::class, 'leaseAdminSpace'])->name('lease.space');
+        Route::prefix('space')->group(function () {
+            Route::get('/add-space', [LeaseSpaceController::class, 'leaseAddSpace'])->name('lease.add.space');
+            Route::post('/submit-space', [LeaseSpaceController::class, 'sumbmitSpace'])->name('lease.submit.space');
+            Route::get('/view-space-modal', [LeaseSpaceController::class, 'leaseViewSpace'])->name('lease.view.space');
+            Route::post('/delete-space', [LeaseSpaceController::class, 'leaseDelete'])->name('lease.delete.space');
+
+            Route::get('/mall-option/{setup}', [LeaseSpaceController::class, 'leaseOptionSpace'])->name('lease.edit.mall');
+            Route::get('/building-option/{setup}', [LeaseSpaceController::class, 'leaseOptionSpace'])->name('lease.edit.building');
+            Route::get('/level-option/{setup}', [LeaseSpaceController::class, 'leaseOptionSpace'])->name('lease.edit.level');
+
+            Route::post('/mall-delete/{setup}', [LeaseSpaceController::class, 'leaseSpaceCodes'])->name('lease.delete.mall');
+            Route::post('/building-delete/{setup}', [LeaseSpaceController::class, 'leaseSpaceCodes'])->name('lease.delete.building');
+            Route::post('/level-delete/{setup}', [LeaseSpaceController::class, 'leaseSpaceCodes'])->name('lease.delete.level');
+
+            Route::post('/space-options/{setup}', [LeaseSpaceController::class, 'leaseOptionSpace'])->name('lease.option.space');
+            Route::get('/get-level', [LeaseSpaceController::class, 'leaseShowLevel'])->name('lease.get.level');
+        });
+
+        Route::get('/tenants', [TenantsController::class, 'adminTenants'])->name('lease.tenants');
+        Route::prefix('tenants')->group(function () {
+        //    Route::get('/', [TenantsController::class, 'retrieveTenants'])->name('admin.tenants');
+            Route::get('/add-tenants', [TenantsController::class, 'adminAddTenants'])->name('admin.add.tenants');
+            Route::post('/submit-tenants', [TenantsController::class, 'adminSubmitTenants'])->name('admin.submit.tenants');
+            Route::get('/get-sub-category', [TenantsController::class, 'getSubCategory'])->name('admin.get.sub.category');
+            Route::get('/view-tenants-modal', [TenantsController::class, 'adminViewTenants'])->name('admin.tenant.documents');
+
+            Route::post('/submit-tenant-documents', [TenantsController::class, 'adminAddDocuments'])->name('admin.submit.documents');
+            Route::post('/approve-tenant-documents', [TenantsController::class, 'adminApproveDocuments'])->name('admin.tenant.documents.approve');
+
+            Route::post('/delete-tenant', [TenantsController::class, 'adminDeleteTenants'])->name('admin.delete.tenants');
+        });
+        
         Route::prefix('commencement')->group(function () {
             Route::get('/lists', [LeaseAdminController::class, 'commcenemnt_index'])->name('lease.admin.commencement.lists');
             Route::post('/commencement-update', [LeaseAdminController::class, 'commencementUpdate'])->name('lease.admin.commencement.update');
