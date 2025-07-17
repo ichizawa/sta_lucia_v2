@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\api\ApiController;
 use App\Http\Controllers\api\TenantController;
 use App\Http\Controllers\AuthController;
@@ -11,20 +12,19 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::group(['middleware' => ['cors', 'json.response']], function () {
+
     Route::get('/test-api', [ApiController::class, 'index'])->name('test.api');
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
 
-    Route::middleware('auth:api')->group(function () {
+    Route::middleware(['auth:api'])->group(function () {
 
-        Route::middleware('auth:api')->prefix('tenant')->group(function () {
-            // Route::get('/user/{user_id}', [TenantController::class, 'tenantProfile']);
+        Route::post('logout', [AuthController::class, 'logout']);
+
+        Route::middleware(['role:tenant|leaseadmin|biller'])->group(function () {
+            Route::get('/get-user/{user_id}', [TenantController::class, 'tenantProfile']);
+            Route::get('/get-sales/{user_id}', [TenantController::class, 'tenantSales']);
+            Route::get('/get-space/{user_id}', [TenantController::class, 'tenantSpaces']);
         });
-
-
     });
-
-    Route::get('/user/{user_id}', [TenantController::class, 'tenantProfile']);
 });
-
-
