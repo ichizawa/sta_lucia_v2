@@ -58,8 +58,14 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item {{ request()->routeIs('lease.tenants') ? 'active' : '' }}">
-                    <a href="{{ route('lease.tenants') }}" aria-expanded="false">
+                <li 
+                class="nav-item 
+                {{-- {{ request()->routeIs('lease.tenants') ? 'active' : '' }} --}}
+                 "
+                >
+                    <a 
+                    {{-- href="{{ route('lease.tenants') }}" --}}
+                     aria-expanded="false">
                         <i class="fa-solid fa-people-carry-box"></i>
                         <p>Tenants</p>
                     </a>
