@@ -59,6 +59,6 @@
             </div>
         </div>
     </div>
-    @include('admin.components.modals.view-leasable-info')
-    @include('admin.components.modals.edit-leasable-info')
+    @include('lease-admin.components.modals.view-leasable-info')
+    @include('lease-admin.components.modals.edit-leasable-info')
 @endsection

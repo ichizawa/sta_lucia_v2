@@ -23,7 +23,7 @@
         </div>
 
         <div class="container-fluid bg-white p-4">
-            <form action="{{ route('lease.submit.lease.proposal', ['option' => 'proposal']) }}" method="POST"
+            <form action="{{ route('leaseSubmit.submit.lease.proposal', ['option' => 'proposal']) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
                 <div class="accordion" id="leaseProposalAccordion">
@@ -89,29 +89,29 @@
                             </div>
                         </div>
                         <div class="col">
-                            @include('admin.leases.components.space-information')
+                            @include('lease-admin.leases.components.space-information')
                         </div>
                     </div>
 
                     <!-- @include('admin.leases.components.lease-details') -->
                     <div class="row">
                         <div class="col">
-                            @include('admin.leases.components.extra-charges')
+                            @include('lease-admin.leases.components.extra-charges')
 
                         </div>
                         <div class="col">
-                            @include('admin.leases.components.utilities')
+                            @include('lease-admin.leases.components.utilities')
 
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col">
-                            @include('admin.leases.components.lease-terms')
+                            @include('lease-admin.leases.components.lease-terms')
 
                         </div>
                         <div class="col">
-                            @include('admin.leases.components.payments')
+                            @include('lease-admin.leases.components.payments')
 
                         </div>
                     </div>

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\lease_admin;
 
-
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Mail\admin\SendRegistrationUpdate;
 use App\Models\AwardNotice;
 use App\Models\DocumentsTable;
@@ -14,29 +15,26 @@ use App\Models\Company;
 use App\Models\Owner;
 use App\Models\Representative;
 use App\Events\TenantUpdated;
-use File;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Categories;
 use App\Models\BusinessType;
 
-class TenantsController extends Controller
-{
-
-    public function adminTenants()
+class LeaseTenantController extends Controller
+{   
+    public function leaseAdminTenants()
     {
         $owners = Owner::with(['companies', 'representatives'])->get();
         
-        return view('admin.tenants.tenants', [
+        return view('lease-admin.tenants.tenants', [
             'owners' => $owners,
         ]);
     }
-
-    public function adminAddTenants(Request $request)
+    
+    public function leaseAddTenants (Request $request)
     {
         $categories = Categories::all();
 
-        return view('admin.tenants.add-tenants', [
+        return view('lease-admin.tenants.add-tenants', [
             'categories' => $categories,
         ]);
     }
@@ -45,7 +43,6 @@ class TenantsController extends Controller
     {
         $subCategory = SubCategory::whereIn('category_id', $request->categoryID)->get();
         return response()->json($subCategory);
-
     }
 
     public function retrieveTenants()
@@ -53,10 +50,10 @@ class TenantsController extends Controller
         $checkDocs = true;
         $owners = Owner::with(['companies', 'representatives'])->join('tenant_documents', 'tenant_documents.owner_id', '=', 'owner.id')
         ->select('owner.*', 'tenant_documents.status as doc_status')->get();
-        return view('admin.tenants.tenants', ['owners' => $owners]);
+        return view('lease-admin.tenants.tenants', ['owners' => $owners]);
     }
 
-    public function adminSubmitTenants(Request $request)
+    public function leaseSubmitTenants(Request $request)
     {
         $owner = new Owner();
         $owner->owner_fname = $request->ownerfname ? $request->ownerfname : null;
@@ -247,10 +244,9 @@ class TenantsController extends Controller
         }
 
         return response()->json(['success' => 'Tenant added successfully']);
-
     }
 
-    public function adminViewTenants(Request $request){
+    public function leaseViewTenants(Request $request){
         $owners = TenantDocuments::with(['documents'])->where('owner_id', $request->owner_id)->get();
         return response()->json($owners);
     }
@@ -278,8 +274,7 @@ class TenantsController extends Controller
             }
         }
 
-
-    public function adminAddDocuments(Request $request){
+        public function leaseAddDocuments(Request $request){
         $ownerid = $request->input('tenant_doc_owner_id');
         $tenant_doc_id = $request->input('tenant_doc_id');
         $tenant_doc_id2 = $request->input('tenant_doc_id2');
@@ -302,7 +297,7 @@ class TenantsController extends Controller
         }
     }
 
-    public function adminApproveDocuments(Request $request){
+    public function leaseApproveDocuments(Request $request){
         $proposalid = LeaseProposal::where('tenant_id', $request->ownerid)->pluck('id')->first();
         TenantDocuments::where('owner_id', $request->ownerid)->update([
             'status' => 1
@@ -321,7 +316,7 @@ class TenantsController extends Controller
         
     }
 
-    public function adminDeleteTenants(Request $request){
+    public function leaseDeleteTenants(Request $request){
         $docid = TenantDocuments::where('owner_id', $request->id)->pluck('document_id')->first();
         DocumentsTable::where('id', $docid)->delete();
         $rep_email = Representative::where('owner_id', $request->id)->pluck('rep_email')->first();
@@ -333,4 +328,5 @@ class TenantsController extends Controller
             return response()->json(['status' => 'No tenant found']);
         }
     }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Events\LeaseProposalEvent;
 use App\Jobs\admin\ProposalStatus;
 use App\Models\ArchivedProposal;
@@ -67,6 +68,7 @@ class LeasesController extends Controller
 
         return view('admin.leases.leases-proposal', compact('proposal'));
     }
+    
     public function addLease()
     {
         $tenants = Owner::join('company', 'owner.id', '=', 'company.owner_id')
