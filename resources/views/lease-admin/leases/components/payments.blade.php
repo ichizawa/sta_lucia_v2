@@ -25,7 +25,7 @@
                     <input name="escrent" type="text" class="form-control" id="esc_rent" placeholder="Escalation Rent" required>
                 </div>
             </div>
-          
+
         </div>
     </div>
 </div>

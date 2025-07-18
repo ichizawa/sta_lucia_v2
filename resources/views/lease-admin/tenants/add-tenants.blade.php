@@ -24,7 +24,7 @@
                             <div class="progress-bar-line" id="step2-line"></div>
                             <div class="progress-bar-circle" id="step3-circle">3</div>
                         </div>
-                        <form id="addTenentsForm" action="{{route('admin.submit.tenants')}}" enctype="multipart/form-data">
+                        <form id="addTenentsForm" action="{{route('lease.submit.tenants')}}" enctype="multipart/form-data">
                             @csrf
                             <div class="container-fluid">
 
@@ -504,7 +504,7 @@
 @endsection
 
 <script>
-    var submintTenantUrl = "{{ route('admin.submit.tenants') }}";
-    var getSubCategory = "{{ route('admin.get.sub.category') }}";
+    var submintTenantUrl = "{{ route('lease.submit.tenants') }}";
+    var getSubCategory = "{{ route('lease.get.sub.category') }}";
     // $('#tenants_table').DataTable({});
 </script>

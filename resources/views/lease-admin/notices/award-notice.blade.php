@@ -1,7 +1,7 @@
 @extends('layouts')
 @section('content')
-    @include('admin.notices.notice-modals.edit-award-notice-modal')
-    @include('admin.notices.notice-modals.view-award-files-modal')
+    @include('lease-admin.notices.notice-modals.edit-award-notice-modal')
+    @include('lease-admin.notices.notice-modals.view-award-files-modal')
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>

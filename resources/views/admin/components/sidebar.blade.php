@@ -36,7 +36,7 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
-
+        
                 <li
                     class="nav-item {{ request()->routeIs('leases.mall.leases') || request()->routeIs('leases.leases.proposal') || request()->routeIs('leases.add.proposal') ? 'active' : '' }}">
                     <a data-bs-toggle="collapse" href="#leases" aria-expanded="false">
@@ -117,6 +117,7 @@
                         </ul>
                     </div>
                 </li>
+                
                 {{-- <li class="nav-item {{ request()->routeIs('commencement.lists') ? 'active' : '' }}">
                     <a href="{{ route('commencement.lists') }}" aria-expanded="false">
                         <i class="fas fa-layer-group"></i>

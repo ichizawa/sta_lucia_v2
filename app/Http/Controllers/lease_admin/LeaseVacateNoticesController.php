@@ -1,0 +1,136 @@
+<?php
+
+namespace App\Http\Controllers\lease_admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Jobs\admin\AwardNoticeStatus;
+use App\Models\AwardNotice;
+use App\Models\AwardNoticeFiles;
+use App\Models\ChargesSelected;
+use App\Models\CommencementProposal;
+use App\Models\Company;
+use App\Models\Contracts;
+use App\Models\LeaseProposal;
+use App\Models\Representative;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Storage;
+
+class LeaseVacateNoticesController extends Controller
+{
+    public function leaseAwardNotices(Request $request, $option)
+    {
+        if ($option == 'upload') {
+            return $this->leaseFilesUpload($request);
+        }
+
+        if ($option == 'view') {
+            $notices = AwardNotice::join('proposal', 'award_notice.proposal_id', '=', 'proposal.id')
+                ->join('company', 'proposal.tenant_id', '=', 'company.owner_id')
+                ->select(
+                    'award_notice.id as award_notice_id',
+                    'award_notice.status as award_notice_status',
+                    'award_notice.created_at as award_notice_created_at',
+                    'proposal.*',
+                    'company.tenant_type',
+                    'company.company_name',
+                    'company.owner_id as company_owner_id'
+                )
+                ->get();
+
+            return view('lease-admin.notices.award-notice', compact('notices'));
+        }
+
+        if ($option == 'get') {
+            $awardNoticeFiles = AwardNoticeFiles::join('company', 'award_notice_files.owner_id', '=', 'company.owner_id')
+                ->select('award_notice_files.*', 'company.company_name')
+                ->where('award_notice_id', $request->noticeid)
+                ->get();
+
+            return response()->json([
+                'data' => $awardNoticeFiles
+            ]);
+        }
+
+        if ($option == 'check') {
+            $check = AwardNoticeFiles::where('award_notice_id', $request->noticeid)->first();
+        }
+    }
+
+    public function leaseFilesUpload(Request $request)
+    {
+        $anf = AwardNoticeFiles::create([
+            'award_notice_id' => $request->award_notice_id,
+            'owner_id' => $request->owner_id,
+            'file_name' => $request->file_name ? $request->file_name : null,
+            'file_path' => $request->file_path ? $request->file('file_path')->getClientOriginalName() : null,
+            'status' => 0
+        ]);
+        $boolean = false;
+        if ($anf) {
+            $ownerName = Company::where('owner_id', $request->owner_id)->pluck('company_name')->first();
+            if ($request->hasFile('file_path')) {
+                $fileName = $request->file('file_path')->getClientOriginalName();
+
+                $directorypath = "public/tenant_documents/{$ownerName}/award_notice/approval_files";
+                if (!Storage::exists($directorypath)) {
+                    Storage::makeDirectory($directorypath, 0755, true);
+                }
+                $request->file('file_path')->storeAs('public/tenant_documents/' . $ownerName . '/award_notice/approval_files/', $fileName);
+                $boolean = true;
+                return redirect()->back()->with('status', $boolean);
+            }
+        } else {
+            $boolean = false;
+            return redirect()->back()->with('status', $boolean);
+        }
+    }
+
+    public function leaseVacateNotices()
+    {
+        return view('lease-admin.notices.vacate_notices');
+    }
+
+    public function leaseNoticeOptions(Request $request)
+    {
+
+        $awardnotice = AwardNotice::with(['proposal', 'proposal.company', 'proposal.representative'])->find($request->award_notice_id);
+        if ($request->status_award == 1) {
+            $awardnotice->status = 1;
+            $awardnotice->save();
+
+            $contracts = Contracts::create([
+                'award_notice_id' => $request->award_notice_id,
+                'status' => 1,
+            ]);
+
+            CommencementProposal::create([
+                'proposal_id' => $awardnotice->proposal_id,
+                'commencement_date' => null,
+            ]);
+
+            User::where('email', $awardnotice->proposal->representative->rep_email)->update([
+                'status' => 1
+            ]);
+
+            $directorypath = "public/tenant_documents/{$awardnotice->proposal->company->company_name}/contract/";
+            $pdfFileName = "contract_{$contracts->id}.pdf";
+
+            if (!Storage::exists($directorypath)) {
+                Storage::makeDirectory($directorypath, 0755, true);
+            }
+
+            $pdf = PDF::loadView('admin.components.contract-template')->setPaper('legal', 'portrait');
+            $dompdf = $pdf->getDomPDF();
+            $canvas = $dompdf->getCanvas();
+            $pdf->save(storage_path("app/{$directorypath}/{$pdfFileName}"));
+
+            AwardNoticeStatus::dispatch($awardnotice);
+        }
+        return back()->with([
+            'notice' => $awardnotice,
+            'modal_open' => true,
+        ]);
+    }
+}

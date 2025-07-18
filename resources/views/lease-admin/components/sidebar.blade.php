@@ -36,7 +36,7 @@
                 </li>
 
                 <li
-                    class="nav-item {{ request()->routeIs('leases.mall.leases') || request()->routeIs('leases.leases.proposal') || request()->routeIs('leases.add.proposal') ? 'active' : '' }}">
+                    class="nav-item {{ request()->routeIs('leasesInfo.mall.leases') || request()->routeIs('leasesProposal.leases.proposal') || request()->routeIs('leases.add.proposal') ? 'active' : '' }}">
                     <a data-bs-toggle="collapse" href="#leases" aria-expanded="false">
                         <i class="fa-solid fa-house"></i>
                         <p>Leases</p>
@@ -44,14 +44,14 @@
                     </a>
                     <div class="collapse" id="leases">
                         <ul class="nav nav-collapse">
-                            <li class="{{ request()->routeIs('leases.mall.leases') ? 'active' : '' }}">
-                                <a href="{{ route('leases.mall.leases') }}">
+                            <li class="{{ request()->routeIs('leasesInfo.mall.leases') ? 'active' : '' }}">
+                                <a href="{{ route('leasesInfo.mall.leases') }}">
                                     <span class="sub-item">Mall Leaseable Info</span>
                                 </a>
                             </li>
                             <li
-                                class="{{ request()->routeIs('leases.leases.proposal') || request()->routeIs('leases.add.proposal') ? 'active' : '' }}">
-                                <a href="{{ route('leases.leases.proposal') }}">
+                                class="{{ request()->routeIs('leasesProposal.leases.proposal') || request()->routeIs('leasesProposal.leases.proposal') ? 'active' : '' }}">
+                                <a href="{{ route('leasesProposal.leases.proposal') }}">
                                     <span class="sub-item">Lease Proposal</span>
                                 </a>
                             </li>
@@ -70,6 +70,8 @@
                         <p>Tenants</p>
                     </a>
                 </li>
+
+
                 <li
                     class="nav-item {{ request()->routeIs('lease.space') || request()->routeIs('space.add.space') ? 'active' : '' }}">
                     <a href="{{ route('lease.space') }}" aria-expanded="false">
@@ -77,8 +79,9 @@
                         <p>Space</p>
                     </a>
                 </li>
+
                 <li
-                    class="nav-item {{ request()->routeIs('admin.award.notices') || request()->routeIs('admin.vacate.notices') ? 'active' : '' }}">
+                    class="nav-item {{ request()->routeIs('lease.award.notices') || request()->routeIs('lease.vacate.notices') ? 'active' : '' }}">
                     <a data-bs-toggle="collapse" href="#notices" aria-expanded="false">
                         <i class="fa-solid fa-award"></i>
                         <p>Notices</p>
@@ -86,21 +89,22 @@
                     </a>
                     <div class="collapse" id="notices">
                         <ul class="nav nav-collapse">
-                            <li class="{{ request()->routeIs('admin.award.notices') ? 'active' : '' }}">
-                                <a href="{{ route('admin.award.notices', 'view') }}">
+                            <li class="{{ request()->routeIs('lease.award.notices') ? 'active' : '' }}">
+                                <a href="{{ route('lease.award.notices', 'view') }}">
                                     <span class="sub-item">Award Notice</span>
                                 </a>
                             </li>
-                            <li class="{{ request()->routeIs('admin.vacate.notices') ? 'active' : '' }}">
-                                <a href="{{ route('admin.vacate.notices') }}">
+                            <li class="{{ request()->routeIs('lease.vacate.notices') ? 'active' : '' }}">
+                                <a href="{{ route('lease.vacate.notices') }}">
                                     <span class="sub-item">Vacate Notice</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
                 <li
-                    class="nav-item {{ request()->routeIs('admin.renewal.contract') || request()->routeIs('admin.termination.contract') ? 'active' : '' }}">
+                    class="nav-item {{ request()->routeIs('lease.renewal.contract') || request()->routeIs('lease.termination.contract') ? 'active' : '' }}">
                     <a data-bs-toggle="collapse" href="#contracts" aria-expanded="false">
                         <i class="fa-solid fa-file-signature"></i>
                         <p>Contract</p>
@@ -108,19 +112,20 @@
                     </a>
                     <div class="collapse" id="contracts">
                         <ul class="nav nav-collapse">
-                            <li class="{{ request()->routeIs('admin.renewal.contract') ? 'active' : '' }}">
-                                <a href="{{ route('admin.renewal.contract') }}">
+                            <li class="{{ request()->routeIs('lease.renewal.contract') ? 'active' : '' }}">
+                                <a href="{{ route('lease.renewal.contract') }}">
                                     <span class="sub-item">Renewal of Contract</span>
                                 </a>
                             </li>
-                            <li class="{{ request()->routeIs('admin.termination.contract') ? 'active' : '' }}">
-                                <a href="{{ route('admin.termination.contract') }}">
+                            <li class="{{ request()->routeIs('lease.termination.contract') ? 'active' : '' }}">
+                                <a href="{{ route('lease.termination.contract') }}">
                                     <span class="sub-item">Termination of Contract</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
                 <li class="nav-item {{ request()->routeIs('lease.admin.permits.lists') ? 'active' : '' }}">
                     <a href="{{ route('lease.admin.permits.lists') }}" aria-expanded="false">
                         <i class="far fa-chart-bar"></i>
@@ -137,3 +142,5 @@
         </div>
     </div>
 </div>
+
+

@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\lease_admin;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use App\Events\LeaseProposalEvent;
 use App\Jobs\admin\ProposalStatus;
@@ -24,7 +26,6 @@ use App\Services\StatusService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SpaceUtility;
 use File;
-use Illuminate\Http\Request;
 use App\Models\BusinessType;
 use App\Models\Charge;
 use App\Models\UtilitiesModel;
@@ -37,7 +38,7 @@ use Storage;
 
 class LeasesController extends Controller
 {
-    public function adminMallLeaseableInfo()
+    public function leaseMallLeaseableInfo()
     {
         $space = Space::join('leasable_space', 'space.id', '=', 'leasable_space.space_id')
             ->leftJoin('representative', 'leasable_space.owner_id', '=', 'representative.owner_id')
@@ -45,9 +46,11 @@ class LeasesController extends Controller
             ->orderBy('leasable_space.id', direction: 'desc')
             ->get();
         // dd($space); die();
-        return view('admin.leases.leases-information', compact('space'));
+        return view('lease-admin.leases.leases-information', compact('space'));
     }
-    public function adminLeases()
+
+
+    public function leaseAdminLeases()
     {
         $proposal = LeaseProposal::join('company', 'proposal.tenant_id', '=', 'company.owner_id')
             ->select('company.company_name', 'proposal.status', 'proposal.id', 'company.owner_id', 'proposal.tenant_id', 'company.tenant_type')
@@ -66,10 +69,11 @@ class LeasesController extends Controller
             return $proposals;
         });
 
-        return view('admin.leases.leases-proposal', compact('proposal'));
+        return view('lease-admin.leases.leases-proposal', compact('proposal'));
     }
-    
-    public function addLease()
+
+
+    public function addingLease()
     {
         $tenants = Owner::join('company', 'owner.id', '=', 'company.owner_id')
             ->join('representative', 'owner.id', '=', 'representative.owner_id')
@@ -79,9 +83,11 @@ class LeasesController extends Controller
         $charges = Charge::all();
         $utilities = UtilitiesModel::all();
 
-        return view('admin.leases.add-proposal', compact('tenants', 'space', 'charges', 'utilities'));
+        return view('lease-admin.leases.add-proposal', compact('tenants', 'space', 'charges', 'utilities'));
     }
-    public function getChargesUtilities(Request $request)
+
+
+    public function gettingChargesUtilities(Request $request)
     {
         $utilities = SpaceUtility::select()->where('space_id', $request->space_id)->get();
         $charges = SpacePaymentInformation::select()->where('space_id', $request->space_id)->get();
@@ -93,7 +99,8 @@ class LeasesController extends Controller
         return response()->json($datas);
     }
 
-    public function adminSubmitLeaseProposal(Request $request, $option)
+
+    public function leaseSubmitLeaseProposal(Request $request, $option)
     {
         $data = [];
         if ($option == 'proposal') {
@@ -105,7 +112,7 @@ class LeasesController extends Controller
             // $notify_proposal->notify($this->newProposal($request));
             ProposalStatus::dispatch($this->newProposal($request));
 
-            return redirect()->route('leases.leases.proposal')->with('success', 'Lease proposal added successfully');
+            return redirect()->route('leasesProposal.leases.proposal')->with('success', 'Lease proposal added successfully');
         } else {
             return $this->counterProposal($request);
             // $data = [
@@ -115,6 +122,7 @@ class LeasesController extends Controller
             // return redirect()->route('leases.leases.proposal')->with('success', 'Counter Lease proposal added successfully');
         }
     }
+
 
     public function newProposal(Request $request)
     {
@@ -241,7 +249,7 @@ class LeasesController extends Controller
             ->get();
 
         $pdf_size = array(0, 0, 349, 573);
-        $pdf = PDF::loadview('admin.components.proposal-template', compact('proposals', 'space_proposals', 'getUtilities', 'getCharges', 'getAminities'))->setPaper('legal', 'portrait');
+        $pdf = PDF::loadview('lease-admin.components.proposal-template', compact('proposals', 'space_proposals', 'getUtilities', 'getCharges', 'getAminities'))->setPaper('legal', 'portrait');
         
         $dompdf = $pdf->getDomPDF();
         $canvas = $dompdf->getCanvas();
@@ -291,7 +299,7 @@ class LeasesController extends Controller
             ])->find($counter_leases->id);
 
             $pdf_size = array(0, 0, 349, 573);
-            $pdf = PDF::loadview('admin.components.counter-proposal-template', compact('counter_proposal'))->setPaper('legal', 'portrait');
+            $pdf = PDF::loadview('lease-admin.components.counter-proposal-template', compact('counter_proposal'))->setPaper('legal', 'portrait');
 
             $dompdf = $pdf->getDomPDF();
             $canvas = $dompdf->getCanvas();
@@ -315,12 +323,12 @@ class LeasesController extends Controller
             ];
         }
 
-        return redirect()->route('leases.leases.proposal')->with('success', 'Counter Lease proposal added successfully');
+        return redirect()->route('leasesProposal.leases.proposal')->with('success', 'Counter Lease proposal added successfully');
         // $publicUrl = asset('storage/counter-lease-proposals/' . $pdfFileName);
         // return response()->json(['url' => $publicUrl, 'data' => $counter_proposal]);
     }
 
-    public function showProposal(Request $request)
+    public function showingProposal(Request $request)
     {
         $proposals = LeaseProposal::join('company', 'proposal.tenant_id', '=', 'company.owner_id')
             ->join('representative', 'proposal.tenant_id', '=', 'representative.owner_id')
@@ -382,7 +390,7 @@ class LeasesController extends Controller
         ]);
     }
 
-    public function showCounterProposal(Request $request)
+    public function showingCounterProposal(Request $request)
     {
         $pdfFileName = 'counter_proposal_' . $request->counter_proposal_id . '.pdf';
         $cprop = CounterProposal::where('id', $request->counter_proposal_id)->first();
@@ -395,7 +403,7 @@ class LeasesController extends Controller
         ]);
     }
 
-    public function adminGetBusinessInfo(Request $request)
+    public function leaseGetBusinessInfo(Request $request)
     {
         $business_type = BusinessType::where('company_id', $request->company_id)
             ->join('categories', 'business_type.category_id', '=', 'categories.id')
@@ -405,7 +413,7 @@ class LeasesController extends Controller
         return response()->json($business_type);
     }
 
-    public function adminOptionsProposal(Request $request, $set, StatusService $notify_proposal)
+    public function leaseadminOptionsProposal(Request $request, $set, StatusService $notify_proposal)
     {
         $data = [];
         if ($set == "new") {
@@ -422,7 +430,7 @@ class LeasesController extends Controller
                     Storage::makeDirectory($directory, 0755, true);
                 }
 
-                $pdf = PDF::loadView('admin.components.award-notice-template', compact('proposal'))->setPaper('legal', 'portrait');
+                $pdf = PDF::loadView('lease-admin.components.award-notice-template', compact('proposal'))->setPaper('legal', 'portrait');
                 $dompdf = $pdf->getDomPDF();
                 $canvas = $dompdf->getCanvas();
                 $pdf->save(storage_path("app/{$directory}/{$pdfFileName}"));
