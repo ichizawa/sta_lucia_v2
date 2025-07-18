@@ -53,7 +53,7 @@
             $('.utilities-container').empty();
 
             $.ajax({
-                url: "{{ route('lease.show.proposal') }}",
+                url: "{{ route('leaseShow.show.proposal') }}",
                 type: "GET",
                 data: {
                     proposal_id: proposal_id

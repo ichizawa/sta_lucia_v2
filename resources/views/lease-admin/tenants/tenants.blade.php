@@ -43,61 +43,65 @@
                                 </thead>
                                 <tbody id="tenant-show-table">
                                     @foreach ($owners as $owner)
-                                                        @foreach ($owner->companies as $company)
-                                                                            @foreach ($owner->representatives as $rep)
-                                                                                                <!-- {{ $rep }} -->
-                                                                                                <tr>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $company->company_name }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ ucFirst($rep->rep_fname) . ' ' . ucFirst($rep->rep_lname) }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $company->store_name }}
+                                        @foreach ($owner->companies as $company)
+                                            @foreach ($owner->representatives as $rep)
+                                                                @foreach ($owner->document as $document)
 
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $company->company_address }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $rep->rep_address }}
+                                                                <!-- {{ $rep }} -->
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        {{ $company->company_name }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ ucFirst($rep->rep_fname) . ' ' . ucFirst($rep->rep_lname) }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ $company->store_name }}
 
-                                                                                                    </td class="text-center">
-                                                                                                    <td>
-                                                                                                        {{ $rep->rep_email }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {!! $rep->status
-                                                                                ? '<span class="badge bg-success">Active</span>'
-                                                                                : '<span class="badge bg-warning">Pending</span>' !!}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {!! $owner->doc_status
-                                                                                ? '<span class="badge bg-success">Approved</span>'
-                                                                                : '<span class="badge bg-warning">Pending</span>' !!}
-                                                                                                    </td>
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ $company->company_address }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ $rep->rep_address }}
+                                                                        </td>
+                                                                    <td class="text-center">
+                                                                        {{ $rep->rep_email }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {!! $rep->status === 1
+                                                ? '<span class="badge bg-success">Active</span>'
+                                                : '<span class="badge bg-warning">Pending</span>' !!}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {!! $document->status === 1
+                                                ? '<span class="badge bg-success">Approved</span>'
+                                                : '<span class="badge bg-warning">Pending</span>' !!}
+                                                                    </td>
+                                                                    
 
-                                                                                                    <td>
-                                                                                                        <div class="d-flex gap-2">
-                                                                                                            <a class="btn btn-warning btn-sm view_documents"
-                                                                                                                data-owner-id="{{ $company->owner_id }}"
-                                                                                                                data-company-name="{{ $company->company_name }}"
-                                                                                                                data-tenant-type="{{ $company->tenant_type }}" data-bs-toggle="modal"
-                                                                                                                data-docu-status="{{ $owner->doc_status }}"
-                                                                                                                data-bs-target="#tenantDocuments">
-                                                                                                                <i class="fa fa-pen" aria-hidden="true"></i>
-                                                                                                            </a>
-                                                                                                            <a class="btn btn-danger btn-sm deleteTenant"
-                                                                                                                onClick="delete_tenant_func({{ $company->owner_id }})">
-                                                                                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                                                                                            </a>
-                                                                                                        </div>
-                                                                                                    </td>
+                                                                    
+                                                                    <td>
+                                                                        <div class="d-flex gap-2">
+                                                                            <a class="btn btn-warning btn-sm view_documents"
+                                                                                data-owner-id="{{ $company->owner_id }}"
+                                                                                data-company-name="{{ $company->company_name }}"
+                                                                                data-tenant-type="{{ $company->tenant_type }}" data-bs-toggle="modal"
+                                                                                data-docu-status="{{ $owner->doc_status }}"
+                                                                                data-bs-target="#tenantDocuments">
+                                                                                <i class="fa fa-pen" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <a class="btn btn-danger btn-sm deleteTenant"
+                                                                                onClick="delete_tenant_func({{ $company->owner_id }})">
+                                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
 
-                                                                                                </tr>
-                                                                            @endforeach
-                                                        @endforeach
+                                                                </tr>
+                                                                @endforeach
+                                            @endforeach
+                                        @endforeach
                                     @endforeach
                                 </tbody>
                             </table>
@@ -148,16 +152,16 @@
                         if (checkFalse) {
                             if (data[0].status !== 1) {
                                 $('#tenant-doc-stats').append(`
-                                                    <button type="button" class="btn btn-primary approveTenantDocuments" data-owner-id="${owner_id}">Approve Documents</button>
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                `);
+                                                            <button type="button" class="btn btn-primary approveTenantDocuments" data-owner-id="${owner_id}">Approve Documents</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        `);
                             }
                         }
                         if (data[0].status !== 1) {
                             $('#tenant-doc-stats').append(`
-                                                <button type="button" class="btn btn-primary approveTenantDocuments" data-owner-id="${owner_id}">Approve Documents</button>
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            `);
+                                                        <button type="button" class="btn btn-primary approveTenantDocuments" data-owner-id="${owner_id}">Approve Documents</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    `);
                         }
 
                         $('.approveTenantDocuments').click(function () {
@@ -235,22 +239,22 @@
                                 var newKeyName = keyMappings[key] || key;
 
                                 var tr = `
-                                                    <tr>
-                                                        <td class="text-center">${newKeyName}</td>
-                                                        <td class="text-center">${documentStatus}</td>
-                                                        <td class="text-center">
-                                                            <a class="btn btn-sta btn-sm viewDocument"
-                                                            data-document-name="${value}"
-                                                            data-company_name="${company_name}"
-                                                            data-documents-id="${key}"
-                                                            data-tenant-doc-id="${documentid}"
-                                                            data-owner-id="${owner_id}"
-                                                            data-bs-target="#tenantCheckDocument" data-bs-toggle="modal">
-                                                                <i class="fa fa-pen" aria-hidden="true"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                `;
+                                                            <tr>
+                                                                <td class="text-center">${newKeyName}</td>
+                                                                <td class="text-center">${documentStatus}</td>
+                                                                <td class="text-center">
+                                                                    <a class="btn btn-sta btn-sm viewDocument"
+                                                                    data-document-name="${value}"
+                                                                    data-company_name="${company_name}"
+                                                                    data-documents-id="${key}"
+                                                                    data-tenant-doc-id="${documentid}"
+                                                                    data-owner-id="${owner_id}"
+                                                                    data-bs-target="#tenantCheckDocument" data-bs-toggle="modal">
+                                                                        <i class="fa fa-pen" aria-hidden="true"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        `;
                                 $('#tenant-documents').append(tr);
 
 
@@ -269,36 +273,36 @@
 
                             if (documentName == null) {
                                 $('#tenant-documents-footer').append(`
-                                                    <button class="btn btn-primary" id="upload-File">Upload</button>
-                                                    <button class="btn btn-secondary" data-bs-target="#tenantDocuments" data-bs-toggle="modal">Back</button>
-                                                    <input type="text" id="tenant-documents-id" name="tenant_doc_id" value="${tenant_doc_id}" hidden>
-                                                    <input type="text" id="tenant-documents-id2" name="tenant_doc_id2" value="${documents_id}" hidden>
-                                                    <input type="text" id="tenant-documents-owner-id" name="tenant_doc_owner_id" value="${owner_id}" hidden>
-                                                    <input type="file" id="tenant-documents-file" name="tenant_doc_file" style="display: none;"/>
-                                                `);
+                                                            <button class="btn btn-primary" id="upload-File">Upload</button>
+                                                            <button class="btn btn-secondary" data-bs-target="#tenantDocuments" data-bs-toggle="modal">Back</button>
+                                                            <input type="text" id="tenant-documents-id" name="tenant_doc_id" value="${tenant_doc_id}" hidden>
+                                                            <input type="text" id="tenant-documents-id2" name="tenant_doc_id2" value="${documents_id}" hidden>
+                                                            <input type="text" id="tenant-documents-owner-id" name="tenant_doc_owner_id" value="${owner_id}" hidden>
+                                                            <input type="file" id="tenant-documents-file" name="tenant_doc_file" style="display: none;"/>
+                                                        `);
                                 $('#tenant-documents-pdf').append(`
-                                                    <img class="" src="https://as1.ftcdn.net/v2/jpg/08/43/39/72/1000_F_843397211_gPMOVXz9VjqN4uSxqQqwY2U1HgACwmAE.jpg" width="40%" height="100%" style="border: none;">
-                                                `);
+                                                            <img class="" src="https://as1.ftcdn.net/v2/jpg/08/43/39/72/1000_F_843397211_gPMOVXz9VjqN4uSxqQqwY2U1HgACwmAE.jpg" width="40%" height="100%" style="border: none;">
+                                                        `);
                             } else {
                                 var fileExtension = documentName.split('.').pop()
                                     .toLowerCase();
 
                                 $('#tenant-documents-footer').append(`
-                                                    <button class="btn btn-secondary" data-bs-target="#tenantDocuments" data-bs-toggle="modal">Back</button>
-                                                `);
+                                                            <button class="btn btn-secondary" data-bs-target="#tenantDocuments" data-bs-toggle="modal">Back</button>
+                                                        `);
                                 if (['jpg', 'jpeg', 'png', 'gif'].includes(
                                     fileExtension)) {
                                     $('#tenant-documents-pdf').append(`
-                                                        <img src="{{ asset('storage/tenant_documents') }}/${company_name}/${documentName}" width="100%" height="100%" style="border: none; object-fit: cover;">
-                                                    `);
+                                                                <img src="{{ asset('storage/tenant_documents') }}/${company_name}/${documentName}" width="100%" height="100%" style="border: none; object-fit: cover;">
+                                                            `);
                                 } else if (fileExtension === 'pdf') {
                                     $('#tenant-documents-pdf').append(`
-                                                        <iframe id="tenant-documents-pdf" src="{{ asset('storage/tenant_documents') }}/${company_name}/${documentName}" width="100%" height="100%" style="border: none;"></iframe>
-                                                    `);
+                                                                <iframe id="tenant-documents-pdf" src="{{ asset('storage/tenant_documents') }}/${company_name}/${documentName}" width="100%" height="100%" style="border: none;"></iframe>
+                                                            `);
                                 } else {
                                     $('#tenant-documents-pdf').append(`
-                                                        <p>Unsupported file type</p>
-                                                    `);
+                                                                <p>Unsupported file type</p>
+                                                            `);
                                 }
                             }
 

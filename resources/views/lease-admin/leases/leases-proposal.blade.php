@@ -2,9 +2,9 @@
 
 @section('content')
 
-    @include('admin.components.modals.proposal-modal')
+    @include('lease-admin.components.modals.proposal-modal')
     <!-- @include('admin.components.modals.lease-documents-modal') -->
-    @include('admin.components.modals.counter-proposals-modal')
+    @include('lease-admin.components.modals.counter-proposals-modal')
 
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">

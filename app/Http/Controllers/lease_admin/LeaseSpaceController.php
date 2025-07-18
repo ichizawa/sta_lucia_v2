@@ -57,7 +57,7 @@ class LeaseSpaceController extends Controller
         ]);
     }
 
-    public function sumbmitSpace(Request $request)
+    public function submitSpace(Request $request)
     {
         $space = Space::firstOrCreate(
             attributes: [

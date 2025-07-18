@@ -43,62 +43,67 @@
                                 </thead>
                                 <tbody id="tenant-show-table">
                                     @foreach ($owners as $owner)
-                                                        @foreach ($owner->companies as $company)
-                                                                            @foreach ($owner->representatives as $rep)
-                                                                                                <!-- {{ $rep }} -->
-                                                                                                <tr>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $company->company_name }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ ucFirst($rep->rep_fname) . ' ' . ucFirst($rep->rep_lname) }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $company->store_name }}
+                                        @foreach ($owner->companies as $company)
+                                            @foreach ($owner->representatives as $rep)
+                                                @foreach ($owner->document as $document)
 
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $company->company_address }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {{ $rep->rep_address }}
+                                                                <!-- {{ $rep }} -->
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        {{ $company->company_name }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ ucFirst($rep->rep_fname) . ' ' . ucFirst($rep->rep_lname) }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ $company->store_name }}
 
-                                                                                                    </td class="text-center">
-                                                                                                    <td>
-                                                                                                        {{ $rep->rep_email }}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {!! $rep->status
-                                                                                ? '<span class="badge bg-success">Active</span>'
-                                                                                : '<span class="badge bg-warning">Pending</span>' !!}
-                                                                                                    </td>
-                                                                                                    <td class="text-center">
-                                                                                                        {!! $owner->doc_status
-                                                                                ? '<span class="badge bg-success">Approved</span>'
-                                                                                : '<span class="badge bg-warning">Pending</span>' !!}
-                                                                                                    </td>
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ $company->company_address }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ $rep->rep_address }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ $rep->rep_email }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {!! $rep->status === 1
+                                                    ? '<span class="badge bg-success">Active</span>'
+                                                    : '<span class="badge bg-warning">Pending</span>' !!}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {!! $document->status === 1
+                                                    ? '<span class="badge bg-success">Approved</span>'
+                                                    : '<span class="badge bg-warning">Pending</span>' !!}
+                                                                    </td>
 
-                                                                                                    <td>
-                                                                                                        <div class="d-flex gap-2">
-                                                                                                            <a class="btn btn-warning btn-sm view_documents"
-                                                                                                                data-owner-id="{{ $company->owner_id }}"
-                                                                                                                data-company-name="{{ $company->company_name }}"
-                                                                                                                data-tenant-type="{{ $company->tenant_type }}" data-bs-toggle="modal"
-                                                                                                                data-docu-status="{{ $owner->doc_status }}"
-                                                                                                                data-bs-target="#tenantDocuments">
-                                                                                                                <i class="fa fa-pen" aria-hidden="true"></i>
-                                                                                                            </a>
-                                                                                                            <a class="btn btn-danger btn-sm deleteTenant"
-                                                                                                                onClick="delete_tenant_func({{ $company->owner_id }})">
-                                                                                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                                                                                            </a>
-                                                                                                        </div>
-                                                                                                    </td>
 
-                                                                                                </tr>
-                                                                            @endforeach
-                                                        @endforeach
+
+                                                                    <td>
+                                                                        <div class="d-flex gap-2">
+                                                                            <a class="btn btn-warning btn-sm view_documents"
+                                                                                data-owner-id="{{ $company->owner_id }}"
+                                                                                data-company-name="{{ $company->company_name }}"
+                                                                                data-tenant-type="{{ $company->tenant_type }}" data-bs-toggle="modal"
+                                                                                data-docu-status="{{ $owner->doc_status }}"
+                                                                                data-bs-target="#tenantDocuments">
+                                                                                <i class="fa fa-pen" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <a class="btn btn-danger btn-sm deleteTenant"
+                                                                                onClick="delete_tenant_func({{ $company->owner_id }})">
+                                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+
+                                                                </tr>
+                                                @endforeach
+                                            @endforeach
+                                        @endforeach
                                     @endforeach
+                                </tbody>
                                 </tbody>
                             </table>
                         </div>
@@ -171,7 +176,7 @@
                                 dataType: "json",
                                 success: function (data) {
                                     //    console.log(data);
-                                    $('#tenant-show-table').find('td').eq(7)
+                                     $('#tenant-show-table').find('td').eq(7)
                                         .html(
                                             '<span class="badge bg-success">Approved</span>'
                                         );

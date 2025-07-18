@@ -184,7 +184,7 @@
 
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('lease.business.info') }}",
+                    url: "{{ route('leaseBussInfo.business.info') }}",
                     data: {
                         'company_id': tenant_id,
                     },

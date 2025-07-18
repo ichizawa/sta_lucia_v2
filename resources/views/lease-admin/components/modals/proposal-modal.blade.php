@@ -93,7 +93,7 @@
             $('#approveNewProposal').attr('disabled', false);
 
             $.ajax({
-                url: "{{ route('lease.show.proposal') }}",
+                url: "{{ route('leaseShow.show.proposal') }}",
                 type: "GET",
                 data: {
                     proposal_id: proposal_id
@@ -170,7 +170,7 @@
             $('#counterProposalsAdd').data('counter-prop-id', proposal_id);
 
             $.ajax({
-                url: "{{ route('lease.show.proposal') }}",
+                url: "{{ route('leaseShow.show.proposal') }}",
                 type: "GET",
                 data: {
                     proposal_id: proposal_id
@@ -241,7 +241,7 @@
 
         function proposalOptions(proposal_id, option, set) {
             $.ajax({
-                url: "{{ url('admin/leases/lease-option-proposal') }}" + '/' + set,
+                url: "{{ url('lease-admin/leases/leaseadmin-option-proposal') }}" + '/' + set,
                 type: "GET",
                 data: {
                     proposal_id: proposal_id,

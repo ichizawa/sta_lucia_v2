@@ -58,7 +58,7 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'authCheck']], function () {
-    Route::prefix('admin')->middleware('role.check:admin, lease')->group(function () {
+    Route::prefix('admin')->middleware('role.check:admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'adminIndex'])->name('admin.dashboard');
 
         Route::get('/space', [SpaceController::class, 'adminSpace'])->name('admin.space');
@@ -305,7 +305,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
         Route::get('/space', [LeaseSpaceController::class, 'leaseAdminSpace'])->name('lease.space');
         Route::prefix('space')->group(function () {
             Route::get('/add-space', [LeaseSpaceController::class, 'leaseAddSpace'])->name('lease.add.space');
-            Route::post('/submit-space', [LeaseSpaceController::class, 'sumbmitSpace'])->name('lease.submit.space');
+            Route::post('/submit-space', [LeaseSpaceController::class, 'submitSpace'])->name('lease.submit.space');
             Route::get('/view-space-modal', [LeaseSpaceController::class, 'leaseViewSpace'])->name('lease.view.space');
             Route::post('/delete-space', [LeaseSpaceController::class, 'leaseDelete'])->name('lease.delete.space');
 
@@ -333,6 +333,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::post('/approve-tenant-documents', [LeaseTenantController::class, 'leaseApproveDocuments'])->name('lease.tenant.documents.approve');
             Route::post('/delete-tenant', [LeaseTenantController::class, 'leaseDeleteTenants'])->name('lease.delete.tenants');
         });
+        
         Route::prefix('leases')->group(function () {
             Route::get('/mall-leaseable-info', [LeaseAdminLeasesController::class, 'leaseMallLeaseableInfo'])->name('leasesInfo.mall.leases');
             Route::get('/leases-proposal', [LeaseAdminLeasesController::class, 'leaseAdminLeases'])->name('leasesProposal.leases.proposal');
@@ -343,7 +344,7 @@ Route::group(['middleware' => ['auth', 'authCheck']], function () {
             Route::get('/show-proposal', [LeaseAdminLeasesController::class, 'showingProposal'])->name('leaseShow.show.proposal');
             Route::get('/show-counter-proposal', [LeaseAdminLeasesController::class, 'showingCounterProposal'])->name('leaseCount.show.counter.proposal');
             Route::get('/get-business-info', [LeaseAdminLeasesController::class, 'leaseGetBusinessInfo'])->name('leaseBussInfo.business.info');
-            Route::get('/lease-option-proposal/{set}', [LeaseAdminLeasesController::class, 'leaseadminOptionsProposal'])->name('leaseOption.option.proposals');
+            Route::get('/leaseadmin-option-proposal/{set}', [LeaseAdminLeasesController::class, 'leaseadminOptionsProposal'])->name('leaseOption.option.proposals');
         });
 
         Route::prefix('notices')->group(function () {

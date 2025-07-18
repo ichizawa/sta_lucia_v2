@@ -24,7 +24,7 @@
                             <div class="progress-bar-line" id="step2-line"></div>
                             <div class="progress-bar-circle" id="step3-circle">3</div>
                         </div>
-                        <form id="addTenentsForm" action="{{route('lease.submit.tenants')}}" enctype="multipart/form-data">
+                        <form id="LeaseaddTenentsForm" action="{{route('lease.submit.tenants')}}" enctype="multipart/form-data">
                             @csrf
                             <div class="container-fluid">
 
@@ -37,8 +37,8 @@
                                                 </div>
 
                                                 <div class="form-group col-md-6">
-                                                    <label for="tenantType">Tenant Type</label>
-                                                    <select name="tenant_type" class="form-control" id="tenantType"
+                                                    <label for="LeasetenantType">Tenant Type</label>
+                                                    <select name="tenant_type" class="form-control" id="LeasetenantType"
                                                         required>
                                                         <option value="" selected hidden>Select Tenant Type</option>
                                                         <option value="Corporate">Corporate</option>
@@ -228,7 +228,7 @@
                             </div>
 
                             <div class="step4" style="display: none">
-                                <div class="row" id="company-docu">
+                                <div class="row" id="Leasecompany-docu">
 
                                 </div>
                                 <!-- <div class="d-flex justify-content-end">
@@ -265,7 +265,7 @@
                                                 id="back-button1">Back</button>
                                         </div>
                                         <div class="col-auto">
-                                            <button type="button" class="btn " id="submit-button"
+                                            <button type="button" class="btn " id="submit-button-lease"
                                                 style="background-color: #304F23; color: white;">Submit</button>
                                         </div>
 
